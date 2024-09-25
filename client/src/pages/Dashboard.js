@@ -104,13 +104,6 @@ const Dashboard = () => {
     }
   }, [userProfile, navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    dispatch(setUserProfile(null)); // Clear the user profile from Redux store
-    navigate("/login"); // Redirect to login page
-  };
-
   if (userStatus === "loading") {
     return <div>Loading...</div>;
   }
@@ -121,7 +114,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <Header userProfile={userProfile} onLogout={handleLogout} />
+      <Header userProfile={userProfile} />
 
       {/* Display Popup when there's a failure */}
       {popup.visible && (

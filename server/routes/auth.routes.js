@@ -38,7 +38,7 @@ router.route("/google/callback").get(
       { id: req.user._id },
       process.env.JWT_SECRET,
       {
-        expiresIn: "7d", // Refresh token valid for 7 days
+        expiresIn: "1d", // Refresh token valid for 7 days
       }
     );
 

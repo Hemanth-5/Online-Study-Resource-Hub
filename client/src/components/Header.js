@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaBell,
   FaCaretDown,
@@ -7,11 +7,15 @@ import {
   FaUser,
   FaDoorOpen,
 } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { setUserProfile } from "../features/userSlice";
 import "./Header.css";
 
-const Header = ({ userProfile, notifications, onLogout }) => {
+const Header = ({ userProfile, notifications }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State to control profile options popup
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
@@ -19,6 +23,13 @@ const Header = ({ userProfile, notifications, onLogout }) => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    dispatch(setUserProfile(null)); // Clear the user profile from Redux store
+    navigate("/login");
   };
 
   return (
@@ -35,7 +46,7 @@ const Header = ({ userProfile, notifications, onLogout }) => {
           <FaBell className="notification-icon" onClick={toggleNotifications} />
           {showNotifications && (
             <div className="notification-popup">
-            {notifications && notifications.length > 0 ? (
+              {notifications && notifications.length > 0 ? (
                 notifications.map((notification, index) => (
                   <div key={index} className="notification-item">
                     {notification}
