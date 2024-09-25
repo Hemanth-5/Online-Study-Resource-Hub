@@ -89,7 +89,7 @@ const fetchUserProfile = async (token) => {
 
 // Complete user profile
 const completeProfile = async (token, profileData) => {
-  const body = { ...profileData, isProfileComplete: true };
+  const body = profileData;
   return apiRequest(API_ENDPOINTS.USERS.UPDATE_PROFILE, "PUT", token, body);
 };
 
