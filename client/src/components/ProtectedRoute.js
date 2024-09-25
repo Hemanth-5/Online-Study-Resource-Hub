@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUserProfile, setLoading, setError } from "../features/userSlice";
-import { setResources } from "../features/resourceSlice"; // Import resource actions
-import { setTags } from "../features/tagSlice"; // Import tag actions
-import {
-  fetchUserProfile,
-  fetchUserResources,
-  fetchAllTags,
-} from "../api/apiServices"; // Import API services
 import { jwtDecode } from "jwt-decode"; // Ensure you have jwt-decode installed
 import { refreshAccessToken } from "../api/apiServices"; // Your function to refresh token
 

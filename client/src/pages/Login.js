@@ -3,12 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserProfile, setLoading, setError } from "../features/userSlice";
 import { setResources } from "../features/resourceSlice"; // Import resource actions
-import { setTags } from "../features/tagSlice"; // Import tag actions
-import {
-  fetchUserProfile,
-  fetchUserResources,
-  fetchAllTags,
-} from "../api/apiServices"; // Import API services
+import { fetchUserProfile, fetchUserResources } from "../api/apiServices"; // Import API services
 import Popup from "../components/Popup"; // Assuming Popup component is available
 import "./Login.css"; // Import the external CSS file
 
@@ -47,13 +42,14 @@ const Login = () => {
       // Fetch user profile
       fetchUserProfile(token)
         .then((userResponse) => {
-          console.log(userResponse);
+          // console.log(userResponse);
           dispatch(setUserProfile(userResponse));
-          return Promise.all([fetchUserResources(token), fetchAllTags(token)]); // Fetch resources and tags
+          return Promise.all([fetchUserResources(token)]); // Fetch resources and tags
         })
-        .then(([resourcesResponse, tagsResponse]) => {
+        .then(([resourcesResponse]) => {
           dispatch(setResources(resourcesResponse)); // Update resources state
-          dispatch(setTags(tagsResponse)); // Update tags state
+
+          // console.log({ resourcesResponse, tagsResponse });
           dispatch(setLoading("succeeded"));
           navigate("/dashboard");
         })
