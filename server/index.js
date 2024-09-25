@@ -14,6 +14,7 @@ import resourceRoutes from "./routes/resource.routes.js";
 import tagRoutes from "./routes/tag.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
 import recentActivityRoutes from "./routes/recentActivity.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use("/api/v2/resources", resourceRoutes);
 app.use("/api/v2/tags", tagRoutes);
 app.use("/api/v2/comments", commentRoutes);
 app.use("/api/v2/activities", recentActivityRoutes);
+app.use("/api/v2/notifications", notificationRoutes);
 
 connectDB(process.env.MONGO_URI)
   .then(() => {
