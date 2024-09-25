@@ -38,7 +38,7 @@ const updateUserProfile = async (req, res) => {
       "alternateEmail", // New field
       "degree", // New field
       "batch", // New field
-      "isProfileCompleted"
+      "isProfileCompleted",
     ];
 
     const updateFields = {};
@@ -58,7 +58,7 @@ const updateUserProfile = async (req, res) => {
     // Find and update the user by ID
     const updatedProfile = await User.findByIdAndUpdate(
       req.user.id,
-      {...updateFields, isProfileComplete: true},
+      { ...updateFields, isProfileComplete: true },
       { new: true }
     );
 
@@ -118,6 +118,7 @@ const updateUser = async (req, res) => {
       "alternateEmail", // New field
       "degree", // New field
       "batch", // New field
+      "isProfileComplete",
     ];
 
     const updateFields = {};

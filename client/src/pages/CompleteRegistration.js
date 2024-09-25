@@ -210,7 +210,6 @@ const CompleteRegistration = () => {
       ),
     }));
   };
-  
 
   return (
     <div className="complete-registration-container">
@@ -298,17 +297,16 @@ const CompleteRegistration = () => {
               </div>
               <div className="form-col">
                 <label>Date of Birth:</label>
-                <div className="date-of-birth-container"> 
+                <div className="date-of-birth-container">
                   <input
                     type="date"
                     name="dob"
                     value={profileData.bio.dob}
                     onChange={handleBioChange}
-                    className="text-input-modern date-input-modern" 
+                    className="text-input-modern date-input-modern"
                   />
                 </div>
-            </div>
-
+              </div>
             </div>
             <div className="form-row">
               <div className="form-col">
@@ -369,11 +367,11 @@ const CompleteRegistration = () => {
                       className="selected-tag"
                       onClick={() => removeInterest(interest)}
                     >
-                      {interest} <span className="remove-tag">×</span> {/* Add close icon */}
+                      {interest} <span className="remove-tag">×</span>{" "}
+                      {/* Add close icon */}
                     </span>
                   ))}
                 </div>
-
               </div>
             </div>
             <div className="form-row">

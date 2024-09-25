@@ -42,10 +42,11 @@ router.route("/google/callback").get(
       }
     );
 
-    console.log({ refreshToken });
+    // console.log({ refreshToken });
 
     // Store refresh token in the database if needed
 
+    console.log(process.env.GOOGLE_SUCCESS_REDIRECT);
     // Redirect to frontend with tokens
     res.redirect(
       `${process.env.GOOGLE_SUCCESS_REDIRECT}?accessToken=${accessToken}&refreshToken=${refreshToken}`

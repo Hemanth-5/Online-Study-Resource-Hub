@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserProfile, setLoading, setError } from "../features/userSlice";
-import { fetchUserProfile } from "../api/apiServices"; // Import your API service directly
+import { setResources } from "../features/resourceSlice"; // Import resource actions
+import { setTags } from "../features/tagSlice"; // Import tag actions
+import {
+  fetchUserProfile,
+  fetchUserResources,
+  fetchAllTags,
+} from "../api/apiServices"; // Import API services
 import Popup from "../components/Popup"; // Assuming Popup component is available
 import "./Login.css"; // Import the external CSS file
 
@@ -21,51 +27,51 @@ const Login = () => {
     setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 5000); // Auto-close after 5 seconds
   };
 
-  const closePopup = () => {
-    setPopup({ visible: false, message: "", type: "" });
-  };
-
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const accessToken = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
 
+    console.log(accessToken);
+
     if (accessToken && refreshToken) {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      window.history.replaceState({}, document.title, "/login");
+      window.history.replaceState({}, document.title, "/dashboard");
     }
 
     const token = accessToken || localStorage.getItem("accessToken");
 
     if (token) {
       dispatch(setLoading("loading"));
+      // Fetch user profile
       fetchUserProfile(token)
-        .then((response) => {
-          dispatch(setUserProfile(response));
+        .then((userResponse) => {
+          console.log(userResponse);
+          dispatch(setUserProfile(userResponse));
+          return Promise.all([fetchUserResources(token), fetchAllTags(token)]); // Fetch resources and tags
+        })
+        .then(([resourcesResponse, tagsResponse]) => {
+          dispatch(setResources(resourcesResponse)); // Update resources state
+          dispatch(setTags(tagsResponse)); // Update tags state
           dispatch(setLoading("succeeded"));
           navigate("/dashboard");
         })
         .catch((err) => {
           console.error(err); // Log the error
           const errorMessage =
-            err.response?.data?.message || "Failed to fetch user profile.";
-          setPopup({ visible: true, message: errorMessage, type: "failure" });
-          dispatch(setError("Failed to fetch user profile."));
+            err.response?.data?.message || "Failed to fetch data.";
+          showPopup(errorMessage, "failure");
+          dispatch(setError("Failed to fetch data."));
           dispatch(setLoading("failed"));
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
-          showPopup("Login failed. Please try again.", "failure");
 
-          // Wait for some time until the popup is completely shown
-          navigate("/login"); // Redirect to login
+          // Redirect to login after showing the error
+          navigate("/login");
         });
     }
   }, [dispatch, navigate, location.search]);
-
-  const handleClosePopup = () => {
-    setPopup({ visible: false, message: "", type: "" });
-  };
 
   return (
     <div className="login-container">
@@ -81,7 +87,11 @@ const Login = () => {
 
       {/* Display Popup when there's a failure */}
       {popup.visible && (
-        <Popup message={popup.message} type={popup.type} onClose={closePopup} />
+        <Popup
+          message={popup.message}
+          type={popup.type}
+          onClose={() => setPopup({ visible: false, message: "", type: "" })}
+        />
       )}
     </div>
   );

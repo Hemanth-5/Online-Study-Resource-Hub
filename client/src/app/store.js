@@ -17,7 +17,7 @@ import resourceReducer from "../features/resourceSlice";
 const persistConfig = {
   key: "root", // Key for the persisted storage in sessionStorage
   storage: storageSession, // Using sessionStorage instead of localStorage
-  whitelist: ["resource"], // Persist only resource slice
+  whitelist: ["resource", "tag", "user"], // Persist only resource slice
 };
 
 const rootReducer = combineReducers({

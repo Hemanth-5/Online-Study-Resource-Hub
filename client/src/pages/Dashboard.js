@@ -36,22 +36,22 @@ const Dashboard = () => {
       let token = localStorage.getItem("accessToken");
       let refreshToken = localStorage.getItem("refreshToken");
 
-      if (!token) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlToken = urlParams.get("accessToken");
-        const urlRefreshToken = urlParams.get("refreshToken");
+      // if (!token) {
+      //   const urlParams = new URLSearchParams(window.location.search);
+      //   const urlToken = urlParams.get("accessToken");
+      //   const urlRefreshToken = urlParams.get("refreshToken");
 
-        if (urlToken) {
-          localStorage.setItem("accessToken", urlToken);
-          if (urlRefreshToken) {
-            localStorage.setItem("refreshToken", urlRefreshToken);
-          }
-          navigate("/dashboard", { replace: true });
-        } else {
-          navigate("/login");
-          return;
-        }
-      }
+      //   if (urlToken) {
+      //     localStorage.setItem("accessToken", urlToken);
+      //     if (urlRefreshToken) {
+      //       localStorage.setItem("refreshToken", urlRefreshToken);
+      //     }
+      //     navigate("/dashboard", { replace: true });
+      //   } else {
+      //     navigate("/login");
+      //     return;
+      //   }
+      // }
 
       // If no userProfile in Redux or status is idle, fetch the profile
       if (!userProfile && userStatus === "idle") {
