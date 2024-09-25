@@ -19,7 +19,12 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.user.profile);
   const userStatus = useSelector((state) => state.user.status);
-  const userResources = useSelector((state) => state.resource.resources);
+  // const userResources = useSelector((state) => state.resource.resources);
+  // const userNotifications = useSelector(
+  //   (state) => state.notifications.notifications
+  // );
+
+  // console.log({ userNotifications });
   const navigate = useNavigate();
 
   const showPopup = (message, type) => {

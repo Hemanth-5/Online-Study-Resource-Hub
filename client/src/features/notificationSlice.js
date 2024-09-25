@@ -20,10 +20,28 @@ const notificationSlice = createSlice({
     setError(state, action) {
       state.error = action.payload;
     },
+    addNotification(state, action) {
+      state.notifications.push(action.payload); // Add a new notification
+    },
+    markNotificationAsRead(state, action) {
+      const notificationId = action.payload;
+      const notification = state.notifications.find(
+        (n) => n.id === notificationId
+      );
+      if (notification) {
+        notification.read = true; // Mark notification as read
+      }
+    },
   },
 });
 
 // Export the action creators and the reducer
-export const { setNotifications, setLoading, setError } =
-  notificationSlice.actions;
+export const {
+  setNotifications,
+  setLoading,
+  setError,
+  addNotification,
+  markNotificationAsRead,
+} = notificationSlice.actions;
+
 export default notificationSlice.reducer;

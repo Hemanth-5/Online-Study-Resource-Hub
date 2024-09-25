@@ -78,9 +78,9 @@ const userSchema = new mongoose.Schema(
     ],
     interests: [
       {
-        // type: mongoose.Schema.Types.ObjectId,
-        // ref: "Tag",
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        // type: String,
       },
     ],
   },

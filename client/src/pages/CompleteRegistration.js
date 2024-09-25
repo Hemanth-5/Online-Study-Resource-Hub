@@ -108,10 +108,10 @@ const CompleteRegistration = () => {
   };
 
   const addInterest = (interest) => {
-    if (!profileData.interests.includes(interest)) {
+    if (!profileData.interests.includes(interest._id)) {
       setProfileData((prevData) => ({
         ...prevData,
-        interests: [...prevData.interests, interest],
+        interests: [...prevData.interests, interest._id],
       }));
       setSearchTerm(""); // Clear the search input after adding
     }
@@ -199,7 +199,7 @@ const CompleteRegistration = () => {
   const filteredTags = availableTags.filter(
     (tag) =>
       tag.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !profileData.interests.includes(tag.name) // Exclude already selected tags
+      !profileData.interests.includes(tag._id) // Exclude already selected tags
   );
 
   const removeInterest = (interestToRemove) => {
@@ -240,7 +240,7 @@ const CompleteRegistration = () => {
           <form className="profile-form-modern">
             <div className="form-row">
               <div className="form-col">
-                <label>Email:</label>
+                <label>Email</label>
                 <input
                   type="text"
                   value={userProfile?.email || ""}
@@ -249,7 +249,7 @@ const CompleteRegistration = () => {
                 />
               </div>
               <div className="form-col">
-                <label>Username:</label>
+                <label>Username</label>
                 <input
                   type="text"
                   value={userProfile?.username || ""}
@@ -260,7 +260,7 @@ const CompleteRegistration = () => {
             </div>
             <div className="form-row">
               <div className="form-col">
-                <label>Name:</label>
+                <label>Name</label>
                 <input
                   type="text"
                   name="name"
@@ -270,7 +270,7 @@ const CompleteRegistration = () => {
                 />
               </div>
               <div className="form-col">
-                <label>Department:</label>
+                <label>Department</label>
                 <input
                   type="text"
                   name="department"
@@ -282,7 +282,7 @@ const CompleteRegistration = () => {
             </div>
             <div className="form-row">
               <div className="form-col">
-                <label>Gender:</label>
+                <label>Gender</label>
                 <select
                   name="gender"
                   value={profileData.bio.gender}
@@ -296,7 +296,7 @@ const CompleteRegistration = () => {
                 </select>
               </div>
               <div className="form-col">
-                <label>Date of Birth:</label>
+                <label>Date of Birth</label>
                 <div className="date-of-birth-container">
                   <input
                     type="date"
@@ -310,7 +310,7 @@ const CompleteRegistration = () => {
             </div>
             <div className="form-row">
               <div className="form-col">
-                <label>Alternate Email:</label>
+                <label>Alternate Email</label>
                 <input
                   type="email"
                   name="alternateEmail"
@@ -320,7 +320,7 @@ const CompleteRegistration = () => {
                 />
               </div>
               <div className="form-col">
-                <label>Degree:</label>
+                <label>Degree</label>
                 <input
                   type="text"
                   name="degree"
@@ -330,7 +330,7 @@ const CompleteRegistration = () => {
                 />
               </div>
               <div className="form-col">
-                <label>Batch:</label>
+                <label>Batch</label>
                 <input
                   type="text"
                   name="batch"
@@ -342,32 +342,40 @@ const CompleteRegistration = () => {
             </div>
             <div className="form-row">
               <div className="form-col">
-                <label>Interests:</label>
+                <label>Interests</label>
                 <input
                   type="text"
                   value={searchTerm}
+                  placeholder="Search for subjects..."
                   onChange={handleSearchChange}
                   className="text-input-modern"
                 />
-                <ul className="tag-suggestion-list">
-                  {filteredTags.map((tag) => (
-                    <li
-                      key={tag.id}
-                      onClick={() => addInterest(tag.name)}
-                      className="tag-suggestion-item"
-                    >
-                      {tag.name}
-                    </li>
-                  ))}
-                </ul>
+                {
+                  <ul className="tag-suggestion-list">
+                    {searchTerm.length > 0 &&
+                      filteredTags.map((tag) => (
+                        <li
+                          key={`suggest_${tag._id}`}
+                          onClick={() => addInterest(tag)}
+                          className="tag-suggestion-item"
+                        >
+                          {tag.name}
+                        </li>
+                      ))}
+                  </ul>
+                }
                 <div className="selected-tags">
-                  {profileData.interests.map((interest, index) => (
+                  {profileData.interests.map((interest) => (
                     <span
-                      key={index}
+                      key={interest}
                       className="selected-tag"
                       onClick={() => removeInterest(interest)}
                     >
-                      {interest} <span className="remove-tag">×</span>{" "}
+                      {
+                        availableTags.filter((tag) => tag._id === interest)[0]
+                          ?.name
+                      }{" "}
+                      <span className="remove-tag">×</span>{" "}
                       {/* Add close icon */}
                     </span>
                   ))}
