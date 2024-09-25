@@ -13,16 +13,20 @@ import {
 import storageSession from "redux-persist/lib/storage/session"; // Use sessionStorage
 import userReducer from "../features/userSlice";
 import resourceReducer from "../features/resourceSlice";
+import notificationsReducer from "../features/notificationSlice";
+import tagReducer from "../features/tagSlice";
 
 const persistConfig = {
   key: "root", // Key for the persisted storage in sessionStorage
   storage: storageSession, // Using sessionStorage instead of localStorage
-  whitelist: ["resource", "tag", "user"], // Persist only resource slice
+  whitelist: ["resource", "user", "notifications", "tag"], // Persist only resource slice
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   resource: resourceReducer,
+  notifications: notificationsReducer,
+  tag: tagReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

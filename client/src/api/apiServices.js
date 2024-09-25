@@ -197,6 +197,35 @@ const addCommentToResource = async (token, resourceId, commentText) => {
     body
   );
 };
+
+// API service to create a new notification
+const createNotification = async (token, notificationData) => {
+  return apiRequest(
+    API_ENDPOINTS.NOTIFICATIONS.CREATE,
+    "POST",
+    token,
+    notificationData
+  );
+};
+
+// API service to get notifications for a specific user
+const fetchUserNotifications = async (token, userId) => {
+  return apiRequest(
+    API_ENDPOINTS.NOTIFICATIONS.GET_USER_NOTIFICATIONS(userId),
+    "GET",
+    token
+  );
+};
+
+// API service to mark a notification as read
+const markNotificationAsRead = async (token, notificationId) => {
+  return apiRequest(
+    API_ENDPOINTS.NOTIFICATIONS.MARK_AS_READ(notificationId),
+    "PATCH", // Use PATCH for partial updates
+    token
+  );
+};
+
 // Export the new function
 export {
   fetchUserProfile,
@@ -217,4 +246,7 @@ export {
   fetchAllRecentActivities,
   fetchRecentActivitiesByUser,
   fetchRecentActivitiesByType,
+  createNotification,
+  fetchUserNotifications,
+  markNotificationAsRead,
 };

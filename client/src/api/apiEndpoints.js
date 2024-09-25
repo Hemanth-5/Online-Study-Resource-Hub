@@ -53,6 +53,11 @@ const API_ENDPOINTS = {
     GET_BY_USER: (id) => `${BASE_URL}/v2/activities/user/${id}`,
     GET_BY_TYPE: (type) => `${BASE_URL}/v2/activities/type/${type}`,
   },
+  NOTIFICATIONS: {
+    CREATE: `${BASE_URL}/v2/notifications`,
+    GET_USER_NOTIFICATIONS: (id) => `${BASE_URL}/v2/notifications/${id}`,
+    MARK_AS_READ: (id) => `${BASE_URL}/v2/notifications/${id}/read`,
+  },
 };
 
 export default API_ENDPOINTS;

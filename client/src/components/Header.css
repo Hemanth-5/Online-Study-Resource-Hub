@@ -146,3 +146,46 @@
   color: #888;
   font-size: 16px;
 }
+
+.notification-popup {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Slightly darker shadow for depth */
+  width: 250px; /* Wider for better readability */
+  padding: 15px;
+  z-index: 10;
+  transition: opacity 0.2s ease; /* Smooth transition for appearance */
+  opacity: 0; /* Initially hidden */
+  visibility: hidden; /* Hidden from view */
+}
+
+.notification-popup.show {
+  opacity: 1; /* Fully visible when shown */
+  visibility: visible; /* Make it visible */
+}
+
+.notification-item {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+.notification-item:hover {
+  background-color: #f1f1f1; /* Light background on hover */
+}
+
+.notification-item:last-child {
+  border-bottom: none; /* No border on the last item */
+}
+
+.no-notifications {
+  text-align: center; /* Center text for better appearance */
+  color: #888; /* Lighter color for "No new notifications" */
+  font-style: italic; /* Italics for a softer look */
+  padding: 10px 0; /* Padding for spacing */
+}
