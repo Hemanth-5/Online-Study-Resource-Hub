@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaBell,
   FaCaretDown,
@@ -8,10 +8,24 @@ import {
   FaDoorOpen,
 } from "react-icons/fa";
 import "./Header.css";
+import { useDispatch, useSelector } from "react-redux"; // Import useSelector
+import { setUserProfile } from "../features/userSlice";
+import { setResources } from "../features/resourceSlice";
+import { setTags } from "../features/tagSlice";
+import { setNotifications } from "../features/notificationSlice";
 
-const Header = ({ userProfile, notifications, onLogout }) => {
+const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State to control profile options popup
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Use useSelector to get notifications from Redux store
+  const notifications = useSelector(
+    (state) => state.notifications.notifications
+  );
+  // console.log({ notifications });
+  const userProfile = useSelector((state) => state.user.profile); // Get user profile from Redux store
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
@@ -19,6 +33,17 @@ const Header = ({ userProfile, notifications, onLogout }) => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    dispatch(setUserProfile(null));
+    dispatch(setResources(null));
+    dispatch(setTags(null));
+    dispatch(setNotifications(null));
+
+    navigate("/login");
   };
 
   return (
@@ -36,9 +61,10 @@ const Header = ({ userProfile, notifications, onLogout }) => {
           {showNotifications && (
             <div className="notification-popup">
               {notifications && notifications.length > 0 ? (
-                notifications.map((notification, index) => (
-                  <div key={index} className="notification-item">
-                    {notification}
+                notifications.map((notification) => (
+                  <div key={notification._id} className="notification-item">
+                    {notification.content}{" "}
+                    {/* Adjust based on your notification structure */}
                   </div>
                 ))
               ) : (
