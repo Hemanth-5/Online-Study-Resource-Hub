@@ -135,32 +135,45 @@ const UploadResource = () => {
       {error && <p className="error-message">{error}</p>}
 
       <form onSubmit={handleUpload}>
-        <div className="form-group">
-          <label className="file-input-label" htmlFor="file-input">
-            Choose file or drag and drop
-          </label>
-          <input
-            type="file"
-            id="file-input"
-            onChange={handleFileChange}
-            required
-            style={{ display: "none" }}
-          />
-          <div
-            className={`drag-drop-area ${isDragOver ? "drag-over" : ""}`}
-            onDragOver={(e) => {
-              e.preventDefault();
-              setIsDragOver(true);
-            }}
-            onDragLeave={() => setIsDragOver(false)}
-            onDrop={(e) => {
-              e.preventDefault();
-              setIsDragOver(false);
-              handleFileChange(e);
-            }}
-          >
-            <p>Drag and drop your file here, or click to select a file.</p>
+        <div className="form-group form-drag-drop-preview">
+          <div className="drag-drop-preview-group">
+            <label className="file-input-label" htmlFor="file-input">
+              Choose file or drag and drop
+            </label>
+            <input
+              type="file"
+              id="file-input"
+              onChange={handleFileChange}
+              required
+              style={{ display: "none" }}
+            />
+            <div
+              className={`drag-drop-area ${isDragOver ? "drag-over" : ""}`}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragOver(true);
+              }}
+              onDragLeave={() => setIsDragOver(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragOver(false);
+                handleFileChange(e);
+              }}
+            >
+              <p>Drag and drop your file here, or click to select a file.</p>
+            </div>
           </div>
+          {previewSrc && (
+            <div className="file-preview">
+              <h4>File Preview:</h4>
+              {file?.type.startsWith("image/") ||
+              file?.type === "application/pdf" ? (
+                <img src={previewSrc} alt="File Preview" />
+              ) : (
+                <p>Preview not available for this file type.</p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -219,18 +232,6 @@ const UploadResource = () => {
           Upload Resource
         </button>
       </form>
-
-      {previewSrc && (
-        <div className="file-preview">
-          <h4>File Preview:</h4>
-          {file?.type.startsWith("image/") ||
-          file?.type === "application/pdf" ? (
-            <img src={previewSrc} alt="File Preview" />
-          ) : (
-            <p>Preview not available for this file type.</p>
-          )}
-        </div>
-      )}
     </div>
   );
 };

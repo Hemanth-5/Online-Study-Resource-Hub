@@ -1,57 +1,141 @@
+/* Overlay to darken background when modal is open */
 .popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  z-index: 1000; /* Ensure it appears above other content */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
+/* Main modal box */
 .popup-box {
-  background: white; /* White background for the popup */
-  padding: 20px; /* Padding around content */
-  border-radius: 8px; /* Rounded corners */
-  width: 400px; /* Fixed width */
-  max-width: 100%; /* Responsive design */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  background-color: #fff;
+  padding: 25px;
+  width: 500px;
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  color: #333;
+  text-align: left;
 }
 
+/* Modal title styling */
 .popup-box h2 {
-  margin-top: 0; /* Remove margin on top of the heading */
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #007bff; /* Matches your dashboard theme */
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
 }
 
+/* Input and textarea fields */
+.popup-box input,
+.popup-box textarea,
+.popup-box select {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.popup-box textarea {
+  resize: none;
+}
+
+.popup-box select {
+  padding: 8px 10px;
+}
+
+/* Label styling */
 .popup-box label {
-  display: block; /* Each label on a new line */
-  margin-bottom: 5px; /* Space between label and input */
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
 }
 
-.popup-box input[type="text"],
-.popup-box input[type="file"] {
-  width: 100%; /* Full width inputs */
-  padding: 10px; /* Padding inside inputs */
-  margin-bottom: 15px; /* Space below inputs */
-  border: 1px solid #ccc; /* Light gray border */
-  border-radius: 4px; /* Slightly rounded corners */
+/* Error message style */
+.error-message {
+  color: #ff4d4f;
+  background-color: #ffeaea;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
+/* Buttons */
 .popup-box button {
-  padding: 10px 15px; /* Button padding */
-  border: none; /* Remove default border */
-  border-radius: 4px; /* Slightly rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
 }
 
-.popup-box button:first-of-type {
-  background-color: #28a745; /* Green background for Save Changes */
+.popup-box button:hover {
+  opacity: 0.9;
+}
+
+/* Save Changes button */
+.popup-box button:nth-child(1) {
+  background-color: #007bff; /* Blue primary color */
+  color: white;
+}
+
+/* Cancel button */
+.popup-box button:nth-child(2) {
+  background-color: #f5f5f5; /* Light background for cancel */
+  color: #555;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .popup-box {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .popup-box h2 {
+    font-size: 1.2rem;
+  }
+
+  .popup-box button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+/* Save button styles */
+.save-button {
+  background-color: #4caf50; /* Green background */
   color: white; /* White text */
 }
 
-.popup-box button:last-of-type {
-  background-color: #dc3545; /* Red background for Cancel */
-  color: white; /* White text */
-  margin-left: 10px; /* Space between buttons */
+/* Save button hover effect */
+.save-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Cancel button styles */
+.cancel-button {
+  background-color: #ff0000; /* Transparent background */
+  color: white; /* Red text */
+  margin-left: 10px; /* Add some space between buttons */
+}
+
+/* Cancel button hover effect */
+.cancel-button:hover {
+  background-color: #ff4d4f;
 }
