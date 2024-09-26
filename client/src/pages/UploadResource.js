@@ -5,6 +5,7 @@ import * as pdfjsLib from "pdfjs-dist/webpack"; // Import pdfjs-dist for PDF ren
 import TagsDropdown from "../components/TagsDropdown"; // Import the TagsDropdown component
 import { setPopup } from "../features/popupsSlice"; // Import popup action
 import "./UploadResource.css";
+import { useNavigate } from "react-router-dom";
 
 const UploadResource = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ const UploadResource = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [isDragOver, setIsDragOver] = useState(false); // Dragging state
   const token = localStorage.getItem("accessToken");
+
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0] || e.dataTransfer.files[0];
@@ -120,6 +123,7 @@ const UploadResource = () => {
       );
     } finally {
       setLoading(false); // Set loading state to false
+      navigate("/my-uploads"); // Redirect to home page
     }
   };
 

@@ -4,12 +4,14 @@ import { setTags, setLoading, setError } from "../features/tagSlice";
 import { fetchAllTags } from "../api/apiServices"; // API service for initial fetch
 import "./TagsDropdown.css"; // Import CSS for pill styling
 
-const TagDropdown = ({ onTagSelect }) => {
+const TagDropdown = ({ onTagSelect, selectedTags }) => {
   const dispatch = useDispatch();
   const tags = useSelector((state) => state.tag.tags); // Get tags from Redux state
   const status = useSelector((state) => state.tag.status); // Get tags from Redux state
   const error = useSelector((state) => state.tag.error); // Get tags from Redux state
-  const [selectedTagIds, setSelectedTagIds] = useState([]);
+  const [selectedTagIds, setSelectedTagIds] = useState(
+    selectedTags == null ? [] : selectedTags
+  );
 
   console.log(tags);
   useEffect(() => {

@@ -1,6 +1,6 @@
 /* General layout styling for the upload container */
 .upload-resource-container {
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
   background-color: #fff;
   border-radius: 12px;
@@ -186,7 +186,7 @@ textarea {
 
 /* General layout styling for the upload container */
 .upload-resource-container {
-  max-width: 800px; /* Increased width for better spacing */
+  max-width: 600px; /* Increased width for better spacing */
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: 12px;

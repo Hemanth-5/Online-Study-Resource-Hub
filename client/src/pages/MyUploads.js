@@ -113,14 +113,14 @@ const MyUploads = () => {
       setLoading(true);
 
       // Prepare formData to send the file and updated data
-      const formData = new FormData();
-      if (updatedResourceData.file) {
-        formData.append("file", updatedResourceData.file); // Append the new file if it exists
-      }
-      formData.append("tags", JSON.stringify(updatedResourceData.tags)); // Append the updated tags
-      formData.append("category", updatedResourceData.category); // Append the updated category
+      // const formData = new FormData();
+      // if (updatedResourceData.file) {
+      //   formData.append("file", updatedResourceData.file); // Append the new file if it exists
+      // }
+      // formData.append("tags", JSON.stringify(updatedResourceData.tags)); // Append the updated tags
+      // formData.append("category", updatedResourceData.category); // Append the updated category
 
-      await editResource(token, resourceId, formData); // Call the API to edit the resource
+      await editResource(token, resourceId, updatedResourceData); // Call the API to edit the resource
 
       const updatedResources = await fetchUserResources(token); // Fetch the updated resources
       setResources(updatedResources); // Update the resources in state

@@ -1,34 +1,52 @@
-import React, { useState } from "react";
-import "./EditResourceModal.css"; // Adjust the path as needed
+import React, { useState, useEffect } from "react";
+import TagsDropdown from "../components/TagsDropdown";
+import "./EditResourceModal.css";
 
 const EditResourceModal = ({ resource, onSave, onClose }) => {
-  const [tags, setTags] = useState(resource.tags || []);
+  const [tags, setTags] = useState(resource.tags || []); // Use resource tags as initial state
   const [category, setCategory] = useState(resource.category || "");
   const [description, setDescription] = useState(resource.description || "");
   const [accessLevel, setAccessLevel] = useState(
     resource.accessLevel || "public"
-  ); // Default accessLevel
+  );
   const [file, setFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(resource.file || null); // Preview existing file if available
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Handle file selection and preview
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
 
-  const handleTagChange = (e) => {
-    const newTags = e.target.value.split(",").map((tag) => tag.trim());
-    setTags([...new Set(newTags)]); // Remove duplicates
-  };
-
-  const handleSubmit = () => {
-    // Validate that category, description, and at least one tag are present
-    if (!category || !description || tags.length === 0) {
-      setErrorMessage("Please fill in all fields.");
-      return;
+    // Generate a preview URL if the selected file is an image or PDF
+    if (
+      selectedFile &&
+      (selectedFile.type.includes("image") || selectedFile.type.includes("pdf"))
+    ) {
+      const fileURL = URL.createObjectURL(selectedFile);
+      setFilePreview(fileURL);
+    } else {
+      setFilePreview(null);
     }
+  };
+
+  // Handle tag selection from TagsDropdown
+  const handleTagSelection = (selectedTagIds) => {
+    console.log({ selectedTagIds });
+    setTags(selectedTagIds); // Update local state with selected tag IDs
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    // if (!category || !description || tags.length === 0) {
+    //   setErrorMessage("Please fill in all fields.");
+    //   return;
+    // }
 
     const formData = new FormData();
-    formData.append("tags", JSON.stringify(tags));
+    tags.forEach((tagId) => {
+      formData.append("tags[]", tagId);
+    });
     formData.append("category", category);
     formData.append("description", description);
     formData.append("accessLevel", accessLevel);
@@ -37,7 +55,6 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
       formData.append("file", file);
     }
 
-    // Trigger the save function to handle the API call
     onSave(resource._id, formData)
       .then(() => onClose()) // Close modal if save is successful
       .catch((error) =>
@@ -49,62 +66,103 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
     <div className="popup-overlay">
       <div className="popup-box">
         <h2>Edit Resource</h2>
-
         {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <div className="popup-content">
+          {/* Description Field */}
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter resource description"
+              rows="4"
+            />
+          </div>
 
-        <div>
-          <label>Description:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter resource description"
-            rows="4"
-          />
+          {/* Tags Dropdown */}
+          <div className="form-group">
+            <label htmlFor="tags">Tags:</label>
+            <TagsDropdown
+              onTagSelect={handleTagSelection}
+              selectedTags={tags}
+            />
+          </div>
+
+          {/* Category Dropdown */}
+          <div className="form-group">
+            <label htmlFor="category">Category:</label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="book">Book</option>
+              <option value="video">Video</option>
+              <option value="audio">Audio</option>
+            </select>
+          </div>
+
+          {/* Access Level Dropdown */}
+          <div className="form-group">
+            <label htmlFor="accessLevel">Access Level:</label>
+            <select
+              id="accessLevel"
+              value={accessLevel}
+              onChange={(e) => setAccessLevel(e.target.value)}
+            >
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </div>
+
+          {/* File Input Area with Drag-and-Drop Zone and Preview */}
+          <div className="form-group">
+            <label htmlFor="file">Replace File:</label>
+            <div className="file-input-container">
+              <input
+                type="file"
+                id="file"
+                onChange={handleFileChange}
+                className="file-input"
+              />
+              <div className="file-preview">
+                {filePreview ? (
+                  // If file is an image or PDF, show preview
+                  <div className="file-preview-content">
+                    {filePreview.includes("pdf") ? (
+                      <iframe
+                        src={filePreview}
+                        title="PDF Preview"
+                        className="file-preview-frame"
+                      ></iframe>
+                    ) : (
+                      <img
+                        src={filePreview}
+                        alt="File Preview"
+                        className="file-preview-image"
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <span>No file selected</span>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label>Tags:</label>
-          <input
-            type="text"
-            value={tags.join(", ")}
-            onChange={handleTagChange}
-            placeholder="Enter tags separated by commas"
-          />
+        {/* Save and Cancel Buttons */}
+        <div className="form-buttons">
+          <button className="save-button" onClick={handleSubmit}>
+            Save Changes
+          </button>
+          <button className="cancel-button" onClick={onClose}>
+            Cancel
+          </button>
         </div>
-
-        <div>
-          <label>Category:</label>
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="Enter category"
-          />
-        </div>
-
-        <div>
-          <label>Access Level:</label>
-          <select
-            value={accessLevel}
-            onChange={(e) => setAccessLevel(e.target.value)}
-          >
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Replace File:</label>
-          <input type="file" onChange={handleFileChange} />
-        </div>
-
-        <button className="save-button" onClick={handleSubmit}>
-          Save Changes
-        </button>
-        {/* Add hover for cancel */}
-        <button className="cancel-button" onClick={onClose}>
-          Cancel
-        </button>
       </div>
     </div>
   );

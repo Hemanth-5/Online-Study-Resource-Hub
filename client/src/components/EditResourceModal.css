@@ -16,7 +16,10 @@
 .popup-box {
   background-color: #fff;
   padding: 25px;
-  width: 500px;
+  width: 600px; /* Fixed width */
+  max-height: 75vh; /* Limit height to 75% of viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
   border-radius: 12px;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
   font-family: "Arial", sans-serif;
@@ -33,7 +36,7 @@
   padding-bottom: 10px;
 }
 
-/* Input and textarea fields */
+/* Input, textarea, select fields, and labels */
 .popup-box input,
 .popup-box textarea,
 .popup-box select {
@@ -55,13 +58,12 @@
   padding: 8px 10px;
 }
 
-/* Label styling */
-.popup-box label {
+/* .popup-box label {
   font-size: 1rem;
   color: #555;
   margin-bottom: 5px;
   display: block;
-}
+} */
 
 /* Error message style */
 .error-message {
@@ -104,7 +106,7 @@
 /* Responsive design */
 @media (max-width: 600px) {
   .popup-box {
-    width: 90%;
+    width: 90%; /* Adjust for smaller screens */
     padding: 15px;
   }
 
@@ -117,25 +119,91 @@
     font-size: 0.9rem;
   }
 }
-/* Save button styles */
+
+/* File input container styles */
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 2px dashed #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  transition: 0.3s ease-in;
+
+  &:hover {
+    border: 2px dashed #007bff;
+    background-color: #f3f0f0;
+  }
+}
+
+.file-input {
+  cursor: pointer;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.file-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.file-preview-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.file-preview-image {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.file-preview-frame {
+  width: 100%;
+  height: 150px; /* Set a fixed height for PDF preview */
+}
+
+/* Additional form styles */
+.form-group {
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Button styles for different actions */
 .save-button {
   background-color: #4caf50; /* Green background */
   color: white; /* White text */
 }
 
-/* Save button hover effect */
 .save-button:hover {
   background-color: #45a049; /* Darker green on hover */
 }
 
-/* Cancel button styles */
 .cancel-button {
   background-color: #ff0000; /* Transparent background */
   color: white; /* Red text */
   margin-left: 10px; /* Add some space between buttons */
 }
 
-/* Cancel button hover effect */
 .cancel-button:hover {
   background-color: #ff4d4f;
 }

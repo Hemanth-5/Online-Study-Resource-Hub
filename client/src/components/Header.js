@@ -50,10 +50,10 @@ const Header = () => {
     <header className="header">
       <div className="logo">Resource Hub</div>
 
-      <div className="header-left">
+      {/* <div className="header-left">
         <input type="text" placeholder="Search" className="search-bar" />
         <FaSearch className="search-icon" />
-      </div>
+      </div> */}
 
       <div className="header-right">
         <div className="notification-container">
