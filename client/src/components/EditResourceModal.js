@@ -5,30 +5,31 @@ import "./EditResourceModal.css";
 const EditResourceModal = ({ resource, onSave, onClose }) => {
   const [tags, setTags] = useState(resource.tags || []); // Use resource tags as initial state
   const [category, setCategory] = useState(resource.category || "");
+  const [fileName, setFileName] = useState(resource.fileName || "");
   const [description, setDescription] = useState(resource.description || "");
   const [accessLevel, setAccessLevel] = useState(
     resource.accessLevel || "public"
   );
   const [file, setFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(resource.file || null); // Preview existing file if available
+  // const [filePreview, setFilePreview] = useState(resource.file || null); // Preview existing file if available
   const [errorMessage, setErrorMessage] = useState("");
 
   // Handle file selection and preview
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   setFile(selectedFile);
 
-    // Generate a preview URL if the selected file is an image or PDF
-    if (
-      selectedFile &&
-      (selectedFile.type.includes("image") || selectedFile.type.includes("pdf"))
-    ) {
-      const fileURL = URL.createObjectURL(selectedFile);
-      setFilePreview(fileURL);
-    } else {
-      setFilePreview(null);
-    }
-  };
+  //   // Generate a preview URL if the selected file is an image or PDF
+  //   if (
+  //     selectedFile &&
+  //     (selectedFile.type.includes("image") || selectedFile.type.includes("pdf"))
+  //   ) {
+  //     const fileURL = URL.createObjectURL(selectedFile);
+  //     setFilePreview(fileURL);
+  //   } else {
+  //     setFilePreview(null);
+  //   }
+  // };
 
   // Handle tag selection from TagsDropdown
   const handleTagSelection = (selectedTagIds) => {
@@ -50,10 +51,10 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
     formData.append("category", category);
     formData.append("description", description);
     formData.append("accessLevel", accessLevel);
-
-    if (file) {
-      formData.append("file", file);
-    }
+    formData.append("fileName", fileName);
+    // if (file) {
+    //   formData.append("file", file);
+    // }
 
     onSave(resource._id, formData)
       .then(() => onClose()) // Close modal if save is successful
@@ -68,9 +69,14 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
         <h2>Edit Resource</h2>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <div className="popup-content">
+          {/* Title */}
+          <div className="form-group">
+            <label htmlFor="fileName">Title</label>
+            <input type="text" id="fileName" value={fileName} />
+          </div>
           {/* Description Field */}
           <div className="form-group">
-            <label htmlFor="description">Description:</label>
+            <label htmlFor="description">Description</label>
             <textarea
               id="description"
               value={description}
@@ -82,7 +88,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
 
           {/* Tags Dropdown */}
           <div className="form-group">
-            <label htmlFor="tags">Tags:</label>
+            <label htmlFor="tags">Tags</label>
             <TagsDropdown
               onTagSelect={handleTagSelection}
               selectedTags={tags}
@@ -91,7 +97,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
 
           {/* Category Dropdown */}
           <div className="form-group">
-            <label htmlFor="category">Category:</label>
+            <label htmlFor="category">Category</label>
             <select
               id="category"
               value={category}
@@ -107,7 +113,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
 
           {/* Access Level Dropdown */}
           <div className="form-group">
-            <label htmlFor="accessLevel">Access Level:</label>
+            <label htmlFor="accessLevel">Access Level</label>
             <select
               id="accessLevel"
               value={accessLevel}
@@ -119,8 +125,8 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
           </div>
 
           {/* File Input Area with Drag-and-Drop Zone and Preview */}
-          <div className="form-group">
-            <label htmlFor="file">Replace File:</label>
+          {/* <div className="form-group">
+            <label htmlFor="file">Replace File</label>
             <div className="file-input-container">
               <input
                 type="file"
@@ -151,7 +157,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Save and Cancel Buttons */}

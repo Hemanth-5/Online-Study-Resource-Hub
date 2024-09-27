@@ -98,37 +98,38 @@ const updateResourceFile = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { description, tags, category, accessLevel } = req.body;
-    const file = req.file;
+    const { description, tags, category, accessLevel, fileName } = req.body;
+    // const file = req.file;
 
     // Delete exisiting file from cloudinary
-    const result = {
-      public_id: currentResource.uploadId,
-      url: currentResource.fileUrl,
-      fileName: currentResource.fileName,
-    };
+    // const result = {
+    //   public_id: currentResource.uploadId,
+    //   url: currentResource.fileUrl,
+    //   fileName: currentResource.fileName,
+    // };
 
-    // console.log(file);
-    if (file) {
-      if (file.originalname !== currentResource.fileName) {
-        await cloudinary.v2.uploader.destroy(currentResource.uploadId);
-        const newResult = await uploadResourcesToCloudinary(req, file.buffer);
-        result.public_id = newResult.public_id;
-        result.url = newResult.secure_url;
-        result.fileName = file.originalname;
-      } else {
-        return res.status(400).json({ message: "File already exists" });
-      }
-    }
+    // // console.log(file);
+    // if (file) {
+    //   if (file.originalname !== currentResource.fileName) {
+    //     await cloudinary.v2.uploader.destroy(currentResource.uploadId);
+    //     const newResult = await uploadResourcesToCloudinary(req, file.buffer);
+    //     result.public_id = newResult.public_id;
+    //     result.url = newResult.secure_url;
+    //     result.fileName = file.originalname;
+    //   } else {
+    //     return res.status(400).json({ message: "File already exists" });
+    //   }
+    // }
 
     // Check if there is a file included
     await Resource.findByIdAndUpdate(
       currentResource._id,
       {
         description,
-        fileName: result.fileName,
-        uploadId: result.public_id,
-        fileUrl: result.url,
+        fileName,
+        // fileName: result.fileName,
+        // uploadId: result.public_id,
+        // fileUrl: result.url,
         tags,
         category,
         accessLevel,

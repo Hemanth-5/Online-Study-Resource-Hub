@@ -22,6 +22,7 @@ const MyUploads = () => {
   const canvasRefs = useRef([]); // Holds references for canvas elements for PDF previews
   const [isModalOpen, setIsModalOpen] = useState(false); // Controls whether the edit modal is open
   const [editingResource, setEditingResource] = useState(null); // Stores the resource being edited
+  const [performingAction, setPerformingAction] = useState(false);
 
   // Get the user's authentication token from localStorage
   const token = localStorage.getItem("accessToken");
@@ -169,10 +170,10 @@ const MyUploads = () => {
           {/* Render the user's resources */}
           <div className={`resources-view ${viewMode}`}>
             {resources.map((resource, index) => (
-              <Link
+              <div
                 key={resource._id}
                 className="resource-card"
-                to={`/resources/view/${resource._id}`}
+                onClick={() => navigate(`/resources/view/${resource._id}`)}
               >
                 <div className="resource-thumbnail">
                   {resource.fileUrl.endsWith(".pdf") ? (
@@ -191,12 +192,18 @@ const MyUploads = () => {
                   <div className="resource-actions">
                     <FaEdit
                       className="edit-icon"
-                      onClick={() => handleEdit(resource)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents the link from being activated
+                        handleEdit(resource);
+                      }}
                       title="Edit Resource"
                     />
                     <FaTrash
                       className="delete-icon"
-                      onClick={() => handleDelete(resource._id)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents the link from being activated
+                        handleDelete(resource._id);
+                      }}
                       title="Delete Resource"
                     />
                   </div>
@@ -208,7 +215,7 @@ const MyUploads = () => {
                     Open Resource
                   </button>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
 

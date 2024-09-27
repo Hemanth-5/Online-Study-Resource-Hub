@@ -4,8 +4,10 @@ import { uploadResource } from "../api/apiServices"; // Import the API service
 import * as pdfjsLib from "pdfjs-dist/webpack"; // Import pdfjs-dist for PDF rendering
 import TagsDropdown from "../components/TagsDropdown"; // Import the TagsDropdown component
 import { setPopup } from "../features/popupsSlice"; // Import popup action
-import "./UploadResource.css";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header"; // Import Header component
+import Navbar from "../components/Navbar"; // Import Navbar component
+import "./UploadResource.css";
 
 const UploadResource = () => {
   const dispatch = useDispatch();
@@ -20,16 +22,37 @@ const UploadResource = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [isDragOver, setIsDragOver] = useState(false); // Dragging state
   const token = localStorage.getItem("accessToken");
-
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0] || e.dataTransfer.files[0];
+    let selectedFile;
+
+    // Handle drag-and-drop file event
+    if (e.type === "drop") {
+      e.preventDefault();
+      selectedFile = e.dataTransfer?.files[0];
+    } else {
+      // Handle regular file selection through input
+      selectedFile = e.target.files[0];
+    }
+
+    // Check if a valid file is selected before proceeding
     if (selectedFile) {
       setFile(selectedFile);
       setError("");
       previewFile(selectedFile); // Generate preview
+    } else {
+      setError("No file selected. Please try again.");
     }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true); // Set drag-over state to true when file is dragged over the area
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false); // Reset drag-over state when file is dragged out of the area
   };
 
   const previewFile = (file) => {
@@ -123,141 +146,130 @@ const UploadResource = () => {
       );
     } finally {
       setLoading(false); // Set loading state to false
-      navigate("/my-uploads"); // Redirect to home page
+      navigate("/my-uploads"); // Redirect to uploads page
     }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-      previewFile(droppedFile); // Generate preview
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragOver(false);
   };
 
   return (
-    <div className="upload-resource-container">
-      {loading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
-        </div>
-      )}
-      <h2>Upload New Resource</h2>
+    <div className="upload-page-container">
+      {/* Header and Navbar */}
+      <Header />
+      <div className="upload-page-main">
+        <Navbar />
 
-      {error && <p className="error-message">{error}</p>}
-
-      <form onSubmit={handleUpload}>
-        <div className="form-group form-drag-drop-preview">
-          {previewSrc && (
-            <div className="file-preview">
-              <h4>File Preview:</h4>
-              {file?.type.startsWith("image/") ||
-              file?.type === "application/pdf" ? (
-                <img src={previewSrc} alt="File Preview" />
-              ) : (
-                <p>Preview not available for this file type.</p>
-              )}
+        {/* Upload Form Content */}
+        <div className="upload-content-wrapper">
+          {loading && (
+            <div className="loading-overlay">
+              <div className="loading-spinner"></div>
             </div>
           )}
-          <div className="drag-drop-preview-group">
-            <label
-              className="file-input-label"
-              htmlFor="file-input"
-              style={{ display: "none" }}
-            ></label>
-            <input
-              type="file"
-              id="file-input"
-              onChange={handleFileChange}
-              required
-              style={{ display: "none" }}
-            />
-            <div
-              className={`drag-drop-area ${isDragOver ? "drag-over" : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => document.getElementById("file-input").click()}
-            >
-              {file == null ? (
-                <p>Drag and drop your file here, or click to select a file.</p>
-              ) : (
-                <p>
-                  {file.name} <br></br>
-                  (Click to replace file)
-                </p>
+          <h2>Upload New Resource</h2>
+
+          {error && <p className="error-message">{error}</p>}
+
+          <form onSubmit={handleUpload}>
+            {/* Drag and Drop or File Upload */}
+            <div className="form-group form-drag-drop-preview">
+              {previewSrc && (
+                <div className="file-preview">
+                  <h4>File Preview</h4>
+                  {file?.type.startsWith("image/") ||
+                  file?.type === "application/pdf" ? (
+                    <img src={previewSrc} alt="File Preview" />
+                  ) : (
+                    <p>Preview not available for this file type.</p>
+                  )}
+                </div>
               )}
+              <div className="drag-drop-preview-group">
+                <input
+                  type="file"
+                  id="file-input"
+                  onChange={handleFileChange}
+                  required
+                  style={{ display: "none" }}
+                />
+                <div
+                  className={`drag-drop-area ${isDragOver ? "drag-over" : ""}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleFileChange}
+                  onClick={() => document.getElementById("file-input").click()}
+                >
+                  {file == null ? (
+                    <p>
+                      Drag and drop your file here, or click to select a file.
+                    </p>
+                  ) : (
+                    <p>
+                      {file.name} <br></br>
+                      (Click to replace file)
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
+            {/* Other form inputs */}
+            <div className="form-group">
+              <label htmlFor="title">Title</label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="tags">Tags:</label>
-          <TagsDropdown onTagSelect={handleTagSelection} />
-        </div>
+            <div className="form-group">
+              <label htmlFor="tags">Tags</label>
+              <TagsDropdown onTagSelect={handleTagSelection} />
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="category">Category:</label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">Select Category</option>
-            <option value="book">Book</option>
-            <option value="video">Video</option>
-            <option value="audio">Audio</option>
-          </select>
-        </div>
+            <div className="form-group">
+              <label htmlFor="category">Category</label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="book">Book</option>
+                <option value="video">Video</option>
+                <option value="audio">Audio</option>
+              </select>
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="visibility">Visibility:</label>
-          <select
-            id="visibility"
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-          >
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
-        </div>
+            <div className="form-group">
+              <label htmlFor="visibility">Visibility</label>
+              <select
+                id="visibility"
+                value={visibility}
+                onChange={(e) => setVisibility(e.target.value)}
+              >
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
 
-        <button type="submit" className="upload-button" disabled={loading}>
-          Upload Resource
-        </button>
-      </form>
+            <button type="submit" className="upload-button" disabled={loading}>
+              Upload Resource
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
