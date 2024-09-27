@@ -1,17 +1,16 @@
 /* General sidebar styling */
 .navbar {
-  position: fixed;
+  position: fixed; /* Keep the sidebar fixed */
   top: 60px; /* Start below the header */
   left: 0;
-  width: 200px;
-  height: 100vh; /* Adjust height considering the header */
+  width: 200px; /* Fixed width */
+  height: 100vh; /* Dynamic height */
+  overflow-y: auto; /* Enable scrolling if needed */
   background-color: #25323f; /* Dark background for the sidebar */
   color: #fff;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  /* Make sure it stays above other content */
 }
 
 .navbar nav {

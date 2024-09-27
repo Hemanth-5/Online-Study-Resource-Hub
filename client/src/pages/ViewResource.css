@@ -64,7 +64,7 @@
   flex: 3;
   padding: 10px;
   background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   border-radius: 8px;
 }
 
@@ -226,15 +226,6 @@ canvas {
   margin-bottom: 20px;
   font-size: 20px;
   color: #007bff;
-}
-
-.resource-details {
-  flex: 1;
-  margin-right: 20px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
 }
 
 .pdf-preview {

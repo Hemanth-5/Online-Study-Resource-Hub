@@ -19,61 +19,31 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.user.profile);
   const userStatus = useSelector((state) => state.user.status);
-  // const userResources = useSelector((state) => state.resource.resources);
-  // const userNotifications = useSelector(
-  //   (state) => state.notifications.notifications
-  // );
-
-  // console.log({ userNotifications });
   const navigate = useNavigate();
 
   const showPopup = (message, type) => {
     setPopup({ visible: true, message, type });
-    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 3000); // Auto-close after 5 seconds
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 3000);
   };
 
-  const closePopup = () => {
-    setPopup({ visible: false, message: "", type: "" });
-  };
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
 
   useEffect(() => {
     const handleTokenManagement = async () => {
       let token = localStorage.getItem("accessToken");
       let refreshToken = localStorage.getItem("refreshToken");
 
-      // if (!token) {
-      //   const urlParams = new URLSearchParams(window.location.search);
-      //   const urlToken = urlParams.get("accessToken");
-      //   const urlRefreshToken = urlParams.get("refreshToken");
-
-      //   if (urlToken) {
-      //     localStorage.setItem("accessToken", urlToken);
-      //     if (urlRefreshToken) {
-      //       localStorage.setItem("refreshToken", urlRefreshToken);
-      //     }
-      //     navigate("/dashboard", { replace: true });
-      //   } else {
-      //     navigate("/login");
-      //     return;
-      //   }
-      // }
-
-      // If no userProfile in Redux or status is idle, fetch the profile
       if (!userProfile && userStatus === "idle") {
         dispatch(setLoading("loading"));
         try {
           const response = await fetchUserProfile(token);
-          dispatch(setUserProfile(response)); // Set profile data in Redux
+          dispatch(setUserProfile(response));
           dispatch(setLoading("succeeded"));
 
-          // Fetch user resources as well
           const userResources = await fetchUserResources(token);
           dispatch(setResources(userResources));
-
-          // Show popup for welcome message
           showPopup(`Welcome, ${response.name}!`, "success");
         } catch (err) {
-          // If token expired, handle token refresh logic
           if (err.message === "Token expired") {
             try {
               const newTokens = await refreshAccessToken(refreshToken);
@@ -109,56 +79,47 @@ const Dashboard = () => {
     }
   }, [userProfile, navigate]);
 
-  if (userStatus === "loading") {
-    return <div>Loading...</div>;
-  }
-
-  if (userStatus === "failed") {
-    return <div>Error loading profile.</div>;
-  }
+  if (userStatus === "loading")
+    return <div className="loading-screen">Loading...</div>;
+  if (userStatus === "failed")
+    return <div className="error-screen">Error loading profile.</div>;
 
   return (
     <div className="dashboard-container">
       <Header userProfile={userProfile} />
 
-      {/* Display Popup when there's a failure */}
       {popup.visible && (
         <Popup message={popup.message} type={popup.type} onClose={closePopup} />
       )}
 
-      <div className="main-container">
+      <div className="dashboard-main">
         <Navbar />
 
-        <main className="main-content">
+        <main className="dashboard-content">
           <section className="welcome-section">
-            <h1>Welcome, {userProfile?.name}!</h1>
-            <p>
-              Here you can manage your resources, view study groups, and more.
-            </p>
-            {/* <img
-              src={userProfile?.profilePicture}
-              alt="User Avatar"
-              width="50%"
-            /> */}
+            <div className="welcome-text">
+              <h1>Welcome, {userProfile?.name}!</h1>
+              <p>Manage your resources, view study groups, and more.</p>
+            </div>
+            <div className="welcome-image">
+              <img
+                src={userProfile?.profilePicture}
+                alt="User Avatar"
+                className="profile-avatar"
+              />
+            </div>
           </section>
 
-          {/* <section className="quick-stats">
-            <div className="stat-item">
+          <section className="quick-stats">
+            <div className="stat-card">
               <h2>Resources</h2>
-              <p>Manage your resources here.</p>
-              {userResources.length > 0 && (
-                <ul>
-                  {userResources.map((resource) => (
-                    <li key={resource._id}>{resource.fileName}</li>
-                  ))}
-                </ul>
-              )}
+              <p>Manage and view your resources.</p>
             </div>
-            <div className="stat-item">
+            <div className="stat-card">
               <h2>Study Groups</h2>
               <p>Join or create study groups.</p>
             </div>
-            <div className="stat-item">
+            <div className="stat-card">
               <h2>Notifications</h2>
               <p>Check your recent notifications.</p>
             </div>
@@ -166,19 +127,14 @@ const Dashboard = () => {
 
           <section className="recent-activities">
             <h2>Recent Activities</h2>
-          </section> */}
+            <div className="activities-list">
+              <p>No recent activities to show.</p>
+            </div>
+          </section>
         </main>
       </div>
 
-      <Footer />
-
-      {/* {popup.visible && (
-        <Popup
-          message={popup.message}
-          type={popup.type}
-          onClose={handlePopupClose}
-        />
-      )} */}
+      {/* <Footer /> */}
     </div>
   );
 };

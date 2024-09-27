@@ -53,7 +53,10 @@ const deleteResource = async (req, res) => {
 // browse resources, update resource file, delete their resource file
 const browseResources = async (req, res) => {
   try {
-    const resources = await Resource.find();
+    const resources = await Resource.find().populate({
+      path: "uploadedBy",
+      select: ["name", "profilePicture"],
+    });
     res.status(200).json(resources);
   } catch (error) {
     res.status(500).json({ message: error.message });

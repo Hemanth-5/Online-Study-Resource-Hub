@@ -1,5 +1,4 @@
 .resources-wrapper {
-  display: flex;
   flex-direction: column;
   height: 100vh;
 }
@@ -10,9 +9,8 @@
 }
 
 .resources-content {
-  flex-grow: 1;
+  margin-left: 240px;
   padding: 20px;
-  overflow-y: auto;
 }
 
 .search-filter-container {
@@ -63,12 +61,6 @@
   display: flex;
 }
 
-.resources-content {
-  flex-grow: 1;
-  padding: 20px;
-  margin-left: 250px; /* Adjust this to the exact width of your Navbar */
-  overflow-y: auto;
-}
 /* Add this for the backdrop */
 .backdrop {
   position: fixed;
@@ -100,20 +92,6 @@
   filter: blur(5px); /* Adjust the blur intensity as needed */
 }
 
-/* Modal styles */
-.my-resources-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  z-index: 1000; /* Above the backdrop */
-  padding: 20px;
-  max-width: 500px;
-  width: 100%;
-}
 .selected-tags {
   display: flex;
   flex-wrap: wrap;
@@ -171,4 +149,133 @@
 .back-button:hover {
   background-color: #0056b3; /* Darker shade on hover */
   color: white;
+}
+
+.resources-view {
+  display: grid; /* Use grid layout */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Responsive columns */
+  gap: 20px; /* Space between grid items */
+}
+
+.resource-card {
+  text-decoration: none;
+  background-color: #ffffff; /* Card background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effects */
+  overflow: hidden; /* Ensures that child elements do not overflow */
+  cursor: pointer; /* Change cursor on hover */
+}
+
+.resource-card:hover {
+  transform: translateY(-5px); /* Slightly lift the card */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+.resource-thumbnail {
+  position: relative; /* Position for thumbnail */
+  overflow: hidden; /* Ensure contents are clipped */
+  height: 150px; /* Fixed height for uniformity */
+}
+
+.resource-details {
+  padding: 15px; /* Padding inside the card */
+}
+
+.resource-details h4 {
+  margin: 0; /* Remove default margin */
+  font-size: 1.2em; /* Font size for the title */
+  color: #333; /* Dark color for text */
+}
+
+.resource-details p {
+  color: #666; /* Lighter color for description */
+  font-size: 0.9em; /* Font size for description */
+  margin: 5px 0 0; /* Margin for spacing */
+}
+
+.uploader-info {
+  text-decoration: none;
+  color: #333;
+  display: flex; /* Align uploader info */
+  align-items: center; /* Center vertically */
+  font-size: 1.3em; /* Font size for uploader info */
+  margin-top: 10px; /* Margin for spacing */
+  justify-content: flex-end;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.uploader-info:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* <span className="uploader-info">
+  {resource.uploadedBy.name}{" "}
+  <img src={resource.uploadedBy.profilePicture} />
+</span> */
+
+.uploader-info img {
+  width: 30px; /* Adjust size as needed */
+  height: 30px; /* Adjust size as needed */
+  border-radius: 50%; /* Circular shape */
+  margin-left: 5px; /* Margin for spacing */
+}
+
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.filter-dropdown {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.tag.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.tag-pill {
+  background-color: #007bff;
+  color: white;
+  border-radius: 16px;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
 }

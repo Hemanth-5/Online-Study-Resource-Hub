@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { browseResources, fetchAllTags } from "../api/apiServices";
 import { useSelector } from "react-redux";
 import * as pdfjsLib from "pdfjs-dist/webpack";
 import { useNavigate } from "react-router-dom";
 import "./Resources.css";
 import Header from "../components/Header";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaSignature } from "react-icons/fa";
+import Navbar from "../components/Navbar";
 
 const Resources = () => {
   const [resources, setResources] = useState([]);
@@ -13,6 +15,7 @@ const Resources = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [openUserProfile, setOpenUserProfile] = useState(false);
 
   const token = localStorage.getItem("accessToken");
   const canvasRefs = useRef([]);
@@ -40,6 +43,7 @@ const Resources = () => {
       setLoading(true);
       try {
         const data = await browseResources(token, { accessLevel: "public" });
+        // console.log({ data });
         setResources(data);
         setFilteredResources(data);
         setLoading(false);
@@ -149,61 +153,78 @@ const Resources = () => {
         <FaArrowLeft />
       </div> */}
 
-      <div style={{ padding: "20px" }}>
-        <h2>Browse Resources</h2>
+      <div className="resources-main">
+        <Navbar />
+        <div className="resources-content">
+          <h2>Browse Resources</h2>
 
-        <div className="search-filter-container">
-          <input
-            type="text"
-            placeholder="Search by keyword"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="search-bar"
-          />
+          <div className="search-filter-container">
+            <input
+              type="text"
+              placeholder="Search by keyword"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="search-bar"
+            />
 
-          <div className="tags-container">
-            {tags.map((tag) => (
-              <div
-                key={tag._id}
-                className={`tag ${
-                  selectedTags.includes(tag._id) ? "selected" : ""
-                }`}
-                onClick={() => handleTagToggle(tag)}
-              >
-                {tag.name}
-              </div>
-            ))}
+            <div className="tags-container">
+              {tags.map((tag) => (
+                <div
+                  key={tag._id}
+                  className={`tag ${
+                    selectedTags.includes(tag._id) ? "selected" : ""
+                  }`}
+                  onClick={() => handleTagToggle(tag)}
+                >
+                  {tag.name}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {renderPillTags()}
+          {renderPillTags()}
 
-        <div className="resources-view grid">
-          {filteredResources.length > 0 ? (
-            filteredResources.map((resource, index) => (
-              <div
-                key={resource._id}
-                className="resource-card"
-                onClick={() => navigate(`/resources/view/${resource._id}`)}
-              >
-                <div className="resource-thumbnail">
-                  {resource.fileUrl.endsWith(".pdf") ? (
-                    <canvas
-                      ref={(el) => (canvasRefs.current[index] = el)}
-                    ></canvas>
-                  ) : (
-                    <img src={resource.fileUrl} alt={resource.fileName} />
+          <div className="resources-view grid">
+            {filteredResources.length > 0 ? (
+              filteredResources.map((resource, index) => (
+                <Link
+                  key={resource._id}
+                  className="resource-card"
+                  to={`/resource/${resource._id}`}
+                >
+                  <div className="resource-thumbnail">
+                    {resource.fileUrl.endsWith(".pdf") ? (
+                      <canvas
+                        ref={(el) => (canvasRefs.current[index] = el)}
+                      ></canvas>
+                    ) : (
+                      <img src={resource.fileUrl} alt={resource.fileName} />
+                    )}
+                  </div>
+                  <div className="resource-details">
+                    <h4>{resource.fileName}</h4>
+                    <p>
+                      {resource.description == "" ? " " : resource.description}
+                    </p>
+                  </div>
+                  {resource.uploadedBy && (
+                    <Link
+                      className="uploader-info"
+                      onMouseEnter={() => setOpenUserProfile(true)}
+                      onMouseLeave={() => setOpenUserProfile(false)}
+                      to={`/profile/${resource.uploadedBy._id}`}
+                    >
+                      <FaSignature />
+                      {resource.uploadedBy.name}{" "}
+                      <img src={resource.uploadedBy.profilePicture} />
+                    </Link>
                   )}
-                </div>
-                <div className="resource-details">
-                  <h4>{resource.fileName}</h4>
-                  <p>{resource.description}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div>No resources found</div>
-          )}
+                </Link>
+              ))
+            ) : (
+              <div>No resources found</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
