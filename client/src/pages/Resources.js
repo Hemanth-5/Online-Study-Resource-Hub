@@ -190,7 +190,7 @@ const Resources = () => {
                 <Link
                   key={resource._id}
                   className="resource-card"
-                  to={`/resource/${resource._id}`}
+                  to={`/resources/view/${resource._id}`}
                 >
                   <div className="resource-thumbnail">
                     {resource.fileUrl.endsWith(".pdf") ? (
