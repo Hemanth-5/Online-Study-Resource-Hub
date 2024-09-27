@@ -350,3 +350,43 @@
   font-size: 14px; /* Font size for the label */
   color: #666; /* Label color */
 }
+/* Modal container */
+.modal {
+  position: fixed; /* Fixed position to overlay on the main content */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Offset to center */
+  width: 80%; /* Width of the modal */
+  max-width: 600px; /* Maximum width */
+  background-color: white; /* White background for the modal */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+  z-index: 1000; /* Ensure it sits above other elements */
+  overflow-y: auto; /* Scrollable if content overflows */
+  max-height: 80vh; /* Maximum height of the modal */
+  padding: 20px; /* Padding inside the modal */
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed; /* Fixed position for the backdrop */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+  z-index: 999; /* Behind the modal */
+}
+
+/* Close button */
+.close-modal {
+  position: absolute; /* Position relative to the modal */
+  top: 10px; /* Space from the top */
+  right: 10px; /* Space from the right */
+  cursor: pointer; /* Pointer cursor for interaction */
+  color: #666; /* Default color */
+}
+
+.close-modal:hover {
+  color: #dc3545; /* Change color on hover */
+}

@@ -46,6 +46,7 @@ const API_ENDPOINTS = {
     ADD: (id) => `${BASE_URL}/v2/comments/${id}`,
     DISPLAY: (id) => `${BASE_URL}/v2/comments/${id}`,
     DELETE: (id) => `${BASE_URL}/v2/comments/delete/${id}`,
+    REPLY: (id) => `${BASE_URL}/v2/comments/reply/${id}`,
   },
   RECENT_ACTIVITIES: {
     LOG: `${BASE_URL}/v2/activities/log`,

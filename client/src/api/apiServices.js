@@ -198,6 +198,17 @@ const addCommentToResource = async (token, resourceId, commentText) => {
   );
 };
 
+// Reply
+const replyToComment = async (token, commentId, replyText) => {
+  const body = { text: replyText };
+  return apiRequest(
+    `${API_ENDPOINTS.COMMENTS.REPLY(commentId)}`,
+    "POST",
+    token,
+    body
+  );
+};
+
 // API service to create a new notification
 const createNotification = async (token, notificationData) => {
   return apiRequest(
@@ -240,6 +251,7 @@ export {
   addCommentToResource,
   fetchResourceDetails,
   fetchCommentsForResource,
+  replyToComment,
   deleteResource,
   editResource,
   logRecentActivity,

@@ -4,6 +4,8 @@ import {
   fetchResourceDetails,
   fetchCommentsForResource,
   addCommentToResource,
+  replyToComment,
+  fetchAllTags,
 } from "../api/apiServices";
 import * as pdfjsLib from "pdfjs-dist/webpack";
 import {
@@ -11,6 +13,7 @@ import {
   FaArrowLeft,
   FaChevronLeft,
   FaChevronRight,
+  FaReply, // Add reply icon
 } from "react-icons/fa";
 import "./ViewResource.css";
 
@@ -21,22 +24,39 @@ const ViewResource = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
+  const [tags, setTags] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [newReply, setNewReply] = useState({});
+  const [replyVisible, setReplyVisible] = useState({}); // State to manage visibility of reply fields
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const canvasRef = useRef(null);
   const token = localStorage.getItem("accessToken");
 
+  // Fetch Resource Details and Comments
   useEffect(() => {
     const fetchResource = async () => {
       try {
         const data = await fetchResourceDetails(token, resourceId);
         setResource(data);
-        await fetchComments();
-        setLoading(false);
-        setTotalPages(
-          data.fileUrl.endsWith(".pdf") ? await getTotalPages(data.fileUrl) : 0
+
+        if (data.fileUrl.endsWith(".pdf")) {
+          const pages = await getTotalPages(data.fileUrl);
+          setTotalPages(pages);
+          setPageNumber(1); // Initial page number
+        }
+
+        const resourceComments = await fetchCommentsForResource(
+          token,
+          resourceId
         );
+
+        console.log({ resourceComments });
+
+        const allTags = await fetchAllTags(token);
+        setTags(allTags);
+        setComments(resourceComments);
+        setLoading(false);
       } catch (err) {
         console.error(err);
         setError("Failed to load resource details.");
@@ -44,18 +64,15 @@ const ViewResource = () => {
       }
     };
 
-    const fetchComments = async () => {
-      try {
-        const commentsData = await fetchCommentsForResource(token, resourceId);
-        setComments(commentsData);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load comments.");
-      }
-    };
-
     fetchResource();
   }, [resourceId, token]);
+
+  // Render PDF when page number or resource file changes
+  useEffect(() => {
+    if (resource && resource.fileUrl.endsWith(".pdf")) {
+      renderPDF(resource.fileUrl, pageNumber);
+    }
+  }, [resource, pageNumber]);
 
   const getTotalPages = async (fileUrl) => {
     const loadingTask = pdfjsLib.getDocument(fileUrl);
@@ -63,11 +80,11 @@ const ViewResource = () => {
     return pdf.numPages;
   };
 
-  const renderPDF = async (fileUrl) => {
+  const renderPDF = async (fileUrl, pageNum) => {
     const loadingTask = pdfjsLib.getDocument(fileUrl);
     try {
       const pdf = await loadingTask.promise;
-      const page = await pdf.getPage(pageNumber);
+      const page = await pdf.getPage(pageNum);
       const scale = 1.5;
       const viewport = page.getViewport({ scale });
       const canvas = canvasRef.current;
@@ -86,14 +103,15 @@ const ViewResource = () => {
     }
   };
 
+  // Handle Comment Submission
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (newComment) {
       try {
         await addCommentToResource(token, resourceId, newComment);
-        setComments((prevComments) => [
-          ...prevComments,
-          { text: newComment, user: { id: "currentUser" } },
+        setComments([
+          ...comments,
+          { text: newComment, user: "currentUser", replies: [] },
         ]);
         setNewComment("");
       } catch (err) {
@@ -103,51 +121,79 @@ const ViewResource = () => {
     }
   };
 
+  // Handle Reply Submission
+  const handleReplySubmit = async (e, commentId) => {
+    e.preventDefault();
+    if (newReply[commentId]) {
+      try {
+        await replyToComment(token, commentId, newReply[commentId]);
+        const updatedComments = [...comments];
+        updatedComments[commentId].replies.push({
+          text: newReply[commentId],
+          user: "currentUser",
+        });
+        setComments(updatedComments);
+        setNewReply({ ...newReply, [commentId]: "" });
+        setReplyVisible({ ...replyVisible, [commentId]: false }); // Hide reply field after submitting
+      } catch (err) {
+        console.error(err);
+        setError("Failed to add reply.");
+      }
+    }
+  };
+
   const handleLike = () => {
     // Handle the like functionality here
   };
 
   const handlePreviousPage = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
-      renderPDF(resource.fileUrl);
-    }
+    if (pageNumber > 1) setPageNumber(pageNumber - 1);
   };
 
   const handleNextPage = () => {
-    if (pageNumber < totalPages) {
-      setPageNumber(pageNumber + 1);
-      renderPDF(resource.fileUrl);
-    }
+    if (pageNumber < totalPages) setPageNumber(pageNumber + 1);
   };
 
-  if (loading) return <div>Loading resource...</div>;
-  if (error) return <div>{error}</div>;
+  const toggleReplyVisibility = (commentId) => {
+    setReplyVisible((prevState) => ({
+      ...prevState,
+      [commentId]: !prevState[commentId], // Toggle visibility
+    }));
+  };
+
+  if (loading) return <div className="loading">Loading resource...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="view-resource-container">
-      <div className="back-button" onClick={() => navigate(-1)}>
+      <div className="back-button" onClick={() => navigate(-1)} title="Go Back">
         <FaArrowLeft />
       </div>
 
       <div className="resource-details">
-        <h2>{resource.fileName}</h2>
-        <p>{resource.description}</p>
+        <h2 className="resource-title">{resource.fileName}</h2>
+        <p className="resource-description">{resource.description}</p>
 
         {resource.fileUrl.endsWith(".pdf") ? (
-          <div className="pdf-preview">
+          <div className="pdf-preview-canvas">
             <canvas ref={canvasRef}></canvas>
             <div className="pagination-controls">
               <FaChevronLeft
                 onClick={handlePreviousPage}
-                className="pagination-arrow"
+                className={`pagination-arrow ${
+                  pageNumber === 1 ? "disabled" : ""
+                }`}
+                title="Previous Page"
               />
-              <span>
+              <span className="page-info">
                 {pageNumber} / {totalPages}
               </span>
               <FaChevronRight
                 onClick={handleNextPage}
-                className="pagination-arrow"
+                className={`pagination-arrow ${
+                  pageNumber === totalPages ? "disabled" : ""
+                }`}
+                title="Next Page"
               />
             </div>
             <div
@@ -165,21 +211,65 @@ const ViewResource = () => {
 
         <div className="resource-tags">
           <h3>Tags:</h3>
-          <p>{resource.tags.join(", ")}</p>
-        </div>
-
-        <div className="resource-actions">
-          <FaHeart onClick={handleLike} className="like-icon" />
+          <div className="tags-container">
+            {resource.tags.map((tag) => (
+              <span key={tag} className="tag-pill">
+                {tags.find((t) => t._id === tag).name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="comments-section">
         <h3>Comments:</h3>
         <ul className="comments-list">
-          {comments.map((comment, index) => (
-            <li key={index} className="comment-item">
+          {comments.map((comment) => (
+            <li key={comment._id} className="comment-item">
               <div className="comment-content">
-                <strong>{comment.user}</strong>: {comment.text}
+                <strong className="comment-user">{comment.user.name}</strong>:
+                <span className="comment-text">{comment.text}</span>
+                <span className="comment-date">
+                  {new Date(comment.createdAt).toLocaleString("en-US", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </span>
+                <FaReply
+                  onClick={() => toggleReplyVisibility(comment._id)} // Toggle reply visibility
+                  className="reply-icon"
+                  title="Reply"
+                />
+                <ul className="replies-list">
+                  {comment.replies.map((reply, replyIndex) => (
+                    <li key={replyIndex} className="reply-item">
+                      <strong className="reply-user">{reply.user}</strong>:
+                      <span className="reply-text">{reply.text}</span>
+                    </li>
+                  ))}
+                </ul>
+                {replyVisible[comment._id] && ( // Only show reply field if visible
+                  <form
+                    onSubmit={(e) => handleReplySubmit(e, comment._id)}
+                    className="reply-form"
+                  >
+                    <textarea
+                      value={newReply[comment._id] || ""}
+                      onChange={(e) =>
+                        setNewReply({
+                          ...newReply,
+                          [comment._id]: e.target.value,
+                        })
+                      }
+                      placeholder="Add a reply..."
+                      required
+                      className="reply-textarea"
+                    />
+                    <button type="submit" className="reply-submit-button">
+                      Reply
+                    </button>
+                  </form>
+                )}
               </div>
             </li>
           ))}
@@ -191,8 +281,11 @@ const ViewResource = () => {
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Add a comment..."
             required
+            className="comment-textarea"
           />
-          <button type="submit">Submit</button>
+          <button type="submit" className="comment-submit-button">
+            Comment
+          </button>
         </form>
       </div>
     </div>

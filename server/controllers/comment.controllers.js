@@ -31,9 +31,19 @@ const addComment = async (req, res) => {
 // Get all comments for a resource
 const displayComments = async (req, res) => {
   try {
-    const resource = await Resource.findById(req.params.id).populate(
-      "comments"
-    );
+    // Comments has a field 'user'
+    // I have given the user field a type of mongoose.Schema.Types.ObjectId and ref of 'User'
+    // This means that the 'user' field in the Comment model will be populated with the user details from the User model
+    // But, I also need to fetch the information of the user who made the comment
+
+    const resource = await Resource.findById(req.params.id).populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        select: ["name", "profilePicture"],
+      },
+    });
+
     if (!resource) {
       return res.status(404).json({ message: "Resource not found" });
     }
@@ -73,4 +83,30 @@ const deleteComment = async (req, res) => {
   }
 };
 
-export { addComment, displayComments, deleteComment };
+const replyToComment = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const user = req.user;
+    const comment = await Comment.findById(req.params.id);
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    const reply = new Comment({
+      text,
+      user: user.id,
+      resource: comment.resource,
+    });
+
+    await reply.save();
+    comment.replies.push(reply._id);
+    await comment.save();
+
+    res.status(201).json({ message: "Reply added" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { addComment, displayComments, deleteComment, replyToComment };
