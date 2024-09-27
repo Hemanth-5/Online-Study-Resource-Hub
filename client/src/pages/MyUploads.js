@@ -9,6 +9,7 @@ import * as pdfjsLib from "pdfjs-dist/webpack"; // For rendering PDF previews
 import "./MyUploads.css"; // Custom styles
 import { FaTrash, FaEdit } from "react-icons/fa"; // Import icons for editing and deleting
 import EditResourceModal from "../components/EditResourceModal"; // Import the modal component for editing
+import Header from "../components/Header";
 
 const MyUploads = () => {
   const navigate = useNavigate();
@@ -143,79 +144,82 @@ const MyUploads = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="my-resources-container">
-      <h2>My Resources</h2>
-      <button className="upload-resource-btn" onClick={handleUploadResource}>
-        Upload Resource
-      </button>
-
-      {/* Toggle between grid and list views */}
-      <div className="view-toggle">
-        <button
-          className={viewMode === "grid" ? "active" : ""}
-          onClick={() => setViewMode("grid")}
-        >
-          Grid View
+    <>
+      <Header />
+      <div className="my-resources-container">
+        <h2>My Resources</h2>
+        <button className="upload-resource-btn" onClick={handleUploadResource}>
+          Upload Resource
         </button>
-        <button
-          className={viewMode === "list" ? "active" : ""}
-          onClick={() => setViewMode("list")}
-        >
-          List View
-        </button>
-      </div>
 
-      {/* Render the user's resources */}
-      <div className={`resources-view ${viewMode}`}>
-        {resources.map((resource, index) => (
-          <div key={resource._id} className="resource-card">
-            <div className="resource-thumbnail">
-              {resource.fileUrl.endsWith(".pdf") ? (
-                <div className="pdf-preview">
-                  <canvas ref={(el) => (canvasRefs.current[index] = el)} />
-                </div>
-              ) : (
-                <img src={resource.fileUrl} alt={resource.fileName} />
-              )}
-            </div>
-            <div className="resource-details">
-              <h4>{resource.fileName}</h4>
-              <p>{resource.description}</p>
+        {/* Toggle between grid and list views */}
+        <div className="view-toggle">
+          <button
+            className={viewMode === "grid" ? "active" : ""}
+            onClick={() => setViewMode("grid")}
+          >
+            Grid View
+          </button>
+          <button
+            className={viewMode === "list" ? "active" : ""}
+            onClick={() => setViewMode("list")}
+          >
+            List View
+          </button>
+        </div>
 
-              {/* Edit and Delete buttons */}
-              <div className="resource-actions">
-                <FaEdit
-                  className="edit-icon"
-                  onClick={() => handleEdit(resource)}
-                  title="Edit Resource"
-                />
-                <FaTrash
-                  className="delete-icon"
-                  onClick={() => handleDelete(resource._id)}
-                  title="Delete Resource"
-                />
+        {/* Render the user's resources */}
+        <div className={`resources-view ${viewMode}`}>
+          {resources.map((resource, index) => (
+            <div key={resource._id} className="resource-card">
+              <div className="resource-thumbnail">
+                {resource.fileUrl.endsWith(".pdf") ? (
+                  <div className="pdf-preview">
+                    <canvas ref={(el) => (canvasRefs.current[index] = el)} />
+                  </div>
+                ) : (
+                  <img src={resource.fileUrl} alt={resource.fileName} />
+                )}
               </div>
+              <div className="resource-details">
+                <h4>{resource.fileName}</h4>
+                <p>{resource.description}</p>
 
-              <button
-                className="open-resource-btn"
-                onClick={() => window.open(resource.fileUrl, "_blank")}
-              >
-                Open Resource
-              </button>
+                {/* Edit and Delete buttons */}
+                <div className="resource-actions">
+                  <FaEdit
+                    className="edit-icon"
+                    onClick={() => handleEdit(resource)}
+                    title="Edit Resource"
+                  />
+                  <FaTrash
+                    className="delete-icon"
+                    onClick={() => handleDelete(resource._id)}
+                    title="Delete Resource"
+                  />
+                </div>
+
+                <button
+                  className="open-resource-btn"
+                  onClick={() => window.open(resource.fileUrl, "_blank")}
+                >
+                  Open Resource
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Conditionally render the EditResourceModal */}
-      {isModalOpen && (
-        <EditResourceModal
-          resource={editingResource}
-          onClose={closeModal}
-          onSave={handleSaveEdit}
-        />
-      )}
-    </div>
+        {/* Conditionally render the EditResourceModal */}
+        {isModalOpen && (
+          <EditResourceModal
+            resource={editingResource}
+            onClose={closeModal}
+            onSave={handleSaveEdit}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

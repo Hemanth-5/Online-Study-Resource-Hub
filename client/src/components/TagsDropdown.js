@@ -13,7 +13,6 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
     selectedTags == null ? [] : selectedTags
   );
 
-  console.log(tags);
   useEffect(() => {
     // If tags are not already loaded, fetch them
     if (status === "idle") {

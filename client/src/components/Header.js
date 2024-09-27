@@ -48,7 +48,9 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="logo">Resource Hub</div>
+      <div className="logo" onClick={() => navigate("/dashboard")}>
+        Resource Hub
+      </div>
 
       {/* <div className="header-left">
         <input type="text" placeholder="Search" className="search-bar" />

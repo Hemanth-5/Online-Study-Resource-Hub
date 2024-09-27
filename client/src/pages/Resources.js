@@ -145,64 +145,66 @@ const Resources = () => {
     <div className="resources-container">
       <Header userProfile={userProfile} />
 
-      <div className="back-button" onClick={handleBackToDashboard}>
+      {/* <div className="back-button" onClick={handleBackToDashboard}>
         <FaArrowLeft />
-      </div>
+      </div> */}
 
-      <h2>Browse Resources</h2>
+      <div style={{ padding: "20px" }}>
+        <h2>Browse Resources</h2>
 
-      <div className="search-filter-container">
-        <input
-          type="text"
-          placeholder="Search by keyword"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="search-bar"
-        />
+        <div className="search-filter-container">
+          <input
+            type="text"
+            placeholder="Search by keyword"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="search-bar"
+          />
 
-        <div className="tags-container">
-          {tags.map((tag) => (
-            <div
-              key={tag._id}
-              className={`tag ${
-                selectedTags.includes(tag._id) ? "selected" : ""
-              }`}
-              onClick={() => handleTagToggle(tag)}
-            >
-              {tag.name}
-            </div>
-          ))}
+          <div className="tags-container">
+            {tags.map((tag) => (
+              <div
+                key={tag._id}
+                className={`tag ${
+                  selectedTags.includes(tag._id) ? "selected" : ""
+                }`}
+                onClick={() => handleTagToggle(tag)}
+              >
+                {tag.name}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {renderPillTags()}
+        {renderPillTags()}
 
-      <div className="resources-view grid">
-        {filteredResources.length > 0 ? (
-          filteredResources.map((resource, index) => (
-            <div
-              key={resource._id}
-              className="resource-card"
-              onClick={() => navigate(`/resources/view/${resource._id}`)}
-            >
-              <div className="resource-thumbnail">
-                {resource.fileUrl.endsWith(".pdf") ? (
-                  <canvas
-                    ref={(el) => (canvasRefs.current[index] = el)}
-                  ></canvas>
-                ) : (
-                  <img src={resource.fileUrl} alt={resource.fileName} />
-                )}
+        <div className="resources-view grid">
+          {filteredResources.length > 0 ? (
+            filteredResources.map((resource, index) => (
+              <div
+                key={resource._id}
+                className="resource-card"
+                onClick={() => navigate(`/resources/view/${resource._id}`)}
+              >
+                <div className="resource-thumbnail">
+                  {resource.fileUrl.endsWith(".pdf") ? (
+                    <canvas
+                      ref={(el) => (canvasRefs.current[index] = el)}
+                    ></canvas>
+                  ) : (
+                    <img src={resource.fileUrl} alt={resource.fileName} />
+                  )}
+                </div>
+                <div className="resource-details">
+                  <h4>{resource.fileName}</h4>
+                  <p>{resource.description}</p>
+                </div>
               </div>
-              <div className="resource-details">
-                <h4>{resource.fileName}</h4>
-                <p>{resource.description}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div>No resources found</div>
-        )}
+            ))
+          ) : (
+            <div>No resources found</div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -9,10 +9,14 @@
   font-family: "Arial", sans-serif;
 }
 
-h2 {
+.upload-resource-container h2 {
+  width: 75%;
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #007bff; /* Matches your dashboard theme */
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
 }
 
 /* Form field container styling */
@@ -196,19 +200,12 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-}
-
-/* Section Title */
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
 }
 
 /* Drag and Drop File Upload Container */
 .form-drag-drop-preview {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   justify-content: space-evenly;
   align-items: center;
@@ -221,8 +218,10 @@ h2 {
 }
 
 .drag-drop-area {
+  cursor: pointer;
+  width: fit-content;
   border: 1px dashed #007bff;
-  padding: 40px;
+  padding: 20px;
   text-align: center;
   border-radius: 12px;
   background-color: #f1faff;
@@ -278,7 +277,7 @@ h2 {
 }
 
 .file-preview img {
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);

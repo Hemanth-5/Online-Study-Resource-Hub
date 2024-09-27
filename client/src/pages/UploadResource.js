@@ -127,6 +127,25 @@ const UploadResource = () => {
     }
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+      previewFile(droppedFile); // Generate preview
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
   return (
     <div className="upload-resource-container">
       {loading && (
@@ -140,33 +159,6 @@ const UploadResource = () => {
 
       <form onSubmit={handleUpload}>
         <div className="form-group form-drag-drop-preview">
-          <div className="drag-drop-preview-group">
-            <label className="file-input-label" htmlFor="file-input">
-              Choose file or drag and drop
-            </label>
-            <input
-              type="file"
-              id="file-input"
-              onChange={handleFileChange}
-              required
-              style={{ display: "none" }}
-            />
-            <div
-              className={`drag-drop-area ${isDragOver ? "drag-over" : ""}`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setIsDragOver(true);
-              }}
-              onDragLeave={() => setIsDragOver(false)}
-              onDrop={(e) => {
-                e.preventDefault();
-                setIsDragOver(false);
-                handleFileChange(e);
-              }}
-            >
-              <p>Drag and drop your file here, or click to select a file.</p>
-            </div>
-          </div>
           {previewSrc && (
             <div className="file-preview">
               <h4>File Preview:</h4>
@@ -178,6 +170,36 @@ const UploadResource = () => {
               )}
             </div>
           )}
+          <div className="drag-drop-preview-group">
+            <label
+              className="file-input-label"
+              htmlFor="file-input"
+              style={{ display: "none" }}
+            ></label>
+            <input
+              type="file"
+              id="file-input"
+              onChange={handleFileChange}
+              required
+              style={{ display: "none" }}
+            />
+            <div
+              className={`drag-drop-area ${isDragOver ? "drag-over" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => document.getElementById("file-input").click()}
+            >
+              {file == null ? (
+                <p>Drag and drop your file here, or click to select a file.</p>
+              ) : (
+                <p>
+                  {file.name} <br></br>
+                  (Click to replace file)
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
