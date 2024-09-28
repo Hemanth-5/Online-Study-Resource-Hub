@@ -9,7 +9,7 @@ import cloudinary from "../config/cloudinary.js";
 const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
-    console.log({ user });
+    // console.log({ user });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -23,7 +23,7 @@ const getUserProfile = async (req, res) => {
 const viewProfile = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
-    console.log({ user });
+    // console.log({ user });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -37,7 +37,7 @@ const viewProfile = async (req, res) => {
 // Update user profile
 const updateUserProfile = async (req, res) => {
   try {
-    console.log({ body: req.body });
+    // console.log({ body: req.body });
 
     // Add new fields to the allowed updates array
     const allowedUpdates = [

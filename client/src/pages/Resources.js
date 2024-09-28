@@ -103,14 +103,14 @@ const Resources = () => {
       };
 
       await page.render(renderContext).promise;
-      console.log("Page rendered");
+      // console.log("Page rendered");
     } catch (reason) {
       console.error("Error rendering PDF:", reason);
     }
   };
 
   const handleTagToggle = (tag) => {
-    console.log("Tag clicked:", tag);
+    // console.log("Tag clicked:", tag);
     setSelectedTags(
       (prevSelected) =>
         prevSelected.includes(tag._id) // Check against tag._id

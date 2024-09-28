@@ -37,7 +37,7 @@ const Login = () => {
     const refreshToken = params.get("refreshToken");
     let name, newUser, userName;
 
-    console.log(accessToken);
+    // console.log(accessToken);
 
     if (accessToken && refreshToken) {
       localStorage.setItem("accessToken", accessToken);

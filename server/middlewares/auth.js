@@ -8,7 +8,7 @@ const authenticateJWT = (req, res, next) => {
     return res.status(401).json({ message: "Token not provided" });
   }
 
-  console.log({ token });
+  // console.log({ token });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {

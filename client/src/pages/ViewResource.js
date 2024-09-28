@@ -51,7 +51,7 @@ const ViewResource = () => {
           resourceId
         );
 
-        console.log({ resourceComments });
+        // console.log({ resourceComments });
 
         const allTags = await fetchAllTags(token);
         setTags(allTags);

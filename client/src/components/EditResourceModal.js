@@ -33,7 +33,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
 
   // Handle tag selection from TagsDropdown
   const handleTagSelection = (selectedTagIds) => {
-    console.log({ selectedTagIds });
+    // console.log({ selectedTagIds });
     setTags(selectedTagIds); // Update local state with selected tag IDs
   };
 

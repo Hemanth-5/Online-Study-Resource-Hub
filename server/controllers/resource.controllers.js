@@ -209,7 +209,7 @@ const createResource = async (req, res) => {
     const result = await uploadResourcesToCloudinary(req, req.file.buffer);
     const { description, tags, category, accessLevel } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     const newResource = new Resource({
       fileName,
@@ -229,7 +229,7 @@ const createResource = async (req, res) => {
 
     res.status(201).json({ message: "Resource created" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
