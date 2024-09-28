@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID.toString(),
       clientSecret: process.env.GOOGLE_CLIENT_SECRET.toString(),
-      callbackURL: process.env.GOOGLE_CALLBACK_URL.toString(),
+      callbackURL: "/api/auth/google/callback",
     },
     handleGoogleLogin
   )
