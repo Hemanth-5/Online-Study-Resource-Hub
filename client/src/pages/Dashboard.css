@@ -198,32 +198,6 @@ header .profile img {
 }
 
 /* Popup styling */
-.popup {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #4caf50;
-  color: white;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-}
-
-.popup.error {
-  background-color: #ff4757;
-}
-
-.popup button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  margin-left: 20px;
-  cursor: pointer;
-}
 
 /* Footer styling
 footer {

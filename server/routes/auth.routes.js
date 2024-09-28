@@ -18,7 +18,7 @@ router
 router.route("/google/callback").get(
   passport.authenticate("google", {
     session: false,
-    failureRedirect: process.env.GOOGLE_FAILURE_REDIRECT,
+    failureRedirect: `${process.env.GOOGLE_FAILURE_REDIRECT}?error=google-auth&type=domain`,
   }),
   (req, res) => {
     if (!req.user) {
@@ -46,7 +46,6 @@ router.route("/google/callback").get(
 
     // Store refresh token in the database if needed
 
-    console.log(process.env.GOOGLE_SUCCESS_REDIRECT);
     // Redirect to frontend with tokens
     res.redirect(
       `${process.env.GOOGLE_SUCCESS_REDIRECT}?accessToken=${accessToken}&refreshToken=${refreshToken}`

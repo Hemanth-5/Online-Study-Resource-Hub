@@ -79,18 +79,26 @@ const Login = () => {
           // navigate("/dashboard");
         })
         .catch((err) => {
-          console.error(err); // Log the error
-          // const errorMessage =
-          //   err.response?.data?.message || "Failed to fetch data.";
-          // showPopup(errorMessage, "failure");
-          // dispatch(setError("Failed to fetch data."));
-          // dispatch(setLoading("failed"));
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
 
           // Redirect to login after showing the error
           navigate("/login");
         });
+    } else {
+      const error = params.get("error") || "Failed to fetch user data";
+      const errorType = params.get("type") || null;
+      if (
+        error &&
+        error === "google-auth" &&
+        errorType &&
+        errorType === "domain"
+      ) {
+        showPopup("Only PSG Tech students allowed", "failure");
+      }
+
+      // Redirect to login after showing the error
+      setTimeout(() => navigate("/login"), 5000);
     }
   }, [dispatch, navigate, location.search]);
 
