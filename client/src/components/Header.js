@@ -95,7 +95,7 @@ const Header = () => {
 
       {showPopup && (
         <div className="profile-popup">
-          <Link to="/profile-completion" className="profile-option">
+          <Link to="/profile" className="profile-option">
             Profile <FaUser className="profile-icon" />
           </Link>
           <div className="profile-option" onClick={onLogout}>

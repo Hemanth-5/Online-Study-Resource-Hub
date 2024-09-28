@@ -14,7 +14,7 @@ const API_ENDPOINTS = {
     PROFILE: `${BASE_URL}/v2/users/profile`,
     UPDATE_PROFILE: `${BASE_URL}/v2/users/profile/update`,
     UPDATE_PROFILE_PIC: `${BASE_URL}/v2/users/profile/updatepic`,
-
+    VIEW_PROFILE: (id) => `${BASE_URL}/v2/users/profile/${id}`,
     // Admin
     USERS: `${BASE_URL}/v2/users`,
     USER: (id) => `${BASE_URL}/v2/users/${id}`,

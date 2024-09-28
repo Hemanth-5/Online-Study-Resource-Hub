@@ -5,6 +5,8 @@ import {
 } from "../api/apiServices";
 import { useSelector } from "react-redux"; // Import the useSelector hook from react-redux
 import "./RecentActivities.css"; // Import the stylesheet for styling
+import Header from "../components/Header";
+import Navbar from "../components/Navbar";
 
 const RecentActivities = () => {
   const token = localStorage.getItem("accessToken");
@@ -49,39 +51,49 @@ const RecentActivities = () => {
 
   return (
     <div className="recent-activities-container">
-      <h2>Your Recent Activities</h2>
+      <Header />
+      <div className="recent-activities-main">
+        <Navbar />
+        <div className="recent-activities-content">
+          <h2>Your Recent Activities</h2>
 
-      <div className="pill-filter-container">
-        {filters.map((actionType) => (
-          <button
-            key={actionType}
-            className={`pill-filter ${filter === actionType ? "active" : ""}`}
-            onClick={() => setFilter(filter === actionType ? "" : actionType)}
-          >
-            {actionType}
-          </button>
-        ))}
+          <div className="pill-filter-container">
+            {filters.map((actionType) => (
+              <button
+                key={actionType}
+                className={`pill-filter ${
+                  filter === actionType ? "active" : ""
+                }`}
+                onClick={() =>
+                  setFilter(filter === actionType ? "" : actionType)
+                }
+              >
+                {actionType}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <p>Loading activities...</p>
+          ) : activities.length === 0 ? (
+            <p>No activities found.</p>
+          ) : (
+            <ul className="activity-list">
+              {activities.map((activity) => (
+                <li key={activity._id} className="activity-item">
+                  <span className="activity-type">{activity.actionType}</span>
+                  <span className="activity-description">
+                    {activity.description}
+                  </span>
+                  <span className="activity-timestamp">
+                    {new Date(activity.timestamp).toLocaleString()}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-
-      {loading ? (
-        <p>Loading activities...</p>
-      ) : activities.length === 0 ? (
-        <p>No activities found.</p>
-      ) : (
-        <ul className="activity-list">
-          {activities.map((activity) => (
-            <li key={activity._id} className="activity-item">
-              <span className="activity-type">{activity.actionType}</span>
-              <span className="activity-description">
-                {activity.description}
-              </span>
-              <span className="activity-timestamp">
-                {new Date(activity.timestamp).toLocaleString()}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };

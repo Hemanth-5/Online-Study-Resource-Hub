@@ -29,10 +29,13 @@ const Login = () => {
     setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 5000); // Auto-close after 5 seconds
   };
 
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const accessToken = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
+    let name;
 
     console.log(accessToken);
 
@@ -50,6 +53,7 @@ const Login = () => {
       fetchUserProfile(token)
         .then((userResponse) => {
           // console.log(userResponse);
+          name = userResponse.name;
           dispatch(setUserProfile(userResponse));
           return Promise.all([
             fetchUserResources(token),
@@ -64,15 +68,23 @@ const Login = () => {
 
           // console.log({ resourcesResponse, tagsResponse });
           dispatch(setLoading("succeeded"));
-          navigate("/dashboard");
+
+          const successMessage = `Welcome, ${name}!, loading your dashboard...`;
+          if (accessToken) {
+            showPopup(successMessage, "success");
+            setTimeout(() => navigate("/dashboard"), 5000); // Redirect to dashboard after 3 seconds
+          } else {
+            navigate("/dashboard");
+          }
+          // navigate("/dashboard");
         })
         .catch((err) => {
           console.error(err); // Log the error
-          const errorMessage =
-            err.response?.data?.message || "Failed to fetch data.";
-          showPopup(errorMessage, "failure");
-          dispatch(setError("Failed to fetch data."));
-          dispatch(setLoading("failed"));
+          // const errorMessage =
+          //   err.response?.data?.message || "Failed to fetch data.";
+          // showPopup(errorMessage, "failure");
+          // dispatch(setError("Failed to fetch data."));
+          // dispatch(setLoading("failed"));
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
 
@@ -96,11 +108,7 @@ const Login = () => {
 
       {/* Display Popup when there's a failure */}
       {popup.visible && (
-        <Popup
-          message={popup.message}
-          type={popup.type}
-          onClose={() => setPopup({ visible: false, message: "", type: "" })}
-        />
+        <Popup message={popup.message} type={popup.type} onClose={closePopup} />
       )}
     </div>
   );

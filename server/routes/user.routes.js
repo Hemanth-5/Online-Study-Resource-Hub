@@ -6,6 +6,7 @@ import {
   getUsers,
   getUserById,
   updateUser,
+  viewProfile,
   deleteUser,
 } from "../controllers/user.controllers.js";
 
@@ -19,6 +20,7 @@ router.route("/profile/update").put(authenticateJWT, updateUserProfile);
 router
   .route("/profile/updatepic")
   .put(authenticateJWT, upload.single("file"), updateUserProfilePic);
+router.route("/profile/:id").get(authenticateJWT, viewProfile);
 
 router.route("/").get(authenticateJWT, verifyAdmin, getUsers);
 router.route("/:id").get(authenticateJWT, verifyAdmin, getUserById);

@@ -87,6 +87,10 @@ const fetchUserProfile = async (token) => {
   return apiRequest(API_ENDPOINTS.USERS.PROFILE, "GET", token);
 };
 
+const viewUserProfile = async (token, userId) => {
+  return apiRequest(API_ENDPOINTS.USERS.VIEW_PROFILE(userId), "GET", token);
+};
+
 // Complete user profile
 const completeProfile = async (token, profileData) => {
   const body = profileData;
@@ -260,5 +264,6 @@ export {
   fetchRecentActivitiesByType,
   createNotification,
   fetchUserNotifications,
+  viewUserProfile,
   markNotificationAsRead,
 };

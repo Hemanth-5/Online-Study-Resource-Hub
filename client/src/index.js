@@ -18,6 +18,7 @@ import ViewResource from "./pages/ViewResource";
 import UploadResource from "./pages/UploadResource";
 import MyUploads from "./pages/MyUploads";
 import RecentActivities from "./pages/RecentActivities";
+import UserProfileView from "./pages/UserProfileView";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -40,10 +41,18 @@ root.render(
               }
             />
             <Route
-              path="/profile-completion"
+              path="/profile"
               element={
                 <ProtectedRoute>
                   <CompleteRegistration />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/:userId"
+              element={
+                <ProtectedRoute>
+                  <UserProfileView />
                 </ProtectedRoute>
               }
             />

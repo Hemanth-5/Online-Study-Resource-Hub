@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile, setLoading, setError } from "../features/userSlice";
 import { setResources } from "../features/resourceSlice";
@@ -20,6 +20,7 @@ const Dashboard = () => {
   const userProfile = useSelector((state) => state.user.profile);
   const userStatus = useSelector((state) => state.user.status);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const showPopup = (message, type) => {
     setPopup({ visible: true, message, type });

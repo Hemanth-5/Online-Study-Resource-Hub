@@ -42,7 +42,7 @@
 .loading-bar {
   height: 5px; /* Height of the loading bar itself */
   width: 0%; /* Initial width */
-  animation: loadingAnimation 5s linear forwards; /* Smooth animation over 5 seconds */
+  animation: loadingAnimation 4s linear forwards; /* Smooth animation over 5 seconds */
 }
 
 @keyframes loadingAnimation {

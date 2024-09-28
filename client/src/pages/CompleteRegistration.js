@@ -8,10 +8,10 @@ import {
   fetchUserProfile,
   fetchAllTags,
 } from "../api/apiServices";
-import { setPopup } from "../features/popupsSlice";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Popup from "../components/Popup";
 import "./CompleteRegistration.css";
 
 const CompleteRegistration = () => {
@@ -37,6 +37,15 @@ const CompleteRegistration = () => {
   const [error, setErrorState] = useState(null);
   const [availableTags, setAvailableTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
+
+  const showPopup = (message, type) => {
+    setPopup({ visible: true, message, type });
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 3000);
+  };
+
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -172,15 +181,9 @@ const CompleteRegistration = () => {
       const updatedProfile = await fetchUserProfile(token);
       dispatch(setUserProfile(updatedProfile));
 
-      // Dispatch success popup
-      dispatch(
-        setPopup({
-          message: "Profile updated successfully!",
-          type: "success",
-        })
-      );
-
-      navigate("/dashboard", { replace: true });
+      // SHow success popup
+      showPopup("Profile updated successfully!", "success");
+      setTimeout(() => navigate("/dashboard", { replace: true }), 3000);
     } catch (error) {
       dispatch(setError("Failed to update profile. Please try again."));
 
@@ -215,13 +218,14 @@ const CompleteRegistration = () => {
     <div className="complete-registration-container">
       <Header userProfile={userProfile} />
       <div className="complete-registration-main">
+        <Navbar />
         <div className="complete-registration-content">
           {loading && (
             <div className="loading-overlay">
               <div className="loading-spinner"></div>
             </div>
           )}
-          <h1>Complete Your Profile</h1>
+          <h1>Edit Profile</h1>
           <div className="profile-photo-section">
             <div
               className={`profile-photo-dropzone ${dragging ? "dragging" : ""}`}
@@ -394,6 +398,14 @@ const CompleteRegistration = () => {
             </div>
           </form>
         </div>
+
+        {popup.visible && (
+          <Popup
+            message={popup.message}
+            type={popup.type}
+            onClose={closePopup}
+          />
+        )}
       </div>
       <Footer />
     </div>
