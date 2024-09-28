@@ -29,7 +29,8 @@ const RecentActivities = () => {
         }
         setActivities(response.activities);
       } catch (error) {
-        console.error("Failed to fetch activities", error);
+        // console.error("Failed to fetch activities", error);
+        setActivities([]);
       } finally {
         setLoading(false);
       }

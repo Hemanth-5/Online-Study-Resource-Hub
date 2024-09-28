@@ -83,7 +83,8 @@ const MyUploads = () => {
       await page.render(renderContext).promise;
       // console.log("Page rendered");
     } catch (reason) {
-      console.error("Error rendering PDF:", reason);
+      // console.error("Error rendering PDF:", reason);
+      setError("Failed to render PDF preview.");
     }
   };
   useEffect(() => {
