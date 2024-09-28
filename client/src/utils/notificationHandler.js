@@ -40,8 +40,8 @@ const handleCommentNotification = async (
     );
     dispatch(addNotification(createdNotification)); // Add notification to Redux state
   } catch (error) {
-    // console.error("Failed to create comment notification:", error);
-    setError("Failed to create comment notification.");
+    console.error("Failed to create comment notification:", error);
+    // setError("Failed to create comment notification.");
   }
 };
 
@@ -62,8 +62,8 @@ const handleLikeNotification = async (token, userId, resourceId, likerName) => {
     );
     dispatch(addNotification(createdNotification)); // Add notification to Redux state
   } catch (error) {
-    // console.error("Failed to create like notification:", error);
-    setError("Failed to create like notification.");
+    console.error("Failed to create like notification:", error);
+    // setError("Failed to create like notification.");
   }
 };
 
@@ -75,8 +75,8 @@ const getUserNotifications = async (token, userId) => {
     dispatch(setNotifications(notifications)); // Update Redux state with fetched notifications
   } catch (error) {
     dispatch(setError(error.message)); // Update error in Redux state
-    // console.error("Failed to fetch user notifications:", error);
-    setError("Failed to fetch user notifications.");
+    console.error("Failed to fetch user notifications:", error);
+    // setError("Failed to fetch user notifications.");
   } finally {
     dispatch(setLoading(false)); // Reset loading state
   }
@@ -88,8 +88,8 @@ const markAsRead = async (token, notificationId) => {
     await markNotificationAsRead(token, notificationId);
     dispatch(markNotificationAsReadAction(notificationId)); // Update Redux state
   } catch (error) {
-    // console.error("Failed to mark notification as read:", error);
-    setError("Failed to mark notification as read.");
+    console.error("Failed to mark notification as read:", error);
+    // setError("Failed to mark notification as read.");
   }
 };
 

@@ -32,8 +32,8 @@ const Resources = () => {
         const tagsData = await fetchAllTags(token);
         setTags(tagsData);
       } catch (err) {
-        // console.error("Failed to load tags", err);
-        setError("Failed to load tags.");
+        console.error("Failed to load tags", err);
+        // setError("Failed to load tags.");
       }
     };
     loadTags();
@@ -54,8 +54,8 @@ const Resources = () => {
           }
         });
       } catch (err) {
-        // console.error(err);
-        setError("Failed to load resources.");
+        console.error(err);
+        // setError("Failed to load resources.");
         setLoading(false);
       }
     };
@@ -106,8 +106,8 @@ const Resources = () => {
       await page.render(renderContext).promise;
       // console.log("Page rendered");
     } catch (reason) {
-      // console.error("Error rendering PDF:", reason);
-      setError("Failed to render PDF preview.");
+      console.error("Error rendering PDF:", reason);
+      // setError("Failed to render PDF preview.");
     }
   };
 

@@ -58,8 +58,8 @@ const ViewResource = () => {
         setComments(resourceComments);
         setLoading(false);
       } catch (err) {
-        // console.error(err);
-        setError("Failed to load resource details.");
+        console.error(err);
+        // setError("Failed to load resource details.");
         setLoading(false);
       }
     };
@@ -99,8 +99,8 @@ const ViewResource = () => {
 
       await page.render(renderContext).promise;
     } catch (reason) {
-      // console.error("Error rendering PDF:", reason);
-      setError("Failed to render PDF preview.");
+      console.error("Error rendering PDF:", reason);
+      // setError("Failed to render PDF preview.");
     }
   };
 
@@ -116,8 +116,8 @@ const ViewResource = () => {
         ]);
         setNewComment("");
       } catch (err) {
-        // console.error(err);
-        setError("Failed to add comment.");
+        console.error(err);
+        // setError("Failed to add comment.");
       }
     }
   };
@@ -137,8 +137,8 @@ const ViewResource = () => {
         setNewReply({ ...newReply, [commentId]: "" });
         setReplyVisible({ ...replyVisible, [commentId]: false }); // Hide reply field after submitting
       } catch (err) {
-        // console.error(err);
-        setError("Failed to add reply.");
+        console.error(err);
+        // setError("Failed to add reply.");
       }
     }
   };

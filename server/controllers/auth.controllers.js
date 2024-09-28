@@ -151,7 +151,7 @@ const handleGoogleLogin = async (accessToken, refreshToken, profile, done) => {
     // Send both access token and refresh token to the client
     return done(null, user);
   } catch (err) {
-    // console.error("Google Login Error:", err);
+    console.error("Google Login Error:", err);
     return done(err, false, { message: "Google login failed" });
   }
 };
