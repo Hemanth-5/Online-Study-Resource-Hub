@@ -142,13 +142,17 @@ const MyUploads = () => {
   };
 
   // Handle loading and error states
-  if (loading) return <div>Loading resources...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <>
       <Header />
       <div className="my-resources-container">
+        {loading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+          </div>
+        )}
         <Navbar />
         <div className="my-resource-view-section">
           <h2>My Resources</h2>

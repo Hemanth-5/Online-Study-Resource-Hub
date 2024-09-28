@@ -7,6 +7,7 @@ import { setPopup } from "../features/popupsSlice"; // Import popup action
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"; // Import Header component
 import Navbar from "../components/Navbar"; // Import Navbar component
+import Popup from "../components/Popup";
 import "./UploadResource.css";
 
 const UploadResource = () => {
@@ -23,6 +24,15 @@ const UploadResource = () => {
   const [isDragOver, setIsDragOver] = useState(false); // Dragging state
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+
+  const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
+
+  const showPopup = (message, type) => {
+    setPopup({ visible: true, message, type });
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 3000);
+  };
+
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
 
   const handleFileChange = (e) => {
     let selectedFile;
@@ -129,24 +139,13 @@ const UploadResource = () => {
     try {
       // Call the uploadResource function and pass the token and formData
       await uploadResource(token, formData); // Pass token and formData to API function
-
-      dispatch(
-        setPopup({
-          message: "Resource uploaded successfully!",
-          type: "success",
-        })
-      );
     } catch (err) {
       setError("Error uploading resource. Please try again.");
-      dispatch(
-        setPopup({
-          message: "Error uploading resource. Please try again.",
-          type: "error",
-        })
-      );
+      showPopup("Error uploading resource. Please try again.", "error");
     } finally {
       setLoading(false); // Set loading state to false
-      navigate("/my-uploads"); // Redirect to uploads page
+      showPopup("Resource uploaded successfully!", "success");
+      setTimeout(() => navigate("/my-uploads"), 3000); // Redirect to dashboard after 3 seconds
     }
   };
 
@@ -154,6 +153,11 @@ const UploadResource = () => {
     <div className="upload-page-container">
       {/* Header and Navbar */}
       <Header />
+
+      {popup.visible && (
+        <Popup message={popup.message} type={popup.type} onClose={closePopup} />
+      )}
+
       <div className="upload-page-main">
         <Navbar />
 
@@ -187,7 +191,6 @@ const UploadResource = () => {
                   type="file"
                   id="file-input"
                   onChange={handleFileChange}
-                  required
                   style={{ display: "none" }}
                 />
                 <div

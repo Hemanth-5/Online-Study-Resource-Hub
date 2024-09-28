@@ -35,7 +35,7 @@ const Login = () => {
     const params = new URLSearchParams(location.search);
     const accessToken = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
-    let name;
+    let name, newUser, userName;
 
     console.log(accessToken);
 
@@ -54,6 +54,8 @@ const Login = () => {
         .then((userResponse) => {
           // console.log(userResponse);
           name = userResponse.name;
+          newUser = userResponse.isProfileComplete;
+          userName = userResponse.username;
           dispatch(setUserProfile(userResponse));
           return Promise.all([
             fetchUserResources(token),
@@ -69,9 +71,17 @@ const Login = () => {
           // console.log({ resourcesResponse, tagsResponse });
           dispatch(setLoading("succeeded"));
 
-          const successMessage = `Welcome, ${name}!, loading your dashboard...`;
           if (accessToken) {
-            showPopup(successMessage, "success");
+            if (name) {
+              showPopup(`Welcome back, ${name}!`, "success");
+            } else if (newUser) {
+              showPopup(`Welcome back!, ${userName}!`, "success");
+            } else {
+              showPopup(
+                "Welcome to Study Resoure Hub, loading your profile...",
+                "success"
+              );
+            }
             setTimeout(() => navigate("/dashboard"), 5000); // Redirect to dashboard after 3 seconds
           } else {
             navigate("/dashboard");

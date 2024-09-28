@@ -43,7 +43,11 @@ const Dashboard = () => {
 
           const userResources = await fetchUserResources(token);
           dispatch(setResources(userResources));
-          showPopup(`Welcome, ${response.name}!`, "success");
+          if (response.name) {
+            showPopup(`Welcome back, ${response.name}!`, "success");
+          } else {
+            showPopup("Welcome back!", "success");
+          }
         } catch (err) {
           if (err.message === "Token expired") {
             try {
@@ -76,7 +80,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (userProfile && !userProfile.isProfileComplete) {
-      navigate("/profile-completion");
+      navigate("/profile");
     }
   }, [userProfile, navigate]);
 
