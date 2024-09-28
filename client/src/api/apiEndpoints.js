@@ -1,5 +1,5 @@
 // File that has all the API endpoints
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 const API_ENDPOINTS = {
   AUTH: {

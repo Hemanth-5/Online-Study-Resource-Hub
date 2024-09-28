@@ -21,7 +21,7 @@ const Login = () => {
   const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5001/api/auth/google";
+    window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
   };
 
   const showPopup = (message, type) => {
