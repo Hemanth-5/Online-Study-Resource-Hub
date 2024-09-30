@@ -192,7 +192,13 @@ const MyUploads = () => {
                 <div className="resource-thumbnail">
                   {resource.fileUrl.endsWith(".pdf") ? (
                     <div className="pdf-preview">
-                      <canvas ref={(el) => (canvasRefs.current[index] = el)} />
+                      <canvas
+                        style={{
+                          width: "-webkit-fill-available",
+                          height: "auto",
+                        }}
+                        ref={(el) => (canvasRefs.current[index] = el)}
+                      />
                     </div>
                   ) : (
                     <img src={resource.fileUrl} alt={resource.fileName} />

@@ -15,7 +15,6 @@ import {
   FaChevronRight,
   FaReply,
 } from "react-icons/fa";
-import renderPDF from "../utils/renderPDF";
 import { Link } from "react-router-dom";
 import "./ViewResource.css";
 
@@ -66,6 +65,13 @@ const ViewResource = () => {
     fetchResource();
   }, [resourceId, token]);
 
+  // Refresh comments everytime comments get changed
+  useEffect(() => {
+    const fetchComments = async () =>
+      setComments(await fetchCommentsForResource(token, resourceId));
+    fetchComments();
+  }, [comments]);
+
   useEffect(() => {
     if (resource && resource?.fileUrl.endsWith(".pdf")) {
       renderPDF(resource?.fileUrl, pageNumber);
@@ -112,7 +118,6 @@ const ViewResource = () => {
           resourceId,
           newComment
         );
-
         // Update the comments state with the newly added comment
         setComments((prevComments) => [...prevComments, createdComment]);
         setNewComment("");
@@ -178,38 +183,38 @@ const ViewResource = () => {
 
         {resource?.fileUrl.endsWith(".pdf") ? (
           <div className="pdf-preview-canvas">
+            <FaChevronLeft
+              onClick={handlePreviousPage}
+              className={`pagination-arrow ${
+                pageNumber === 1 ? "disabled" : ""
+              }`}
+              title="Previous Page"
+            />
             <canvas ref={canvasRef}></canvas>
-            <div className="pagination-controls">
-              <FaChevronLeft
-                onClick={handlePreviousPage}
-                className={`pagination-arrow ${
-                  pageNumber === 1 ? "disabled" : ""
-                }`}
-                title="Previous Page"
-              />
-              <span className="page-info">
-                {pageNumber} / {totalPages}
-              </span>
-              <FaChevronRight
-                onClick={handleNextPage}
-                className={`pagination-arrow ${
-                  pageNumber === totalPages ? "disabled" : ""
-                }`}
-                title="Next Page"
-              />
-            </div>
-            <div
-              className="open-in-new-tab"
-              onClick={() => window.open(resource?.fileUrl, "_blank")}
-            >
-              Open in New Tab
-            </div>
+            <FaChevronRight
+              onClick={handleNextPage}
+              className={`pagination-arrow ${
+                pageNumber === totalPages ? "disabled" : ""
+              }`}
+              title="Next Page"
+            />
           </div>
         ) : (
           <div className="image-preview">
             <img src={resource?.fileUrl} alt={resource?.fileName} />
           </div>
         )}
+        <div className="pagination-controls">
+          <span className="page-info">
+            {pageNumber} / {totalPages}
+          </span>
+        </div>
+        <div
+          className="open-in-new-tab"
+          onClick={() => window.open(resource?.fileUrl, "_blank")}
+        >
+          Open in New Tab
+        </div>
 
         <div className="resource-tags">
           <h3>Tags:</h3>
@@ -229,7 +234,7 @@ const ViewResource = () => {
           {comments.map((comment) => (
             <li key={comment?._id} className="comment-item">
               <div className="comment-content">
-                <Link to={`/profile/${comment?.user._id}`}>
+                <Link to={`/profile/${comment?.user?._id}`}>
                   <strong className="comment-user">
                     <img
                       src={comment?.user?.profilePicture}
@@ -252,7 +257,7 @@ const ViewResource = () => {
                   title="Reply"
                 />
                 <ul className="replies-list">
-                  {comment?.replies.map((reply, replyIndex) => (
+                  {comment?.replies?.map((reply, replyIndex) => (
                     <li key={replyIndex} className="reply-item">
                       <Link to={`/profile/${reply?.user?._id}`}>
                         <strong className="reply-user">
@@ -265,6 +270,12 @@ const ViewResource = () => {
                         </strong>
                       </Link>
                       <span className="reply-text">{reply?.text}</span>
+                      <span className="comment-date">
+                        {new Date(reply?.createdAt).toLocaleString("en-US", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </span>
                     </li>
                   ))}
                 </ul>

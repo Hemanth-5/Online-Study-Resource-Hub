@@ -163,9 +163,7 @@
 .resource-card {
   text-decoration: none;
   background-color: #ffffff; /* Card background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effects */
+  border-radius: 8px;
   overflow: hidden; /* Ensures that child elements do not overflow */
   cursor: pointer; /* Change cursor on hover */
 }
@@ -181,10 +179,6 @@
   height: 150px; /* Fixed height for uniformity */
 }
 
-.resource-details {
-  padding: 15px; /* Padding inside the card */
-}
-
 .resource-details h4 {
   margin: 0; /* Remove default margin */
   font-size: 1.2em; /* Font size for the title */
@@ -194,7 +188,6 @@
 .resource-details p {
   color: #666; /* Lighter color for description */
   font-size: 0.9em; /* Font size for description */
-  margin: 5px 0 0; /* Margin for spacing */
 }
 
 .uploader-info {
@@ -332,4 +325,26 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
+}
+.resource-card {
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: space-between; /* Space between items */
+  overflow: hidden; /* Hide overflow */
+}
+
+.file-name {
+  overflow: hidden; /* Prevent overflowing text */
+  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
+  white-space: nowrap; /* Prevent line breaks */
+}
+.resource-card {
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: space-between; /* Space between items */
+}
+
+.profile {
+  align-self: flex-end; /* Align profile to the end */
+  margin-top: auto; /* Push it to the end of the card */
 }

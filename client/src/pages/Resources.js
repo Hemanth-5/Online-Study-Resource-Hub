@@ -209,6 +209,10 @@ const Resources = () => {
                   <div className="resource-thumbnail">
                     {resource.fileUrl.endsWith(".pdf") ? (
                       <canvas
+                        style={{
+                          width: "-webkit-fill-available",
+                          height: "auto",
+                        }}
                         ref={(el) => (canvasRefs.current[index] = el)}
                       ></canvas>
                     ) : (
