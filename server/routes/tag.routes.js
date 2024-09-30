@@ -12,7 +12,7 @@ import { authenticateJWT, verifyAdmin } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.route("/browse").get(authenticateJWT, browseAllTags);
-router.route("/create").post(authenticateJWT, createTag);
+router.route("/create").post(authenticateJWT, verifyAdmin, createTag);
 
 // Assign tags: params: modelType, objectId of an instance of provided model
 router.route("/assign/:type/:id").put(authenticateJWT, assignTags);

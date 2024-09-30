@@ -15,7 +15,9 @@ import {
   FaChevronRight,
   FaReply, // Add reply icon
 } from "react-icons/fa";
-import "./ViewResource?.css";
+import renderPDF from "../utils/renderPDF";
+import { Link } from "react-router-dom";
+import "./ViewResource.css";
 
 const ViewResource = () => {
   const location = useLocation();
@@ -52,6 +54,8 @@ const ViewResource = () => {
           token,
           resourceId
         );
+
+        console.log({ resourceComments });
 
         // console.log({ resourceComments });
 
@@ -129,6 +133,7 @@ const ViewResource = () => {
     e.preventDefault();
     if (newReply[commentId]) {
       try {
+        console.log({ replyText: newReply[commentId] });
         await replyToComment(token, commentId, newReply[commentId]);
         const updatedComments = [...comments];
         updatedComments[commentId].replies.push({
@@ -229,7 +234,16 @@ const ViewResource = () => {
           {comments.map((comment) => (
             <li key={comment._id} className="comment-item">
               <div className="comment-content">
-                <strong className="comment-user">{comment?.user.name}</strong>:
+                <Link to={`/profile/${comment?.user._id}`}>
+                  <strong className="comment-user">
+                    <img
+                      src={comment?.user.profilePicture}
+                      width="50px"
+                      height="50px"
+                    />
+                    {comment?.user.name}
+                  </strong>
+                </Link>
                 <span className="comment-text">{comment?.text}</span>
                 <span className="comment-date">
                   {new Date(comment.createdAt).toLocaleString("en-US", {
@@ -245,7 +259,16 @@ const ViewResource = () => {
                 <ul className="replies-list">
                   {comment.replies.map((reply, replyIndex) => (
                     <li key={replyIndex} className="reply-item">
-                      <strong className="reply-user">{reply?.user}</strong>:
+                      <Link to={`/profile/${reply?.user._id}`}>
+                        <strong className="reply-user">
+                          <img
+                            src={reply?.user.profilePicture}
+                            width="50px"
+                            height="50px"
+                          />
+                          {reply?.user.name}
+                        </strong>
+                      </Link>
                       <span className="reply-text">{reply?.text}</span>
                     </li>
                   ))}

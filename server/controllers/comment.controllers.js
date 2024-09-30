@@ -38,11 +38,22 @@ const displayComments = async (req, res) => {
 
     const resource = await Resource.findById(req.params.id).populate({
       path: "comments",
-      populate: {
-        path: "user",
-        select: ["name", "profilePicture"],
-      },
+      populate: [
+        {
+          path: "user",
+          select: ["name", "profilePicture"],
+        },
+        {
+          path: "replies",
+          populate: {
+            path: "user",
+            select: ["name", "profilePicture"],
+          },
+        },
+      ],
     });
+
+    // Also for each replies the comment gets, i need to send the username and profilePciture, since reply is also a comment
 
     if (!resource) {
       return res.status(404).json({ message: "Resource not found" });
