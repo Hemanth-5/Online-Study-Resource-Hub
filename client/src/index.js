@@ -28,6 +28,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const Index = () => {
   const [showDesktopSuggestion, setShowDesktopSuggestion] = useState(false);
+  const [desktopMode, setDesktopMode] = useState(false); // New state to track desktop mode
 
   useEffect(() => {
     // Check if the device is mobile and set the popup to show
@@ -40,89 +41,99 @@ const Index = () => {
     setShowDesktopSuggestion(false);
   };
 
+  const handleSwitchToDesktop = () => {
+    setDesktopMode(true); // Enable desktop mode
+    setShowDesktopSuggestion(false); // Hide the popup after switching
+  };
+
   return (
-    <React.StrictMode>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Router>
-            {/* Desktop Suggestion Popup */}
-            <DesktopSuggestionPopup
-              show={showDesktopSuggestion}
-              onClose={handleClosePopup}
-            />
+    <div className={desktopMode ? "desktop-mode" : ""}>
+      {" "}
+      {/* Add a class for desktop mode styles */}
+      <React.StrictMode>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Router>
+              {/* Desktop Suggestion Popup */}
+              <DesktopSuggestionPopup
+                show={showDesktopSuggestion}
+                onClose={handleClosePopup}
+                onSwitchToDesktop={handleSwitchToDesktop} // Pass the desktop switch handler
+              />
 
-            {/* Application Routes */}
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/login" element={<Login />} />
+              {/* Application Routes */}
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/login" element={<Login />} />
 
-              {/* Protected Routes */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <CompleteRegistration />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile/:userId"
-                element={
-                  <ProtectedRoute>
-                    <UserProfileView />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/resources"
-                element={
-                  <ProtectedRoute>
-                    <Resources />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/resources/view/:resourceId"
-                element={
-                  <ProtectedRoute>
-                    <ViewResource />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/resources/upload"
-                element={
-                  <ProtectedRoute>
-                    <UploadResource />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/my-uploads"
-                element={
-                  <ProtectedRoute>
-                    <MyUploads />
-                  </ProtectedRoute>
-                }
-              />
-              {/* Default redirect to login */}
-              <Route path="/*" element={<Navigate to="/login" />} />
+                {/* Protected Routes */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <CompleteRegistration />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile/:userId"
+                  element={
+                    <ProtectedRoute>
+                      <UserProfileView />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/resources"
+                  element={
+                    <ProtectedRoute>
+                      <Resources />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/resources/view/:resourceId"
+                  element={
+                    <ProtectedRoute>
+                      <ViewResource />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/resources/upload"
+                  element={
+                    <ProtectedRoute>
+                      <UploadResource />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/my-uploads"
+                  element={
+                    <ProtectedRoute>
+                      <MyUploads />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* Default redirect to login */}
+                <Route path="/*" element={<Navigate to="/login" />} />
 
-              {/* Admin routes */}
-              <Route path="/admin" element={<AdminTagManagement />} />
-            </Routes>
-          </Router>
-        </PersistGate>
-      </Provider>
-    </React.StrictMode>
+                {/* Admin routes */}
+                <Route path="/admin" element={<AdminTagManagement />} />
+              </Routes>
+            </Router>
+          </PersistGate>
+        </Provider>
+      </React.StrictMode>
+    </div>
   );
 };
 

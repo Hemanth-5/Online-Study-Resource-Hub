@@ -1,9 +1,9 @@
 // src/components/DesktopSuggestionPopup.js
 
 import React from "react";
-import "./DesktopSuggestionPopup.css"; // Create CSS file for styling the popup
+import "./DesktopSuggestionPopup.css";
 
-const DesktopSuggestionPopup = ({ show, onClose }) => {
+const DesktopSuggestionPopup = ({ show, onClose, onSwitchToDesktop }) => {
   if (!show) return null;
 
   return (
@@ -14,9 +14,17 @@ const DesktopSuggestionPopup = ({ show, onClose }) => {
           For a better experience, we recommend using the desktop version of the
           website.
         </p>
-        <button className="desktop-popup-button" onClick={onClose}>
-          Okay, Got it!
-        </button>
+        <div className="desktop-popup-actions">
+          <button className="desktop-popup-button" onClick={onClose}>
+            Okay, Got it!
+          </button>
+          <button
+            className="desktop-popup-button switch-desktop"
+            onClick={onSwitchToDesktop}
+          >
+            Switch to Desktop Mode
+          </button>
+        </div>
       </div>
     </div>
   );
