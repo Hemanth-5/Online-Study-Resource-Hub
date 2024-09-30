@@ -4,6 +4,7 @@ import "./EditResourceModal.css";
 
 const EditResourceModal = ({ resource, onSave, onClose }) => {
   const [tags, setTags] = useState(resource.tags || []); // Use resource tags as initial state
+  console.log({ initialTags: tags });
   const [category, setCategory] = useState(resource.category || "");
   const [fileName, setFileName] = useState(resource.fileName || "");
   const [description, setDescription] = useState(resource.description || "");
@@ -34,7 +35,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
   // Handle tag selection from TagsDropdown
   const handleTagSelection = (selectedTagIds) => {
     // console.log({ selectedTagIds });
-    setTags(selectedTagIds); // Update local state with selected tag IDs
+    setTags(selectedTagIds);
   };
 
   // Handle form submission
@@ -45,9 +46,10 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
     // }
 
     const formData = new FormData();
-    tags.forEach((tagId) => {
-      formData.append("tags[]", tagId);
-    });
+    // tags.forEach((tagId) => {
+    //   formData.append("tags[]", tagId);
+    // });
+    formData.append("tags[]", tags);
     formData.append("category", category);
     formData.append("description", description);
     formData.append("accessLevel", accessLevel);

@@ -9,17 +9,15 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
   const tags = useSelector((state) => state.tag.tags); // Get tags from Redux state
   const status = useSelector((state) => state.tag.status); // Get tags from Redux state
   const error = useSelector((state) => state.tag.error); // Get tags from Redux state
-  const [selectedTagIds, setSelectedTagIds] = useState(
-    selectedTags == null ? [] : selectedTags
-  );
+  const [selectedTagIds, setSelectedTagIds] = useState(selectedTags ?? []);
 
+  // console.log({ selectedTags });
   useEffect(() => {
-    // If tags are not already loaded, fetch them
     if (status === "idle") {
       const fetchTags = async () => {
         dispatch(setLoading("loading"));
         try {
-          const token = localStorage.getItem("accessToken").toString(); // Retrieve token from localStorage
+          const token = localStorage.getItem("accessToken")?.toString(); // Retrieve token from localStorage
           const response = await fetchAllTags(token); // Fetch tags from API
           dispatch(setTags(response)); // Store tags in Redux state
           dispatch(setLoading("succeeded"));
@@ -42,13 +40,29 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
 
   // Toggle selection of a tag
   const handleTagClick = (tagId) => {
-    if (selectedTagIds.includes(tagId)) {
-      setSelectedTagIds(selectedTagIds.filter((id) => id !== tagId)); // Deselect tag
+    console.log({ before: selectedTagIds });
+    console.log({ id: tagId });
+
+    let updatedTags;
+    if (!selectedTagIds.includes(tagId)) {
+      // Add the tagId to the selectedTagIds
+      updatedTags = [...selectedTagIds, tagId];
     } else {
-      setSelectedTagIds([...selectedTagIds, tagId]); // Select tag
+      // Remove the tagId from the selectedTagIds
+      updatedTags = selectedTagIds.filter((id) => id !== tagId);
     }
-    onTagSelect(selectedTagIds); // Notify parent component of selection
+
+    setSelectedTagIds(updatedTags);
+
+    // Log the updated state using the local variable
+    console.log({ after: updatedTags });
+
+    // Notify the parent component with the updated tag list
+    onTagSelect(updatedTags); // Pass the updatedTags instead of selectedTagIds
   };
+
+  // Monitor selectedTagIds state changes
+  useEffect(() => {}, [selectedTagIds]);
 
   // Conditional rendering based on the state
   if (status === "loading") {

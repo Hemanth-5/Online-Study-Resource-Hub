@@ -132,20 +132,22 @@ const UploadResource = () => {
     formData.append("visibility", visibility);
 
     // Append each selected tag individually
-    selectedTags.forEach((tagId) => {
-      formData.append("tags[]", tagId); // Add each tag ID
-    });
+    // selectedTags.forEach((tagId) => {
+    //   formData.append("tags[]", tagId); // Add each tag ID
+    // });
+    formData.append("tags[]", selectedTags);
+
+    // console.log(selectedTags);
 
     try {
       // Call the uploadResource function and pass the token and formData
-      await uploadResource(token, formData); // Pass token and formData to API function
+      const response = await uploadResource(token, formData); // Pass token and formData to API function
+      showPopup("Resource uploaded successfully!", "success");
+      setTimeout(() => navigate("/my-uploads", { replace: true }), 3000);
     } catch (err) {
       setError("Error uploading resource. Please try again.");
-      showPopup("Error uploading resource. Please try again.", "error");
-    } finally {
+      // showPopup("Error uploading resource. Please try again.", "error");
       setLoading(false); // Set loading state to false
-      showPopup("Resource uploaded successfully!", "success");
-      setTimeout(() => navigate("/my-uploads"), 3000); // Redirect to dashboard after 3 seconds
     }
   };
 

@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { browseResources, fetchAllTags } from "../api/apiServices";
 import { useSelector } from "react-redux";
-import * as pdfjsLib from "pdfjs-dist/webpack";
+import { FaSignature, FaFilter } from "react-icons/fa"; // Add FaFilter for the filter button
 import { useNavigate } from "react-router-dom";
+import renderPDF from "../utils/renderPDF";
 import "./Resources.css";
 import Header from "../components/Header";
-import { FaSignature } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import TagPopup from "../components/TagPopup";
 
 const Resources = () => {
   const [resources, setResources] = useState([]);
@@ -16,6 +17,7 @@ const Resources = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openUserProfile, setOpenUserProfile] = useState(false);
+  const [showFilters, setShowFilters] = useState(false); // New state to toggle filters
 
   const token = localStorage.getItem("accessToken");
   const canvasRefs = useRef([]);
@@ -25,6 +27,30 @@ const Resources = () => {
   const [selectedTags, setSelectedTags] = useState([]);
 
   const userProfile = useSelector((state) => state.user.profile);
+  const [tagsByType, setTagsByType] = useState({});
+  const [popupStyle, setPopupStyle] = useState({ display: "none" }); // State for popup style
+  const filterButtonRef = useRef(null);
+
+  const handleShowFilters = () => {
+    if (filterButtonRef.current) {
+      const rect = filterButtonRef.current.getBoundingClientRect();
+      setPopupStyle({
+        display: "block",
+        position: "absolute",
+        // Position to place the end of the popup at the bottom left of the button
+
+        // top: `${rect.bottom + 10}px`, // Position below the button
+        // left: `${rect.left - 10}px`, // Align left with the button
+        // zIndex: 1000, // Ensure it overlays on other elements
+
+        // Position to place the end of the popup at the top right of the button
+        top: `${rect.bottom + 10}px`, // Position above the button
+        left: `${rect.left - 275}px`, // Align right with the button
+        zIndex: 1000, // Ensure it overlays on other elements
+      });
+    }
+    setShowFilters((prev) => !prev);
+  };
 
   useEffect(() => {
     const loadTags = async () => {
@@ -33,7 +59,6 @@ const Resources = () => {
         setTags(tagsData);
       } catch (err) {
         console.error("Failed to load tags", err);
-        // setError("Failed to load tags.");
       }
     };
     loadTags();
@@ -44,18 +69,16 @@ const Resources = () => {
       setLoading(true);
       try {
         const data = await browseResources(token, { accessLevel: "public" });
-        // console.log({ data });
         setResources(data);
         setFilteredResources(data);
         setLoading(false);
         data.forEach((resource, index) => {
           if (resource.fileUrl.endsWith(".pdf")) {
-            renderPDF(resource.fileUrl, index);
+            fetchPDFPages(resource.fileUrl, index);
           }
         });
       } catch (err) {
         console.error(err);
-        // setError("Failed to load resources.");
         setLoading(false);
       }
     };
@@ -73,9 +96,8 @@ const Resources = () => {
       }
 
       if (selectedTags.length > 0) {
-        updatedResources = updatedResources.filter(
-          (resource) =>
-            selectedTags.some((tagId) => resource.tags.includes(tagId)) // Check if any selected tag is in resource.tags
+        updatedResources = updatedResources.filter((resource) =>
+          selectedTags.some((tagId) => resource.tags.includes(tagId))
         );
       }
 
@@ -85,39 +107,19 @@ const Resources = () => {
     filterResourcesLocally();
   }, [query, selectedTags, resources]);
 
-  const renderPDF = async (fileUrl, index) => {
-    const loadingTask = pdfjsLib.getDocument(fileUrl);
+  const fetchPDFPages = async (fileUrl, index) => {
     try {
-      const pdf = await loadingTask.promise;
-      const page = await pdf.getPage(1);
-      const scale = 1.5;
-      const viewport = page.getViewport({ scale });
-
-      const canvas = canvasRefs.current[index];
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
-
-      await page.render(renderContext).promise;
-      // console.log("Page rendered");
-    } catch (reason) {
-      console.error("Error rendering PDF:", reason);
-      // setError("Failed to render PDF preview.");
+      await renderPDF(fileUrl, canvasRefs, index, 1);
+    } catch (error) {
+      console.error("Error rendering PDF:", error);
     }
   };
 
   const handleTagToggle = (tag) => {
-    // console.log("Tag clicked:", tag);
-    setSelectedTags(
-      (prevSelected) =>
-        prevSelected.includes(tag._id) // Check against tag._id
-          ? prevSelected.filter((selectedTag) => selectedTag !== tag._id)
-          : [...prevSelected, tag._id] // Add tag._id to the array
+    setSelectedTags((prevSelected) =>
+      prevSelected.includes(tag._id)
+        ? prevSelected.filter((selectedTag) => selectedTag !== tag._id)
+        : [...prevSelected, tag._id]
     );
   };
 
@@ -140,22 +142,29 @@ const Resources = () => {
     </div>
   );
 
-  const handleBackToDashboard = () => {
-    navigate("/dashboard"); // Navigate back to the dashboard
-  };
+  useEffect(() => {
+    // Organize tags by type
+    const categorizedTags = {};
+    tags.forEach((tag) => {
+      if (!categorizedTags[tag.type]) {
+        categorizedTags[tag.type] = [];
+      }
+      categorizedTags[tag.type].push(tag);
+    });
+    setTagsByType(categorizedTags);
+  }, [tags]);
 
-  if (loading) return <div>Loading resources...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="resources-container">
       <Header userProfile={userProfile} />
-
-      {/* <div className="back-button" onClick={handleBackToDashboard}>
-        <FaArrowLeft />
-      </div> */}
-
       <div className="resources-main">
+        {loading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+          </div>
+        )}
         <Navbar />
         <div className="resources-content">
           <h2>Browse Resources</h2>
@@ -168,21 +177,24 @@ const Resources = () => {
               onChange={(e) => setQuery(e.target.value)}
               className="search-bar"
             />
-
-            <div className="tags-container">
-              {tags.map((tag) => (
-                <div
-                  key={tag._id}
-                  className={`tag ${
-                    selectedTags.includes(tag._id) ? "selected" : ""
-                  }`}
-                  onClick={() => handleTagToggle(tag)}
-                >
-                  {tag.name}
-                </div>
-              ))}
-            </div>
+            <button
+              className="filter-button"
+              ref={filterButtonRef} // Attach the ref to the button
+              onClick={handleShowFilters} // Update click handler
+            >
+              <FaFilter /> Show Filters
+            </button>
           </div>
+
+          {/* Conditional rendering of filters */}
+          {showFilters && (
+            <TagPopup
+              tags={Object.values(tagsByType).flat()} // Flatten the tags for rendering
+              onTagToggle={handleTagToggle}
+              selectedTags={selectedTags}
+              style={popupStyle} // Pass the style prop
+            />
+          )}
 
           {renderPillTags()}
 

@@ -5,13 +5,14 @@ import {
   editResource,
 } from "../api/apiServices"; // Import your API services
 import { useNavigate } from "react-router-dom";
-import * as pdfjsLib from "pdfjs-dist/webpack"; // For rendering PDF previews
+// import * as pdfjsLib from "pdfjs-dist/webpack"; // For rendering PDF previews
 import "./MyUploads.css"; // Custom styles
 import { FaTrash, FaEdit, FaFileUpload, FaPlus } from "react-icons/fa"; // Import icons for editing and deleting
 import EditResourceModal from "../components/EditResourceModal"; // Import the modal component for editing
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import renderPDF from "../utils/renderPDF";
 
 const MyUploads = () => {
   const navigate = useNavigate();
@@ -62,31 +63,39 @@ const MyUploads = () => {
   };
 
   // Function to render a PDF preview using pdfjsLib
-  const renderPDF = async (fileUrl, index) => {
-    const loadingTask = pdfjsLib.getDocument(fileUrl);
+  // const fetchPDFPages = async (fileUrl, index) => {
+  //   const loadingTask = pdfjsLib.getDocument(fileUrl);
+  //   try {
+  //     const pdf = await loadingTask.promise;
+  //     const page = await pdf.getPage(1);
+  //     const scale = 1.5;
+  //     const viewport = page.getViewport({ scale });
+
+  //     const canvas = canvasRefs.current[index];
+  //     const context = canvas.getContext("2d");
+  //     canvas.height = viewport.height;
+  //     canvas.width = viewport.width;
+
+  //     const renderContext = {
+  //       canvasContext: context,
+  //       viewport: viewport,
+  //     };
+
+  //     await page.render(renderContext).promise;
+  //     // console.log("Page rendered");
+  //   } catch (reason) {
+  //     console.error("Error rendering PDF:", reason);
+  //     // setError("Failed to render PDF preview.");
+  //   }
+  // };
+  const fetchPDFPages = async (fileUrl, index) => {
     try {
-      const pdf = await loadingTask.promise;
-      const page = await pdf.getPage(1);
-      const scale = 1.5;
-      const viewport = page.getViewport({ scale });
-
-      const canvas = canvasRefs.current[index];
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
-
-      await page.render(renderContext).promise;
-      // console.log("Page rendered");
-    } catch (reason) {
-      console.error("Error rendering PDF:", reason);
-      // setError("Failed to render PDF preview.");
+      await renderPDF(fileUrl, canvasRefs, index, 1);
+    } catch (error) {
+      console.error("Error rendering PDF:", error);
     }
   };
+
   useEffect(() => {
     loadResources(); // Fetch resources when the component mounts
   }, [token]);
@@ -95,7 +104,7 @@ const MyUploads = () => {
     // Render PDF preview for each resource
     resources.forEach((resource, index) => {
       if (resource.fileUrl.endsWith(".pdf")) {
-        renderPDF(resource.fileUrl, index);
+        fetchPDFPages(resource.fileUrl, index);
       }
     });
   }, [resources]);

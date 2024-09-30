@@ -121,6 +121,8 @@ const updateResourceFile = async (req, res) => {
     //   }
     // }
 
+    const tagsArray = tags[0].split(",").map((tag) => tag.trim());
+    console.log({ description, tagsArray, category, accessLevel, fileName });
     // Check if there is a file included
     await Resource.findByIdAndUpdate(
       currentResource._id,
@@ -130,7 +132,7 @@ const updateResourceFile = async (req, res) => {
         // fileName: result.fileName,
         // uploadId: result.public_id,
         // fileUrl: result.url,
-        tags,
+        tags: tagsArray,
         category,
         accessLevel,
       },
@@ -208,8 +210,12 @@ const createResource = async (req, res) => {
     // Upload the file to Cloudinary
     const result = await uploadResourcesToCloudinary(req, req.file.buffer);
     const { description, tags, category, accessLevel } = req.body;
-
+    // console.log({ description, tags, category, accessLevel });
     // console.log(req.body);
+
+    // Split tags by comma and remove whitespace only if a array is sent, else,
+    const tagsArray = tags[0].split(",").map((tag) => tag.trim());
+    // console.log({ tagsArray });
 
     const newResource = new Resource({
       fileName,
@@ -217,7 +223,7 @@ const createResource = async (req, res) => {
       uploadedBy: uploader._id,
       uploadId: result.public_id,
       description,
-      tags,
+      tags: tagsArray,
       category,
       accessLevel,
     });

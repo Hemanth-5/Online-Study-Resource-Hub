@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   fetchResourceDetails,
   fetchCommentsForResource,
@@ -15,10 +15,11 @@ import {
   FaChevronRight,
   FaReply, // Add reply icon
 } from "react-icons/fa";
-import "./ViewResource.css";
+import "./ViewResource?.css";
 
 const ViewResource = () => {
-  const { resourceId } = useParams();
+  const location = useLocation();
+  const resourceId = location.pathname.split("/").pop();
   const navigate = useNavigate();
   const [resource, setResource] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ const ViewResource = () => {
     const fetchResource = async () => {
       try {
         const data = await fetchResourceDetails(token, resourceId);
+        console.log({ data });
         setResource(data);
 
         if (data.fileUrl.endsWith(".pdf")) {
@@ -69,8 +71,8 @@ const ViewResource = () => {
 
   // Render PDF when page number or resource file changes
   useEffect(() => {
-    if (resource && resource.fileUrl.endsWith(".pdf")) {
-      renderPDF(resource.fileUrl, pageNumber);
+    if (resource && resource?.fileUrl.endsWith(".pdf")) {
+      renderPDF(resource?.fileUrl, pageNumber);
     }
   }, [resource, pageNumber]);
 
@@ -162,7 +164,6 @@ const ViewResource = () => {
     }));
   };
 
-  if (loading) return <div className="loading">Loading resource...</div>;
   if (error) return <div className="error-message">{error}</div>;
 
   return (
@@ -172,10 +173,10 @@ const ViewResource = () => {
       </div>
 
       <div className="resource-details">
-        <h2 className="resource-title">{resource.fileName}</h2>
-        <p className="resource-description">{resource.description}</p>
+        <h2 className="resource-title">{resource?.fileName}</h2>
+        <p className="resource-description">{resource?.description}</p>
 
-        {resource.fileUrl.endsWith(".pdf") ? (
+        {resource?.fileUrl.endsWith(".pdf") ? (
           <div className="pdf-preview-canvas">
             <canvas ref={canvasRef}></canvas>
             <div className="pagination-controls">
@@ -199,23 +200,23 @@ const ViewResource = () => {
             </div>
             <div
               className="open-in-new-tab"
-              onClick={() => window.open(resource.fileUrl, "_blank")}
+              onClick={() => window.open(resource?.fileUrl, "_blank")}
             >
               Open in New Tab
             </div>
           </div>
         ) : (
           <div className="image-preview">
-            <img src={resource.fileUrl} alt={resource.fileName} />
+            <img src={resource?.fileUrl} alt={resource?.fileName} />
           </div>
         )}
 
         <div className="resource-tags">
           <h3>Tags:</h3>
           <div className="tags-container">
-            {resource.tags.map((tag) => (
+            {resource?.tags.map((tag) => (
               <span key={tag} className="tag-pill">
-                {tags.find((t) => t._id === tag).name}
+                {tags.find((t) => t._id === tag)?.name}
               </span>
             ))}
           </div>
@@ -228,8 +229,8 @@ const ViewResource = () => {
           {comments.map((comment) => (
             <li key={comment._id} className="comment-item">
               <div className="comment-content">
-                <strong className="comment-user">{comment.user.name}</strong>:
-                <span className="comment-text">{comment.text}</span>
+                <strong className="comment-user">{comment?.user.name}</strong>:
+                <span className="comment-text">{comment?.text}</span>
                 <span className="comment-date">
                   {new Date(comment.createdAt).toLocaleString("en-US", {
                     dateStyle: "medium",
@@ -244,8 +245,8 @@ const ViewResource = () => {
                 <ul className="replies-list">
                   {comment.replies.map((reply, replyIndex) => (
                     <li key={replyIndex} className="reply-item">
-                      <strong className="reply-user">{reply.user}</strong>:
-                      <span className="reply-text">{reply.text}</span>
+                      <strong className="reply-user">{reply?.user}</strong>:
+                      <span className="reply-text">{reply?.text}</span>
                     </li>
                   ))}
                 </ul>

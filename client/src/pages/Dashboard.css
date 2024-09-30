@@ -62,7 +62,6 @@ header .profile img {
 /* Main content area */
 .main-content {
   flex-grow: 1;
-  padding: 40px;
   background-color: #ffffff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
@@ -308,7 +307,6 @@ footer a:hover {
   padding: 20px;
   background: #ffffff;
   border-radius: 10px;
-  margin: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 }
@@ -371,4 +369,30 @@ footer a:hover {
 
 .activities-list {
   margin-top: 20px;
+}
+@media (max-width: 768px) {
+  .welcome-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .welcome-section .welcome-text {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .quick-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dashboard-main {
+    margin-left: 0;
+  }
+
+  .dashboard-content {
+    margin: 20px;
+    padding: 20px;
+  }
 }
