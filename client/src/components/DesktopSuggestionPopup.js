@@ -3,7 +3,7 @@
 import React from "react";
 import "./DesktopSuggestionPopup.css";
 
-const DesktopSuggestionPopup = ({ show, onClose, onSwitchToDesktop }) => {
+const DesktopSuggestionPopup = ({ show, onClose }) => {
   if (!show) return null;
 
   return (
@@ -17,12 +17,6 @@ const DesktopSuggestionPopup = ({ show, onClose, onSwitchToDesktop }) => {
         <div className="desktop-popup-actions">
           <button className="desktop-popup-button" onClick={onClose}>
             Okay, Got it!
-          </button>
-          <button
-            className="desktop-popup-button switch-desktop"
-            onClick={onSwitchToDesktop}
-          >
-            Switch to Desktop Mode
           </button>
         </div>
       </div>

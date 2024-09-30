@@ -58,7 +58,6 @@ const Index = () => {
               <DesktopSuggestionPopup
                 show={showDesktopSuggestion}
                 onClose={handleClosePopup}
-                onSwitchToDesktop={handleSwitchToDesktop}
               />
 
               {/* Application Routes */}
