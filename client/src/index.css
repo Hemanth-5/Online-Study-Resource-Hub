@@ -11,38 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-/* src/index.css */
-
-.desktop-mode {
-  width: 1200px;
-  height: auto;
-  margin: 0 auto; /* Center the app */
-  border: 1px solid #ddd;
-  padding: 20px;
-}
-
-.desktop-mode .resource-item {
-  font-size: 18px; /* Larger font size for desktop */
-  padding: 15px;
-}
-
-.desktop-mode .dashboard-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.desktop-mode .sidebar {
-  width: 20%;
-}
-
-.desktop-mode .content {
-  width: 75%;
-}
-
-.desktop-mode .navbar {
-  position: fixed;
-  top: 0;
-  width: calc(100% - 40px); /* Adjust width for desktop */
-}
