@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const TagManagement = () => {
+const AdminTagManagement = () => {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState({ name: "", type: "", parent: "" });
   const [selectedTag, setSelectedTag] = useState("");
@@ -103,4 +103,4 @@ const TagManagement = () => {
   );
 };
 //exported
-export default TagManagement;
+export default AdminTagManagement;

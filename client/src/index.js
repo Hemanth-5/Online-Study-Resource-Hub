@@ -19,6 +19,7 @@ import UploadResource from "./pages/UploadResource";
 import MyUploads from "./pages/MyUploads";
 import RecentActivities from "./pages/RecentActivities";
 import UserProfileView from "./pages/UserProfileView";
+import AdminTagManagement from "./pages/Admin/AdminTagManagement";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -99,6 +100,9 @@ root.render(
 
             {/* Default redirect to login */}
             <Route path="/*" element={<Navigate to="/login" />} />
+
+            {/* Admin routes*/}
+            <Route path="/admin" element={<AdminTagManagement />} />
           </Routes>
         </Router>
       </PersistGate>

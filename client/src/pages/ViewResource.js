@@ -13,7 +13,7 @@ import {
   FaArrowLeft,
   FaChevronLeft,
   FaChevronRight,
-  FaReply, // Add reply icon
+  FaReply,
 } from "react-icons/fa";
 import renderPDF from "../utils/renderPDF";
 import { Link } from "react-router-dom";
@@ -30,42 +30,35 @@ const ViewResource = () => {
   const [tags, setTags] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState({});
-  const [replyVisible, setReplyVisible] = useState({}); // State to manage visibility of reply fields
+  const [replyVisible, setReplyVisible] = useState({});
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const canvasRef = useRef(null);
   const token = localStorage.getItem("accessToken");
 
-  // Fetch Resource Details and Comments
   useEffect(() => {
     const fetchResource = async () => {
       try {
         const data = await fetchResourceDetails(token, resourceId);
-        console.log({ data });
         setResource(data);
 
         if (data.fileUrl.endsWith(".pdf")) {
           const pages = await getTotalPages(data.fileUrl);
           setTotalPages(pages);
-          setPageNumber(1); // Initial page number
+          setPageNumber(1);
         }
 
         const resourceComments = await fetchCommentsForResource(
           token,
           resourceId
         );
-
-        console.log({ resourceComments });
-
-        // console.log({ resourceComments });
+        setComments(resourceComments);
 
         const allTags = await fetchAllTags(token);
         setTags(allTags);
-        setComments(resourceComments);
         setLoading(false);
       } catch (err) {
         console.error(err);
-        // setError("Failed to load resource details.");
         setLoading(false);
       }
     };
@@ -73,7 +66,6 @@ const ViewResource = () => {
     fetchResource();
   }, [resourceId, token]);
 
-  // Render PDF when page number or resource file changes
   useEffect(() => {
     if (resource && resource?.fileUrl.endsWith(".pdf")) {
       renderPDF(resource?.fileUrl, pageNumber);
@@ -106,7 +98,6 @@ const ViewResource = () => {
       await page.render(renderContext).promise;
     } catch (reason) {
       console.error("Error rendering PDF:", reason);
-      // setError("Failed to render PDF preview.");
     }
   };
 
@@ -115,15 +106,18 @@ const ViewResource = () => {
     e.preventDefault();
     if (newComment) {
       try {
-        await addCommentToResource(token, resourceId, newComment);
-        setComments([
-          ...comments,
-          { text: newComment, user: "currentUser", replies: [] },
-        ]);
+        // Add the comment to the server and get the created comment response
+        const createdComment = await addCommentToResource(
+          token,
+          resourceId,
+          newComment
+        );
+
+        // Update the comments state with the newly added comment
+        setComments((prevComments) => [...prevComments, createdComment]);
         setNewComment("");
       } catch (err) {
         console.error(err);
-        // setError("Failed to add comment.");
       }
     }
   };
@@ -133,25 +127,28 @@ const ViewResource = () => {
     e.preventDefault();
     if (newReply[commentId]) {
       try {
-        console.log({ replyText: newReply[commentId] });
-        await replyToComment(token, commentId, newReply[commentId]);
-        const updatedComments = [...comments];
-        updatedComments[commentId].replies.push({
-          text: newReply[commentId],
-          user: "currentUser",
-        });
-        setComments(updatedComments);
+        // Add the reply to the server and get the created reply response
+        const createdReply = await replyToComment(
+          token,
+          commentId,
+          newReply[commentId]
+        );
+
+        // Update the replies array for the specific comment in the comments state
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment._id === commentId
+              ? { ...comment, replies: [...comment.replies, createdReply] }
+              : comment
+          )
+        );
+
         setNewReply({ ...newReply, [commentId]: "" });
-        setReplyVisible({ ...replyVisible, [commentId]: false }); // Hide reply field after submitting
+        setReplyVisible({ ...replyVisible, [commentId]: false });
       } catch (err) {
         console.error(err);
-        // setError("Failed to add reply.");
       }
     }
-  };
-
-  const handleLike = () => {
-    // Handle the like functionality here
   };
 
   const handlePreviousPage = () => {
@@ -165,11 +162,9 @@ const ViewResource = () => {
   const toggleReplyVisibility = (commentId) => {
     setReplyVisible((prevState) => ({
       ...prevState,
-      [commentId]: !prevState[commentId], // Toggle visibility
+      [commentId]: !prevState[commentId],
     }));
   };
-
-  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="view-resource-container">
@@ -232,58 +227,58 @@ const ViewResource = () => {
         <h3>Comments:</h3>
         <ul className="comments-list">
           {comments.map((comment) => (
-            <li key={comment._id} className="comment-item">
+            <li key={comment?._id} className="comment-item">
               <div className="comment-content">
                 <Link to={`/profile/${comment?.user._id}`}>
                   <strong className="comment-user">
                     <img
-                      src={comment?.user.profilePicture}
+                      src={comment?.user?.profilePicture}
                       width="50px"
                       height="50px"
                     />
-                    {comment?.user.name}
+                    {comment?.user?.name}
                   </strong>
                 </Link>
                 <span className="comment-text">{comment?.text}</span>
                 <span className="comment-date">
-                  {new Date(comment.createdAt).toLocaleString("en-US", {
+                  {new Date(comment?.createdAt).toLocaleString("en-US", {
                     dateStyle: "medium",
                     timeStyle: "short",
                   })}
                 </span>
                 <FaReply
-                  onClick={() => toggleReplyVisibility(comment._id)} // Toggle reply visibility
+                  onClick={() => toggleReplyVisibility(comment?._id)} // Toggle reply visibility
                   className="reply-icon"
                   title="Reply"
                 />
                 <ul className="replies-list">
-                  {comment.replies.map((reply, replyIndex) => (
+                  {comment?.replies.map((reply, replyIndex) => (
                     <li key={replyIndex} className="reply-item">
-                      <Link to={`/profile/${reply?.user._id}`}>
+                      <Link to={`/profile/${reply?.user?._id}`}>
                         <strong className="reply-user">
                           <img
-                            src={reply?.user.profilePicture}
+                            src={reply?.user?.profilePicture}
                             width="50px"
                             height="50px"
                           />
-                          {reply?.user.name}
+                          {reply?.user?.name}
                         </strong>
                       </Link>
                       <span className="reply-text">{reply?.text}</span>
                     </li>
                   ))}
                 </ul>
-                {replyVisible[comment._id] && ( // Only show reply field if visible
+                {replyVisible[comment?._id] && ( // Only show reply field if visible
                   <form
-                    onSubmit={(e) => handleReplySubmit(e, comment._id)}
+                    onSubmit={(e) => handleReplySubmit(e, comment?._id)}
                     className="reply-form"
                   >
                     <textarea
-                      value={newReply[comment._id] || ""}
+                      value={newReply[comment?._id] || ""}
                       onChange={(e) =>
                         setNewReply({
                           ...newReply,
-                          [comment._id]: e.target.value,
+                          [comment?._id]: e.target.value,
                         })
                       }
                       placeholder="Add a reply..."
