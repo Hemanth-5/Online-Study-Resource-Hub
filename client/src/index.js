@@ -1,5 +1,3 @@
-// src/index.js
-
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -21,35 +19,37 @@ import UploadResource from "./pages/UploadResource";
 import MyUploads from "./pages/MyUploads";
 import UserProfileView from "./pages/UserProfileView";
 import AdminTagManagement from "./pages/Admin/AdminTagManagement";
-import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
-import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
+import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup";
+import {
+  isMobileDevice,
+  enableDesktopMode,
+  disableDesktopMode,
+} from "./utils/deviceUtils";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const Index = () => {
   const [showDesktopSuggestion, setShowDesktopSuggestion] = useState(false);
-  const [desktopMode, setDesktopMode] = useState(false); // New state to track desktop mode
+  const [desktopMode, setDesktopMode] = useState(false);
 
   useEffect(() => {
-    // Check if the device is mobile and set the popup to show
     if (isMobileDevice()) {
       setShowDesktopSuggestion(true);
     }
   }, []);
 
+  const handleSwitchToDesktop = () => {
+    enableDesktopMode();
+    setDesktopMode(true);
+    setShowDesktopSuggestion(false);
+  };
+
   const handleClosePopup = () => {
     setShowDesktopSuggestion(false);
   };
 
-  const handleSwitchToDesktop = () => {
-    setDesktopMode(true); // Enable desktop mode
-    setShowDesktopSuggestion(false); // Hide the popup after switching
-  };
-
   return (
     <div className={desktopMode ? "desktop-mode" : ""}>
-      {" "}
-      {/* Add a class for desktop mode styles */}
       <React.StrictMode>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
@@ -58,7 +58,7 @@ const Index = () => {
               <DesktopSuggestionPopup
                 show={showDesktopSuggestion}
                 onClose={handleClosePopup}
-                onSwitchToDesktop={handleSwitchToDesktop} // Pass the desktop switch handler
+                onSwitchToDesktop={handleSwitchToDesktop}
               />
 
               {/* Application Routes */}
@@ -123,6 +123,7 @@ const Index = () => {
                     </ProtectedRoute>
                   }
                 />
+
                 {/* Default redirect to login */}
                 <Route path="/*" element={<Navigate to="/login" />} />
 

@@ -192,7 +192,7 @@
 /* Responsive Styles */
 @media (max-width: 1024px) {
   .upload-content-wrapper {
-    width: 85%; /* Increase width for smaller screens */
+    width: 100%; /* Increase width for smaller screens */
     padding: 30px 20px;
   }
 
@@ -204,7 +204,7 @@
 
 @media (max-width: 768px) {
   .upload-content-wrapper {
-    width: 95%; /* Further increase width for mobile devices */
+    width: 100%; /* Further increase width for mobile devices */
   }
 
   .form-group input,
