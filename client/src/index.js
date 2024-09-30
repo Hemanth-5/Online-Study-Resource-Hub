@@ -20,7 +20,7 @@ import ViewResource from "./pages/ViewResource";
 import UploadResource from "./pages/UploadResource";
 import MyUploads from "./pages/MyUploads";
 import UserProfileView from "./pages/UserProfileView";
-import AdminTagManagement from "./pages/Admin/AdminTagManagement";
+import AdminTagManagement from "./pages/Admin/TagManagement";
 import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
 import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
 
@@ -30,13 +30,17 @@ const Index = () => {
   const [showDesktopSuggestion, setShowDesktopSuggestion] = useState(false);
 
   useEffect(() => {
-    // Check if the device is mobile and set the popup to show
-    if (isMobileDevice()) {
+    // Check if the device is mobile and the popup hasn't been shown before
+    const popupShown = localStorage.getItem("desktopSuggestionShown");
+
+    if (isMobileDevice() && !popupShown) {
       setShowDesktopSuggestion(true);
     }
   }, []);
 
   const handleClosePopup = () => {
+    // Set a flag in localStorage to indicate that the popup has been shown
+    localStorage.setItem("desktopSuggestionShown", "true");
     setShowDesktopSuggestion(false);
   };
 
