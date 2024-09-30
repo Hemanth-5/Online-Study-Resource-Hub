@@ -39,7 +39,7 @@ const Navbar = () => {
           <span>My Uploads</span>
         </Link>
 
-        <Link
+        {/* <Link
           to="/recent-activities"
           className={`nav-link ${
             location.pathname === "/recent-activities" ? "active" : ""
@@ -47,7 +47,7 @@ const Navbar = () => {
         >
           <FaClock className="nav-icon" />
           <span>Recent Activities</span>
-        </Link>
+        </Link> */}
       </nav>
     </aside>
   );

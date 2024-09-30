@@ -312,7 +312,15 @@ const likeResource = async (req, res) => {
     }
 
     if (resource.likes.includes(currentUser._id)) {
-      return res.status(400).json({ message: "Resource already liked" });
+      // return res.status(400).json({ message: "Resource already liked" });
+      // Remove the like if already liked
+      await Resource.findByIdAndUpdate(
+        resource._id,
+        { $pull: { likes: currentUser._id } },
+        { new: true }
+      );
+
+      return res.status(200).json({ message: "Resource unliked" });
     }
 
     await Resource.findByIdAndUpdate(

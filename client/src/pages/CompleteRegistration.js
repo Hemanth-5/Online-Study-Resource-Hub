@@ -225,7 +225,11 @@ const CompleteRegistration = () => {
               <div className="loading-spinner"></div>
             </div>
           )}
-          <h1>Edit Profile</h1>
+          {userProfile.isProfileComplete ? (
+            <h1>Edit Profile</h1>
+          ) : (
+            <h1>Complete your Profile...</h1>
+          )}
           <div className="profile-photo-section">
             <div
               className={`profile-photo-dropzone ${dragging ? "dragging" : ""}`}

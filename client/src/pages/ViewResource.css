@@ -77,6 +77,7 @@
   cursor: pointer;
   color: #555;
   transition: color 0.3s, transform 0.3s;
+  z-index: 9999;
 }
 
 .pagination-arrow:hover {
@@ -111,7 +112,6 @@
 .resource-tags {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   margin-top: 20px;
 }
 
@@ -298,4 +298,36 @@
 .arrow {
   font-size: 30px; /* Increase the size of the arrows */
   cursor: pointer; /* Change cursor to pointer for interactivity */
+}
+
+.resource-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.like-icon {
+  margin-right: 20px;
+  font-size: 35px;
+  cursor: pointer;
+  color: pink;
+  transition: all 0.3s ease-in-out;
+}
+
+.like-icon.liked {
+  color: red;
+}
+
+.like-icon:hover {
+  color: red;
+}
+
+.like-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

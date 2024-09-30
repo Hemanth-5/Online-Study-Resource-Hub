@@ -241,6 +241,10 @@ const markNotificationAsRead = async (token, notificationId) => {
   );
 };
 
+// like resource
+const likeResource = async (token, resourceId) => {
+  return apiRequest(API_ENDPOINTS.RESOURCES.LIKE(resourceId), "PUT", token);
+};
 // Export the new function
 export {
   fetchUserProfile,
@@ -266,4 +270,5 @@ export {
   fetchUserNotifications,
   viewUserProfile,
   markNotificationAsRead,
+  likeResource,
 };

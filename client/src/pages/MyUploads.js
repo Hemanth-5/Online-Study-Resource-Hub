@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import renderPDF from "../utils/renderPDF";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 
 const MyUploads = () => {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ const MyUploads = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Controls whether the edit modal is open
   const [editingResource, setEditingResource] = useState(null); // Stores the resource being edited
   const [performingAction, setPerformingAction] = useState(false);
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Control delete confirmation modal
+  const [resourceToDelete, setResourceToDelete] = useState(null); // Track the resource to be deleted
   // Get the user's authentication token from localStorage
   const token = localStorage.getItem("accessToken");
 
@@ -151,6 +153,28 @@ const MyUploads = () => {
     setIsModalOpen(false);
   };
 
+  const handleDeleteClick = (resource) => {
+    setResourceToDelete(resource);
+    setShowDeleteModal(true); // Open the delete confirmation modal
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setLoading(true);
+      await deleteResource(token, resourceToDelete._id);
+      setResources(resources.filter((res) => res._id !== resourceToDelete._id));
+      setLoading(false);
+      setShowDeleteModal(false); // Close the modal after deletion
+    } catch (err) {
+      setError("Failed to delete resource. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false); // Close the delete confirmation modal
+  };
+
   // Handle loading and error states
   if (error) return <div>{error}</div>;
 
@@ -221,8 +245,8 @@ const MyUploads = () => {
                     <FaTrash
                       className="delete-icon"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevents the link from being activated
-                        handleDelete(resource._id);
+                        e.stopPropagation();
+                        handleDeleteClick(resource);
                       }}
                       title="Delete Resource"
                     />
@@ -245,6 +269,14 @@ const MyUploads = () => {
               resource={editingResource}
               onClose={closeModal}
               onSave={handleSaveEdit}
+            />
+          )}
+
+          {showDeleteModal && (
+            <DeleteConfirmationModal
+              onConfirm={handleConfirmDelete}
+              onCancel={handleCancelDelete}
+              resourceName={resourceToDelete?.fileName}
             />
           )}
         </div>

@@ -12,17 +12,18 @@ const UserProfileView = () => {
   const location = useLocation();
   const userId = location.pathname.split("/").pop();
   const [profileData, setProfileData] = useState(null);
+  const [tags, setTags] = useState([]);
   const [loading, setLoadingState] = useState(true);
   const [error, setErrorState] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     if (!token) {
       navigate("/login");
       return;
     }
 
+    // Fetch the user profile data
     viewUserProfile(token, userId)
       .then((response) => {
         setProfileData(response);
@@ -32,7 +33,18 @@ const UserProfileView = () => {
         setErrorState("Failed to fetch user profile.");
         setLoadingState(false);
       });
-  }, [navigate, userId]);
+
+    // Fetch all tags and filter them based on user interests
+    if (profileData) {
+      fetchAllTags(token).then((tagsData) => {
+        const filteredTags = tagsData.filter((tag) =>
+          profileData.interests.includes(tag._id)
+        );
+        // console.log(filteredTags);
+        setTags(filteredTags); // Set only the filtered tags to state
+      });
+    }
+  }, [navigate, userId, profileData]);
 
   if (loading) {
     return (
@@ -72,7 +84,12 @@ const UserProfileView = () => {
               <strong>Department:</strong> {profileData.department}
             </div>
             <div className="profile-detail">
-              <strong>Gender:</strong> {profileData.bio?.gender}
+              <strong>Gender:</strong>{" "}
+              {profileData.bio?.gender === "male"
+                ? "Male"
+                : profileData.bio?.gender === "female"
+                ? "Female"
+                : "Other"}
             </div>
             <div className="profile-detail">
               <strong>Date of Birth:</strong> {profileData.bio?.dob}
@@ -85,30 +102,17 @@ const UserProfileView = () => {
             </div>
           </div>
           <div className="profile-interests">
-            <strong>Interests:</strong>
+            <strong>Interests</strong>
             <div className="interests-list">
-              {/* {profileData.interests.map((interest) => (
-                <span key={interest} className="interest-tag">
-                  {interest}
-                </span>
-              ))} */}
-              {profileData.interests}
+              {tags.length > 0
+                ? tags.map((tag) => (
+                    <div className="interest-tag" key={tag._id}>
+                      {tag.name}
+                    </div>
+                  ))
+                : "None"}
             </div>
           </div>
-          {/* <div className="profile-analytics">
-            <h2>Analytics</h2>
-            <div className="analytics-detail">
-              <strong>Posts:</strong> {profileData.analytics?.posts || 0}
-            </div>
-            <div className="analytics-detail">
-              <strong>Followers:</strong>{" "}
-              {profileData.analytics?.followers || 0}
-            </div>
-            <div className="analytics-detail">
-              <strong>Following:</strong>{" "}
-              {profileData.analytics?.following || 0}
-            </div>
-          </div> */}
         </div>
       </div>
       <Footer />

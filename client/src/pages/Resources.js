@@ -90,8 +90,11 @@ const Resources = () => {
       let updatedResources = resources;
 
       if (query) {
-        updatedResources = updatedResources.filter((resource) =>
-          resource.fileName.toLowerCase().includes(query.toLowerCase())
+        updatedResources = updatedResources.filter(
+          (resource) =>
+            resource.fileName.toLowerCase().includes(query.toLowerCase()) ||
+            (resource.description &&
+              resource.description.toLowerCase().includes(query.toLowerCase()))
         );
       }
 

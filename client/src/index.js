@@ -89,14 +89,14 @@ root.render(
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/recent-activities"
               element={
                 <ProtectedRoute>
                   <RecentActivities />
                 </ProtectedRoute>
               }
-            />
+            /> */}
 
             {/* Default redirect to login */}
             <Route path="/*" element={<Navigate to="/login" />} />
