@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile, setLoading, setError } from "../features/userSlice";
 import { setResources } from "../features/resourceSlice";
@@ -19,6 +19,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.user.profile);
   const userStatus = useSelector((state) => state.user.status);
+  const resources = useSelector((state) => state.resource.resources);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -84,6 +85,15 @@ const Dashboard = () => {
     }
   }, [userProfile, navigate]);
 
+  const userResources = userProfile?.uploadedResources?.length
+    ? resources.filter((resource) =>
+        userProfile.uploadedResources.includes(resource._id)
+      )
+    : [];
+  const topLikedResources = userResources
+    .sort((a, b) => b.likes - a.likes)
+    .slice(0, 3); // Get top 3 liked resources
+
   if (userStatus === "loading")
     return <div className="loading-screen">Loading...</div>;
   if (userStatus === "failed")
@@ -117,25 +127,54 @@ const Dashboard = () => {
 
           <section className="quick-stats">
             <div className="stat-card">
-              <h2>Resources</h2>
-              <p>Manage and view your resources.</p>
+              <h2>Your top liked resources...</h2>
+              {/* <p>Manage and view your resources.</p> */}
+              {topLikedResources.length > 0 ? (
+                topLikedResources.map((resource) => (
+                  <div
+                    key={resource._id}
+                    className="resource-item"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <strong>
+                      <Link to={`/resources/view/${resource._id}`}>
+                        {resource.fileName}
+                      </Link>
+                    </strong>
+                    <p>
+                      {resource?.likes?.length < 2
+                        ? `${resource?.likes?.length} like`
+                        : `${resource?.likes?.length} likes`}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>
+                  No resources to show.{" "}
+                  <Link to="/my-uploads">Click here to upload...</Link>
+                </p>
+              )}
             </div>
-            <div className="stat-card">
+            {/* <div className="stat-card">
               <h2>Study Groups</h2>
               <p>Join or create study groups.</p>
             </div>
             <div className="stat-card">
               <h2>Notifications</h2>
               <p>Check your recent notifications.</p>
-            </div>
+            </div> */}
           </section>
 
-          <section className="recent-activities">
+          {/* <section className="recent-activities">
             <h2>Recent Activities</h2>
             <div className="activities-list">
               <p>No recent activities to show.</p>
             </div>
-          </section>
+          </section> */}
         </main>
       </div>
 
