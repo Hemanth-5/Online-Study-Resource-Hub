@@ -1,26 +1,21 @@
 // src/components/DesktopSuggestionPopup.js
-
 import React from "react";
-import "./DesktopSuggestionPopup.css";
+import "./DesktopSuggestionPopup.css"; // Add appropriate styles
 
-const DesktopSuggestionPopup = ({ show, onClose }) => {
-  if (!show) return null;
-
+const DesktopSuggestionPopup = ({ onClose }) => {
   return (
-    <div className="desktop-popup-overlay">
-      <div className="desktop-popup-container">
+    <div className="desktop-suggestion-popup">
+      <div className="popup-content">
         <h2>Switch to Desktop View</h2>
         <p>
-          {/* For a better experience, we recommend using the desktop version of the
-          website. */}
-          The website is still under development. Please use the desktop version
-          for a better experience. Thank you! 😊
+          The website is currently under development and may not be fully
+          optimized for mobile devices.For the best experience, please view this
+          site on a desktop. If you're on a mobile device, enable Desktop View
+          in your browser. Thank you! 😊
         </p>
-        <div className="desktop-popup-actions">
-          <button className="desktop-popup-button" onClick={onClose}>
-            Okay, Got it!
-          </button>
-        </div>
+        <button onClick={onClose} className="close-button">
+          Close
+        </button>
       </div>
     </div>
   );
