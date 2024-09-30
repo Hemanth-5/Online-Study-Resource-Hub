@@ -12,9 +12,9 @@ const DesktopSuggestionPopup = ({ show, onClose }) => {
         <h2>Switch to Desktop View</h2>
         <p>
           The website is currently under development and may not be fully
-          optimized for mobile devices.For the best experience, please view this
-          site on a desktop. If you're on a mobile device, enable Desktop View
-          in your browser. Thank you! 😊
+          optimized for mobile devices. For the best experience, please view
+          this site on a desktop. If you're on a mobile device, enable Desktop
+          View in your browser. Thank you! 😊
         </p>
         <button className="desktop-popup-button" onClick={onClose}>
           Okay, Got it!
