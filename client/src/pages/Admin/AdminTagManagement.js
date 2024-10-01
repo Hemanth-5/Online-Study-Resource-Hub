@@ -28,7 +28,7 @@ const AdminTagManagement = () => {
     try {
       const response = await fetchAllTags(token);
       console.log("Fetched Tags:", response); // Check the structure of the response
-      setTags(response.data || []); // Ensure tags is always an array
+      setTags(response || []); // Ensure tags is always an array
     } catch (error) {
       console.error("Fetch error:", error);
       setError("Error fetching tags");
@@ -36,14 +36,22 @@ const AdminTagManagement = () => {
   };
 
   const handleCreateTag = async () => {
-    // Renamed function
+    if (!newTag.name || !newTag.type) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     try {
-      await apiCreateTag(newTag, token); // Use imported apiCreateTag
+      console.log("Creating tag:", newTag); // Log the tag data
+      const createdTag = await apiCreateTag(token, newTag); // Ensure you pass token first
+
+      // Update the tags state to include the new tag
+      setTags((prevTags) => [...prevTags, createdTag]); // Add the created tag to the existing tags
       setMessage("Tag created successfully");
-      setNewTag({ name: "", type: "", parent: "" });
-      fetchTags();
+      setNewTag({ name: "", type: "", parent: "" }); // Reset the form
     } catch (error) {
-      setError("Error creating tag");
+      console.error("Error creating tag:", error);
+      setError("Error creating tag: " + error.message); // Add the error message for better debugging
     }
   };
 
