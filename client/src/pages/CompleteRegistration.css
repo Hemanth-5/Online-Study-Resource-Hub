@@ -639,3 +639,16 @@
     width: 100%;
   }
 }
+.complete-registration-header {
+  position: sticky; /* or 'fixed' */
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Higher than the content */
+  background-color: #ffffff; /* Background color for visibility */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for elevation */
+}
+
+.content {
+  margin-top: 80px; /* Adjust based on your header's height */
+  padding: 20px;
+}
