@@ -361,3 +361,26 @@
     transform: rotate(360deg);
   }
 }
+.pdf-preview-canvas {
+  position: relative; /* Establishes positioning context */
+}
+
+.pagination-arrow {
+  position: absolute; /* Positions arrows absolutely within the container */
+  top: 50%; /* Center vertically */
+  z-index: 10; /* Ensures arrows are above the canvas */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+.pagination-arrow:first-child {
+  left: 10px; /* Adjust the left position for the left arrow */
+}
+
+.pagination-arrow:last-child {
+  right: 10px; /* Adjust the right position for the right arrow */
+}
+
+.disabled {
+  opacity: 0.5; /* Style for disabled arrows */
+  pointer-events: none; /* Prevents clicks on disabled arrows */
+}

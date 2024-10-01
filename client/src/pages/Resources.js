@@ -68,9 +68,12 @@ const Resources = () => {
     const fetchResources = async () => {
       setLoading(true);
       try {
-        const data = await browseResources(token, { accessLevel: "public" });
+        const data = await browseResources(token);
 
-        const nonQPData = data.filter((resource) => !resource.isQuestionPaper);
+        const nonQPData = data.filter(
+          (resource) =>
+            !resource.isQuestionPaper && resource.accessLevel === "public"
+        );
         setResources(nonQPData);
         setFilteredResources(nonQPData);
         setLoading(false);

@@ -90,7 +90,8 @@ const Login = () => {
             //   actionType: "login",
             //   description: "User logged in successfully",
             // }).then((response) => console.log(response));
-            setTimeout(() => navigate("/dashboard"), 5000); // Redirect to dashboard after 3 seconds
+            // setTimeout(() => navigate("/dashboard"), 5000); // Redirect to dashboard after 3 seconds
+            navigate("/dashboard");
           } else {
             navigate("/dashboard");
           }
