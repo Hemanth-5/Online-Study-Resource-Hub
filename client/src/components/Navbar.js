@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaHome, FaBook, FaClock, FaSearch } from "react-icons/fa"; // Icons
+import { FaHome, FaBook, FaClock, FaSearch, FaFileAlt } from "react-icons/fa"; // Icons
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -48,6 +48,16 @@ const Navbar = () => {
           <FaClock className="nav-icon" />
           <span>Recent Activities</span>
         </Link> */}
+        {/* Question paper */}
+        <Link
+          to="/question-papers"
+          className={`nav-link ${
+            location.pathname === "/question-papers" ? "active" : ""
+          }`}
+        >
+          <FaFileAlt className="nav-icon" />
+          <span>Question Papers</span>
+        </Link>
       </nav>
     </aside>
   );

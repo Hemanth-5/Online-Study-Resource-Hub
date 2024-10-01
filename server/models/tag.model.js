@@ -9,7 +9,15 @@ const tagSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["department", "course", "branch", "subject"],
+      enum: [
+        "department",
+        "course",
+        "branch",
+        "subject",
+        "questionType",
+        "semester",
+      ],
+      // enum for questionType => ["semester", "assessment", "tutorial"]
       required: true,
     },
     parent: {

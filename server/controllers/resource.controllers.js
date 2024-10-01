@@ -98,7 +98,15 @@ const updateResourceFile = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { description, tags, category, accessLevel, fileName } = req.body;
+    const {
+      description,
+      tags,
+      category,
+      accessLevel,
+      fileName,
+      isQuestionPaper,
+      questionPaperInfo,
+    } = req.body;
     // const file = req.file;
 
     // Delete exisiting file from cloudinary
@@ -129,12 +137,11 @@ const updateResourceFile = async (req, res) => {
       {
         description,
         fileName,
-        // fileName: result.fileName,
-        // uploadId: result.public_id,
-        // fileUrl: result.url,
         tags: tagsArray,
         category,
         accessLevel,
+        isQuestionPaper,
+        questionPaperInfo: isQuestionPaper ? questionPaperInfo : undefined,
       },
       { new: true }
     );
@@ -210,7 +217,14 @@ const createResource = async (req, res) => {
 
     // Upload the file to Cloudinary
     const result = await uploadResourcesToCloudinary(req, req.file.buffer);
-    const { description, tags, category, accessLevel } = req.body;
+    const {
+      description,
+      tags,
+      category,
+      accessLevel,
+      isQuestionPaper,
+      questionPaperInfo,
+    } = req.body;
 
     // Convert tags to array if necessary
     const tagsArray = Array.isArray(tags)
@@ -226,6 +240,8 @@ const createResource = async (req, res) => {
       tags: tagsArray,
       category,
       accessLevel,
+      isQuestionPaper: isQuestionPaper || false,
+      questionPaperInfo: isQuestionPaper ? questionPaperInfo : undefined,
     });
 
     const savedResource = await newResource.save();
