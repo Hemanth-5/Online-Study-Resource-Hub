@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { uploadResource } from "../api/apiServices"; // Import the API service
 import * as pdfjsLib from "pdfjs-dist/webpack"; // Import pdfjs-dist for PDF rendering
@@ -33,6 +33,15 @@ const UploadResource = () => {
   };
 
   const closePopup = () => setPopup({ visible: false, message: "", type: "" });
+
+  const errorRef = useRef(null); // Create a reference for the error message element
+
+  useEffect(() => {
+    if (error && errorRef.current) {
+      // Focus on the error message element when error changes
+      errorRef.current.focus();
+    }
+  }, [error]); // Run this effect whenever the `error` state changes
 
   const handleFileChange = (e) => {
     let selectedFile;
@@ -131,16 +140,10 @@ const UploadResource = () => {
     formData.append("category", category);
     formData.append("visibility", visibility);
 
-    // Append each selected tag individually
-    // selectedTags.forEach((tagId) => {
-    //   formData.append("tags[]", tagId); // Add each tag ID
-    // });
     formData.append("tags[]", selectedTags);
 
-    // console.log(selectedTags);
     // Check whether file name already exists in the database
     try {
-      // Call the uploadResource function and pass the token and formData
       const response = await uploadResource(token, formData); // Pass token and formData to API function
 
       if (response.message === "File already exists") {
@@ -153,7 +156,6 @@ const UploadResource = () => {
       }
     } catch (err) {
       setError("Error uploading resource. Please try again.");
-      // showPopup("Error uploading resource. Please try again.", "error");
       setLoading(false); // Set loading state to false
     }
   };
@@ -179,7 +181,16 @@ const UploadResource = () => {
           )}
           <h2>Upload New Resource</h2>
 
-          {error && <p className="error-message">{error}</p>}
+          {/* Error message with reference for focus */}
+          {error && (
+            <p
+              className="error-message"
+              ref={errorRef} // Attach the ref to the error message element
+              tabIndex={-1} // Set tabIndex to make it focusable
+            >
+              {error}
+            </p>
+          )}
 
           <form onSubmit={handleUpload}>
             {/* Drag and Drop or File Upload */}
