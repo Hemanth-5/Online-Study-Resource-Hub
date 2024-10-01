@@ -236,7 +236,6 @@ const ViewResource = () => {
 
         <div className="resource-bottom">
           <div className="resource-tags">
-            <h3>Tags</h3>
             <div className="tags-container">
               {resource?.tags.map((tag) => (
                 <span key={tag} className="tag-pill">

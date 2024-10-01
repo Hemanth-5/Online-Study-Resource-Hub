@@ -157,7 +157,7 @@ html {
   }
 
   .user-profile-view-content {
-    margin-left: 100px;
+    margin-left: 90px;
     padding: 20px;
   }
 }
@@ -189,5 +189,61 @@ html {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+@media (max-width: 480px) {
+  .user-profile-view-content {
+    margin-left: 0; /* Remove left margin */
+    padding: 15px; /* Reduce padding */
+    margin: 10px; /* Add smaller margin around the container */
+  }
+
+  .user-profile-view-content h1 {
+    font-size: 1.5rem; /* Reduce title font size */
+    margin-bottom: 20px; /* Adjust spacing below title */
+  }
+
+  .profile-photo {
+    width: 100px; /* Smaller profile photo */
+    height: 100px;
+  }
+
+  .profile-info {
+    grid-template-columns: 1fr; /* Stack information vertically */
+    gap: 10px; /* Reduce gap between items */
+  }
+
+  .profile-detail {
+    font-size: 0.9rem; /* Smaller font size for details */
+    padding: 8px 0; /* Adjust padding for details */
+  }
+
+  .profile-interests {
+    margin-top: 20px; /* Reduce top margin */
+  }
+
+  .interests-list {
+    flex-direction: column; /* Stack interest tags vertically */
+    align-items: center; /* Center tags */
+  }
+
+  .interest-tag {
+    margin: 5px; /* Reduce spacing between tags */
+    padding: 6px 12px; /* Reduce padding for tags */
+    font-size: 0.8rem; /* Smaller font size */
+  }
+
+  .loading-overlay {
+    padding: 20px; /* Add padding around loading spinner for small screens */
+  }
+
+  .loading-spinner {
+    width: 40px; /* Smaller spinner size */
+    height: 40px;
+  }
+
+  .error-message {
+    font-size: 1rem; /* Adjust font size for error messages */
+    padding: 10px; /* Add padding */
   }
 }

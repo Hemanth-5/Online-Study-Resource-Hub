@@ -450,7 +450,7 @@
   }
 
   .my-resource-view-section {
-    margin-left: 100px;
+    margin-left: 90px;
   }
 
   .resources-view.grid {
@@ -461,5 +461,95 @@
   .edit-icon,
   .delete-icon {
     font-size: 22px;
+  }
+}
+/* Media query for screens with a maximum width of 480px */
+@media (max-width: 480px) {
+  .my-resource-view-section {
+    margin-left: 0;
+    padding: 10px;
+  }
+  /* General container adjustments */
+  .my-resources-container {
+    padding: 8px; /* Reduce padding */
+  }
+
+  /* Adjustments for buttons */
+  .upload-resource-btn {
+    padding: 6px 10px; /* Further reduce padding */
+    font-size: 12px; /* Smaller font size */
+  }
+
+  .view-toggle {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: stretch; /* Full width for buttons */
+  }
+
+  .view-toggle button {
+    width: 100%; /* Full width */
+    margin-bottom: 8px; /* Space between buttons */
+  }
+
+  /* Grid layout adjustments */
+  .resources-view.grid {
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 10px; /* Reduced spacing */
+  }
+
+  .resource-details h4 {
+    font-size: 14px; /* Smaller title */
+  }
+
+  .resource-details p {
+    font-size: 10px; /* Smaller description */
+  }
+
+  /* Modal adjustments */
+  .modal {
+    width: 95%; /* Reduce modal width */
+    max-width: none; /* Remove max-width */
+  }
+
+  /* Toggle switch adjustments */
+  .toggle {
+    width: 40px; /* Smaller toggle */
+    height: 20px; /* Smaller height */
+  }
+
+  .toggle-circle {
+    width: 18px; /* Smaller circle */
+    height: 18px; /* Smaller circle */
+  }
+
+  .toggle.active .toggle-circle {
+    transform: translateX(20px); /* Adjust transform */
+  }
+
+  /* Adjustments for text fields and dropdowns */
+  .input-field,
+  .dropdown-field {
+    font-size: 12px; /* Smaller font size */
+    padding: 6px 8px; /* Reduce padding */
+  }
+
+  /* Navbar adjustments */
+  .navbar {
+    flex-direction: column; /* Stack elements */
+  }
+
+  .navbar .nav-item {
+    margin: 5px 0; /* Add spacing between items */
+  }
+
+  /* Adjustments for headers */
+
+  /* Adjustments for sidebar */
+  .sidebar {
+    width: 100%; /* Full width sidebar */
+  }
+
+  .sidebar .sidebar-item {
+    font-size: 14px; /* Smaller text */
+    padding: 8px; /* Reduce padding */
   }
 }

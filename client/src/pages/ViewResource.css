@@ -384,3 +384,142 @@
   opacity: 0.5; /* Style for disabled arrows */
   pointer-events: none; /* Prevents clicks on disabled arrows */
 }
+@media (max-width: 480px) {
+  .view-resource-container {
+    padding: 10px;
+  }
+
+  .back-button {
+    font-size: 20px;
+  }
+
+  .resource-details {
+    padding: 15px;
+  }
+
+  .resource-title {
+    font-size: 22px;
+  }
+
+  .resource-description {
+    font-size: 14px;
+  }
+
+  .pdf-preview-canvas,
+  .image-preview {
+    padding: 5px;
+    border: 1px solid #ddd;
+  }
+
+  .pagination-arrow {
+    font-size: 30px;
+  }
+
+  .page-info {
+    font-size: 14px;
+  }
+
+  .open-in-new-tab {
+    font-size: 14px;
+  }
+
+  .resource-tags {
+    margin-top: 10px;
+  }
+
+  .tags-container {
+    gap: 5px;
+  }
+
+  .tag-pill {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .comments-section {
+    padding: 15px;
+  }
+
+  .comments-list {
+    gap: 10px;
+  }
+
+  .comment-item {
+    padding: 10px;
+  }
+
+  .comment-user {
+    font-size: 14px;
+  }
+
+  .comment-text {
+    font-size: 12px;
+  }
+
+  .comment-date {
+    font-size: 10px;
+  }
+
+  .reply-icon {
+    font-size: 16px;
+  }
+
+  .replies-list {
+    padding-left: 15px;
+  }
+
+  .reply-item {
+    padding: 8px;
+  }
+
+  .reply-user {
+    font-size: 12px;
+  }
+
+  .reply-text {
+    font-size: 12px;
+  }
+
+  .comment-form,
+  .reply-form {
+    gap: 8px;
+  }
+
+  .comment-textarea,
+  .reply-textarea {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .comment-submit-button,
+  .reply-submit-button {
+    padding: 8px 15px;
+    font-size: 12px;
+  }
+
+  .pagination {
+    padding: 10px;
+  }
+
+  .arrow {
+    font-size: 20px;
+  }
+
+  .resource-bottom {
+    padding: 15px;
+    flex-direction: column;
+  }
+
+  .like-icon {
+    font-size: 30px;
+    &:hover {
+      color: pink;
+    }
+  }
+
+  .like-icon.liked {
+    &:hover {
+      color: red;
+    }
+  }
+}

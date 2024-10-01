@@ -407,3 +407,83 @@
     left: 0;
   }
 }
+@media (max-width: 480px) {
+  .resources-wrapper {
+    flex-direction: column; /* Stack the wrapper elements vertically */
+  }
+
+  .resources-body {
+    flex-direction: column; /* Stack content in a single column */
+  }
+
+  .resources-content {
+    margin-left: 0; /* Remove left margin */
+    padding: 10px; /* Reduce padding for better spacing */
+  }
+
+  .search-filter-container {
+    flex-direction: column; /* Stack the search and filter elements vertically */
+    align-items: flex-start; /* Align items to start */
+    gap: 5px; /* Reduce gap */
+  }
+
+  .upload-resource {
+    width: 100%; /* Make the upload button full-width */
+    margin-bottom: 10px; /* Adjust spacing */
+  }
+
+  .resources-view {
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 15px; /* Adjust the gap between cards */
+  }
+
+  .resource-card {
+    padding: 10px; /* Adjust padding inside the card */
+    border-radius: 6px; /* Slightly reduce border radius */
+  }
+
+  .resource-thumbnail {
+    height: 100px; /* Smaller height for thumbnails */
+  }
+
+  .resource-details h4 {
+    font-size: 1em; /* Smaller font size */
+  }
+
+  .resource-details p {
+    font-size: 0.8em; /* Adjust description font size */
+  }
+
+  .uploader-info {
+    font-size: 0.9em; /* Smaller font size for uploader info */
+    align-self: flex-end; /* Align uploader info to the start */
+    margin-top: 5px; /* Adjust margin */
+  }
+
+  .search-bar,
+  .filter-dropdown {
+    margin-bottom: 10px; /* Spacing between inputs */
+  }
+
+  .selected-tags {
+    gap: 5px; /* Reduce gap between selected tags */
+    margin-top: 10px;
+  }
+
+  .filter-button {
+    font-size: 0.9em; /* Slightly smaller font size */
+  }
+
+  .back-button {
+    width: 30px; /* Adjust button size */
+    height: 30px;
+  }
+
+  .tag-popup {
+    width: 100%; /* Make tag popup take full width */
+    left: 0;
+    margin: 0;
+    padding: 10px; /* Adjust padding */
+    border-radius: 8px; /* Adjust border radius */
+  }
+}

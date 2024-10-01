@@ -1,18 +1,176 @@
-/* General sidebar styling */
+/* General Sidebar Styling */
 .navbar {
   position: fixed; /* Keep the sidebar fixed */
   top: 60px; /* Start below the header */
   left: 0;
   width: 200px; /* Fixed width */
-  height: 100vh; /* Dynamic height */
+  height: 100vh; /* Full height */
   overflow-y: auto; /* Enable scrolling if needed */
   background-color: #25323f; /* Dark background for the sidebar */
   color: #fff;
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  /* Make sure it stays above other content */
+  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+  z-index: 999; /* Make sure it stays above other content */
 }
 
+/* Navbar Content */
+.navbar nav {
+  flex-grow: 1;
+}
+
+/* Navigation Links */
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease-in;
+  margin-bottom: 15px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #1e2d3d; /* Hover background */
+  border-left: 5px solid #03a9f4; /* Highlight on the left */
+}
+
+.nav-icon {
+  margin-right: 10px; /* Space between icon and text */
+  font-size: 18px; /* Icon size */
+}
+
+.nav-link span {
+  margin-left: 10px;
+}
+
+/* Mobile Navbar Toggle Icon */
+.mobile-navbar-toggle {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  cursor: pointer;
+  z-index: 1001; /* Make sure it's above other content */
+}
+
+/* Mobile Navbar Content (Full Sidebar) */
+.mobile-nav-content {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  background-color: #25323f;
+  transition: left 0.3s ease;
+  z-index: 1000; /* Ensure it is above content but below the toggle */
+}
+
+/* Responsive Styles */
+
+/* For tablets and screens smaller than 768px */
+@media (max-width: 768px) {
+  .navbar {
+    width: 70px; /* Reduced width for small screens */
+    padding: 10px; /* Adjust padding */
+    gap: 10px;
+  }
+
+  .nav-link {
+    justify-content: center;
+    padding: 10px;
+    flex-direction: column; /* Stack icons and text vertically */
+    text-align: center;
+  }
+
+  .nav-link span {
+    display: none; /* Hide text for smaller widths */
+  }
+
+  .nav-icon {
+    font-size: 22px; /* Increase icon size */
+  }
+}
+
+/* For mobile screens and screens smaller than 480px */
+@media (max-width: 480px) {
+  /* Navbar styles */
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px; /* More compact */
+    padding: 0; /* Remove padding */
+    z-index: 100;
+  }
+
+  /* Show mobile toggle icon */
+  .fa-bars-icon {
+    display: block;
+  }
+
+  /* Display mobile navbar toggle */
+  .mobile-navbar-toggle {
+    display: block;
+    background-color: transparent;
+    color: #fff;
+  }
+
+  /* Hide the default navbar when mobile navbar is open */
+  .navbar nav {
+    display: none;
+  }
+
+  /* Mobile Navbar Content (Sidebar when mobile navbar is open) */
+  .mobile-nav-content {
+    width: 200px; /* Full width sidebar */
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    transition: left 0.3s ease;
+    position: fixed;
+    top: 0;
+    background-color: #25323f;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Display mobile nav content when toggle is active */
+  .navbar .mobile-nav-content.show {
+    left: 0; /* Slide in sidebar */
+  }
+
+  .nav-link {
+    padding: 20px; /* Increase padding */
+    font-size: 18px; /* Increase font size */
+  }
+
+  .nav-icon {
+    margin: 0;
+    font-size: 24px; /* Larger icons */
+  }
+
+  /* Show text and icons side-by-side */
+  .nav-link span {
+    display: inline;
+    margin-left: 15px;
+  }
+} /* General sidebar styling */
+.navbar {
+  position: fixed; /* Keep the sidebar fixed */
+  top: 60px; /* Start below the header */
+  left: 0;
+  width: 200px; /* Fixed width */
+  height: 100vh; /* Full height */
+  overflow-y: auto; /* Enable scrolling if needed */
+  background-color: #25323f; /* Dark background for the sidebar */
+  color: #fff;
+  padding: 20px;
+  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+  z-index: 900; /* Ensure it appears above main content */
+}
+
+/* Navigation container */
 .navbar nav {
   flex-grow: 1;
 }
@@ -25,7 +183,7 @@
   padding: 15px 20px;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   transition: background-color 0.3s ease-in;
 }
 
@@ -40,43 +198,96 @@
   font-size: 18px; /* Icon size */
 }
 
-.nav-link {
-  color: #fff;
-  text-decoration: none;
-  font-size: 16px;
-  padding: 15px 20px;
+/* Desktop view */
+.navbar nav {
   display: flex;
-  align-items: center;
-  transition: background-color 0.3s;
+  flex-direction: column;
+  margin-top: 50px;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  /* The active link will have the same style as hover */
-  background-color: #1e2d3d; /* Hover background */
-  border-left: 5px solid #03a9f4; /* Highlight on the left */
-}
-
-.nav-icon {
-  margin-right: 10px; /* Space between icon and text */
-  font-size: 18px; /* Icon size */
-}
-
-.nav-link {
-  display: flex;
-  flex-direction: row;
-}
-
+/* Responsive design: 768px and below */
 @media (max-width: 768px) {
   .navbar {
-    gap: 10px;
+    width: 60px; /* Narrower sidebar for medium screens */
   }
 
   .nav-icon {
-    font-size: 22px;
+    font-size: 22px; /* Larger icon size */
+  }
+
+  .nav-link span {
+    display: none; /* Hide text */
   }
 
   .nav-link {
-    display: block;
+    padding: 12px 0;
+    justify-content: center;
   }
+}
+
+/* Responsive design: 480px and below */
+@media (max-width: 480px) {
+  .fa-bars-icon {
+    margin-left: -8px;
+  }
+
+  .fa-close-icon {
+    margin-left: 10px;
+  }
+  .navbar {
+    top: 65px;
+    background: transparent;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    margin-left: 0;
+    /* background-color: #25323f; */
+    border-radius: 10px;
+    align-content: stretch;
+  }
+
+  /* Mobile toggle icon */
+  .mobile-navbar-toggle {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it appears above the sidebar */
+  }
+
+  .mobile-navbar-toggle svg {
+    font-size: 30px;
+    color: #007bff;
+  }
+
+  /* Mobile sidebar content */
+  .mobile-nav-content {
+    position: fixed;
+    top: 60px; /* Start below the header */
+    width: 50px; /* Set a fixed width */
+    height: calc(100vh - 60px); /* Adjust height for mobile */
+    background-color: #25323f; /* Match sidebar color */
+    transition: left 0.3s ease; /* Smooth slide in/out */
+    z-index: 1000;
+    padding: 20px;
+  }
+
+  /* Show sidebar when open */
+  .mobile-nav-content.open {
+    left: 0; /* Slide in */
+  }
+
+  /* Links in mobile sidebar */
+  .mobile-nav-content .nav-link {
+    flex-direction: row; /* Align icon and text horizontally */
+  }
+
+  /* Hide the full sidebar on mobile view */
+  /* .navbar nav {
+    display: none;
+  } */
 }

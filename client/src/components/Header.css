@@ -255,8 +255,12 @@
   opacity: 0.8;
 }
 
-/* @media (max-width: 768px) {
-  .header {
-    width: 100%;
+@media (max-width: 480px) {
+  .logo {
+    font-size: medium;
   }
-} */
+
+  .notification-popup {
+    left: 0;
+  }
+}

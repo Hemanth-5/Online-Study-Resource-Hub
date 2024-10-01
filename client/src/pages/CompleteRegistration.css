@@ -547,10 +547,14 @@
 
   .text-input-modern {
     width: 100%; /* Full-width inputs */
-    font-size: 0.9rem; /* Adjust font size for inputs */
+    font-size: 0.8rem; /* Adjust font size for inputs */
     margin-bottom: 10px; /* Spacing between inputs */
   }
 
+  .disabled-input-modern {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
   .save-button-modern {
     width: 100%; /* Full-width button */
     padding: 12px; /* Reduced padding */
@@ -558,6 +562,80 @@
   }
 
   .complete-registration-content {
-    margin: 0; /* Adjust padding */
+    margin-left: 90px; /* Adjust padding */
+  }
+
+  .complete-registration-header header {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .complete-registration-container {
+    width: auto;
+  }
+
+  .complete-registration-main {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .complete-registration-content {
+    margin-left: 0;
+    padding: 1rem;
+    box-shadow: none;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-col {
+    padding: 0;
+  }
+
+  .text-input-modern,
+  .textarea-input-modern {
+    font-size: 0.875rem;
+  }
+
+  .profile-photo-section {
+    flex-direction: column;
+  }
+
+  .profile-photo-dropzone {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-photo-upload-text {
+    font-size: 0.875rem;
+  }
+
+  .save-button-modern {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .selected-tags {
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .tag-suggestion-list {
+    font-size: 0.75rem;
+  }
+
+  .interest-tag {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .remove-tag-button {
+    font-size: 0.85rem;
+  }
+
+  .complete-profile-header {
+    width: 100%;
   }
 }

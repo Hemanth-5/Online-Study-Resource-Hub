@@ -216,7 +216,9 @@ const CompleteRegistration = () => {
 
   return (
     <div className="complete-registration-container">
-      <Header userProfile={userProfile} />
+      <div className="complete-registration-header">
+        <Header userProfile={userProfile} />
+      </div>
       <div className="complete-registration-main">
         <Navbar />
         <div className="complete-registration-content">
@@ -411,7 +413,7 @@ const CompleteRegistration = () => {
           />
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

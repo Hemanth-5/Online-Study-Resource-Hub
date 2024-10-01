@@ -463,38 +463,98 @@ footer a:hover {
   }
 
   .dashboard-main {
-    margin-left: 100px; /* Remove left margin */
+    margin-left: 90px; /* Remove left margin */
   }
 
   .dashboard-main .card {
     width: 100%; /* Full width for cards */
   }
 }
-
+/* Mobile-specific styling for screens up to 480px */
 @media (max-width: 480px) {
-  header h1 {
-    font-size: 20px; /* Adjust font size */
+  .dashboard-main {
+    margin: 0; /* Remove left margin */
+  }
+  /* Main content */
+  .main-container {
+    flex-direction: column;
+    margin-top: 20px; /* Reduced top margin for mobile */
+  }
+
+  .main-content {
+    margin: 10px;
+    margin-left: 0; /* No sidebar offset */
+    margin-right: 0;
+  }
+
+  /* Welcome section */
+  .welcome-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .welcome-text h1 {
+    font-size: 20px;
+  }
+
+  /* Profile section */
+  .profile-section {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .profile-info {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+    padding: 15px;
   }
 
   .profile-image {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 15px;
   }
 
-  .user-details h2 {
-    font-size: 18px; /* Adjust font size */
+  /* Quick stats section */
+  .quick-stats {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 0;
   }
 
-  .user-details p {
-    font-size: 12px; /* Adjust font size */
+  .stat-item {
+    width: 100%;
+    margin-bottom: 10px;
   }
 
-  .logout-button {
-    padding: 10px 20px; /* Smaller padding */
+  /* Recent activities */
+  .recent-activities {
+    margin-bottom: 20px;
+  }
+
+  .activities-list {
+    padding: 0;
+  }
+
+  /* Other adjustments */
+  .stat-card {
+    padding: 10px;
+  }
+
+  .dashboard-content {
+    margin: 10px;
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    padding: 20px;
   }
 
   .loading-spinner {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 }

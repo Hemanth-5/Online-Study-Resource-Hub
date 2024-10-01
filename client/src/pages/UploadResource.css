@@ -169,7 +169,7 @@
 
 @media (max-width: 768px) {
   .upload-content-wrapper {
-    width: 100%; /* Further increase width for mobile devices */
+    width: auto; /* Further increase width for mobile devices */
   }
 
   .form-group input,
@@ -177,10 +177,6 @@
   .form-group textarea {
     font-size: 14px; /* Reduce font size for smaller screens */
   }
-
-  /* .header {
-    width: 100%;
-  } */
 }
 .loading-overlay {
   position: fixed; /* Changed from absolute to fixed */
@@ -215,12 +211,10 @@
 @media (max-width: 768px) {
   .upload-page-main {
     flex-direction: column; /* Stack elements vertically */
-    margin-left: 100px; /* Remove left margin */
+    margin-left: 90px; /* Remove left margin */
   }
 
-  .upload-content-wrapper {
-    width: 100%; /* Full width on mobile */
-  }
+  /*  */
 
   .upload-content-wrapper h2 {
     font-size: 24px; /* Smaller title font size */
@@ -242,5 +236,69 @@
 
   .upload-button {
     font-size: 16px; /* Adjust button font size */
+  }
+}
+@media (max-width: 480px) {
+  .upload-page-main {
+    flex-direction: column; /* Stack elements vertically */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  .upload-content-wrapper {
+    padding: 20px; /* Adjust padding for better spacing */
+    box-shadow: none; /* Remove shadow for a cleaner look */
+  }
+
+  .upload-content-wrapper h2 {
+    font-size: 20px; /* Smaller title font size */
+    margin-bottom: 15px; /* Adjust margin */
+  }
+
+  .form-group {
+    margin-bottom: 10px; /* Reduce spacing between form groups */
+  }
+
+  .error-message {
+    font-size: 12px; /* Smaller font size for error messages */
+    padding: 8px 10px; /* Adjust padding */
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 12px; /* Smaller font size for input fields */
+    padding: 8px 10px; /* Adjust padding */
+  }
+
+  .form-group textarea {
+    min-height: 80px; /* Reduce minimum height for textarea */
+  }
+
+  .upload-button {
+    font-size: 14px; /* Smaller button font size */
+    padding: 10px; /* Adjust padding */
+  }
+
+  .file-preview {
+    max-width: 100%; /* Full width on mobile */
+    padding: 15px; /* Adjust padding */
+  }
+
+  .file-preview img {
+    max-width: 100%; /* Image width should adapt to container */
+    max-height: 300px; /* Limit height for better display */
+  }
+
+  .form-drag-drop-preview {
+    padding: 20px 10px; /* Adjust padding for drag area */
+  }
+
+  .drag-drop-area {
+    padding: 30px 10px; /* Adjust padding for drag area */
+    font-size: 14px; /* Smaller font size */
+  }
+
+  .drag-drop-area p {
+    font-size: 14px; /* Adjust paragraph font size */
   }
 }

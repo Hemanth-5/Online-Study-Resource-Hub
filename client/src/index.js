@@ -21,30 +21,30 @@ import UploadResource from "./pages/UploadResource";
 import MyUploads from "./pages/MyUploads";
 import UserProfileView from "./pages/UserProfileView";
 import AdminTagManagement from "./pages/Admin/AdminTagManagement";
-import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
-import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
+// import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
+// import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
 import QuestionPapers from "./pages/QuestionPapers";
 // import Feedback from "./pages/Feedback";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const Index = () => {
-  const [showDesktopSuggestion, setShowDesktopSuggestion] = useState(false);
+  // const [showDesktopSuggestion, setShowDesktopSuggestion] = useState(false);
 
-  useEffect(() => {
-    // Check if the device is mobile and the popup hasn't been shown before
-    const popupShown = localStorage.getItem("desktopSuggestionShown");
+  // useEffect(() => {
+  //   // Check if the device is mobile and the popup hasn't been shown before
+  //   const popupShown = localStorage.getItem("desktopSuggestionShown");
 
-    if (isMobileDevice() && !popupShown) {
-      setShowDesktopSuggestion(true);
-    }
-  }, []);
+  //   if (isMobileDevice() && !popupShown) {
+  //     setShowDesktopSuggestion(true);
+  //   }
+  // }, []);
 
-  const handleClosePopup = () => {
-    // Set a flag in localStorage to indicate that the popup has been shown
-    localStorage.setItem("desktopSuggestionShown", "true");
-    setShowDesktopSuggestion(false);
-  };
+  // const handleClosePopup = () => {
+  //   // Set a flag in localStorage to indicate that the popup has been shown
+  //   localStorage.setItem("desktopSuggestionShown", "true");
+  //   setShowDesktopSuggestion(false);
+  // };
 
   return (
     <React.StrictMode>
@@ -52,10 +52,10 @@ const Index = () => {
         <PersistGate loading={null} persistor={persistor}>
           <Router>
             {/* Desktop Suggestion Popup */}
-            <DesktopSuggestionPopup
+            {/* <DesktopSuggestionPopup
               show={showDesktopSuggestion}
               onClose={handleClosePopup}
-            />
+            /> */}
 
             {/* Application Routes */}
             <Routes>
