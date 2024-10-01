@@ -11,7 +11,7 @@ const AdminTagManagement = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const token = localStorage.getItem("access token");
+  const token = localStorage.getItem("accessToken");
   console.log("Token in AdminTagManagement:", token); // Log the token
 
   useEffect(() => {
@@ -20,13 +20,17 @@ const AdminTagManagement = () => {
   }, []);
 
   const fetchTags = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setError("You must be logged in to manage tags.");
+      return;
+    }
     try {
-      console.log("Token:", token); // Check if token is retrieved correctly
       const response = await fetchAllTags(token);
-      console.log("Fetched Tags:", response); // Log the fetched tags
-      setTags(response.data); // Adjust if your response structure is different
+      console.log("Fetched Tags:", response); // Check the structure of the response
+      setTags(response.data || []); // Ensure tags is always an array
     } catch (error) {
-      console.error("Fetch error:", error); // Log detailed error
+      console.error("Fetch error:", error);
       setError("Error fetching tags");
     }
   };
