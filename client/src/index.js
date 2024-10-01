@@ -24,7 +24,6 @@ import AdminTagManagement from "./pages/Admin/AdminTagManagement";
 // import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
 // import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
 import QuestionPapers from "./pages/QuestionPapers";
-// import Feedback from "./pages/Feedback";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
