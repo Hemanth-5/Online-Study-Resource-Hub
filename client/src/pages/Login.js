@@ -20,6 +20,7 @@ const Login = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = () => {
     console.log(`${process.env.REACT_APP_API_URL}/auth/google`);
@@ -28,7 +29,7 @@ const Login = () => {
 
   const showPopup = (message, type) => {
     setPopup({ visible: true, message, type });
-    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 5000); // Auto-close after 5 seconds
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 4000); // Auto-close after 5 seconds
   };
 
   const closePopup = () => setPopup({ visible: false, message: "", type: "" });
@@ -51,7 +52,8 @@ const Login = () => {
     const token = accessToken || localStorage.getItem("accessToken");
 
     if (token) {
-      dispatch(setLoading("loading"));
+      // dispatch(setLoading("loading"));
+      setLoading(true);
       // Fetch user profile
       fetchUserProfile(token)
         .then((userResponse) => {
@@ -72,8 +74,8 @@ const Login = () => {
           dispatch(setNotifications(notificationResponse));
 
           // console.log({ resourcesResponse, tagsResponse });
-          dispatch(setLoading("succeeded"));
-
+          // dispatch(setLoading("succeeded"));
+          setLoading(false);
           if (accessToken) {
             if (name) {
               showPopup(`Welcome back, ${name}!`, "success");
@@ -122,6 +124,11 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
       <div className="login-box">
         <h1 className="login-title">Login</h1>
         <p className="login-subtitle">
