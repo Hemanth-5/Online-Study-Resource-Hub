@@ -68,8 +68,8 @@
   }
 }
 
-/* Media query for screens with a maximum width of 480px */
-@media (max-width: 480px) {
+/* Media query for screens with a maximum width of 768px */
+@media (max-width: 768px) {
   .login-container {
     padding: 0 10px; /* Add padding around container */
   }

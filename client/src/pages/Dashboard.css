@@ -466,8 +466,8 @@ footer a:hover {
     width: 100%; /* Full width for cards */
   }
 }
-/* Mobile-specific styling for screens up to 480px */
-@media (max-width: 480px) {
+/* Mobile-specific styling for screens up to 768px */
+@media (max-width: 768px) {
   .dashboard-main {
     margin: 0; /* Remove left margin */
   }

@@ -384,7 +384,7 @@
   opacity: 0.5; /* Style for disabled arrows */
   pointer-events: none; /* Prevents clicks on disabled arrows */
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .view-resource-container {
     padding: 10px;
   }

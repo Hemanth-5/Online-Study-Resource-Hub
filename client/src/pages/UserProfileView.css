@@ -191,7 +191,7 @@ html {
     transform: rotate(360deg);
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .user-profile-view-content {
     margin-left: 0; /* Remove left margin */
     padding: 15px; /* Reduce padding */

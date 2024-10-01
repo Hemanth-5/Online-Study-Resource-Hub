@@ -14,14 +14,12 @@ import "./Navbar.css";
 const Navbar = () => {
   const location = useLocation(); // Get current location
   const [is768, setIs768] = useState(window.innerWidth <= 768); // State for width <= 768
-  const [is480, setIs480] = useState(window.innerWidth <= 480); // State for width <= 480
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false); // State to track if mobile navbar is open
 
   useEffect(() => {
     // Handler to update the states for responsive design
     const handleResize = () => {
       setIs768(window.innerWidth <= 768);
-      setIs480(window.innerWidth <= 480);
     };
 
     // Set up the event listener for window resize
@@ -41,7 +39,7 @@ const Navbar = () => {
   return (
     <aside className="navbar">
       {/* Mobile Navbar Toggle Icon */}
-      {is480 ? (
+      {is768 ? (
         <div className="mobile-navbar-toggle" onClick={toggleMobileNav}>
           {isMobileNavOpen ? (
             <FaTimes
@@ -54,7 +52,7 @@ const Navbar = () => {
           )}
         </div>
       ) : (
-        // Render Full Navbar for width > 480px
+        // Render Full Navbar for width > 768px
         <nav>
           <Link
             to="/dashboard"
@@ -100,7 +98,7 @@ const Navbar = () => {
       )}
 
       {/* Mobile Navbar Content (Full Sidebar) */}
-      {is480 && isMobileNavOpen && (
+      {is768 && isMobileNavOpen && (
         <div className="mobile-nav-content">
           <nav>
             <Link

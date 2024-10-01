@@ -166,6 +166,7 @@
 
 .my-resource-view-section h2 {
   font-size: 24px; /* Title size */
+  margin-top: 22px;
   margin-bottom: 15px; /* Margin below title */
   color: #333; /* Dark color for title */
 }
@@ -470,8 +471,8 @@
     font-size: 22px;
   }
 }
-/* Media query for screens with a maximum width of 480px */
-@media (max-width: 480px) {
+/* Media query for screens with a maximum width of 768px */
+@media (max-width: 768px) {
   .my-resource-view-section {
     margin-left: 0;
     padding: 10px;

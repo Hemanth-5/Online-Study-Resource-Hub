@@ -93,8 +93,8 @@
   }
 }
 
-/* For mobile screens and screens smaller than 480px */
-@media (max-width: 480px) {
+/* For mobile screens and screens smaller than 768px */
+@media (max-width: 768px) {
   /* Navbar styles */
   .navbar {
     display: flex;
@@ -225,8 +225,8 @@
   }
 }
 
-/* Responsive design: 480px and below */
-@media (max-width: 480px) {
+/* Responsive design: 768px and below */
+@media (max-width: 768px) {
   .fa-bars-icon {
     margin-left: -8px;
   }

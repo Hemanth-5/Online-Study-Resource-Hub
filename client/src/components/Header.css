@@ -255,7 +255,7 @@
   opacity: 0.8;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .logo {
     font-size: medium;
   }

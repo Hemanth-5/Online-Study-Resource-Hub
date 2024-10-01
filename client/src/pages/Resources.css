@@ -406,7 +406,7 @@
     left: 0;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .resources-wrapper {
     flex-direction: column; /* Stack the wrapper elements vertically */
   }
