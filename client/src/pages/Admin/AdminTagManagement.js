@@ -92,9 +92,11 @@ const AdminTagManagement = () => {
         <select name="type" value={newTag.type} onChange={handleInputChange}>
           <option value="">Select Tag Type</option>
           <option value="department">Department</option>
-          <option value="course">Course</option>
+          <option value="semester">Semester</option>
           <option value="branch">Branch</option>
           <option value="subject">Subject</option>
+          <option value="questionType">Question Type</option>
+          <option value="batch">Batch</option>
         </select>
         <select
           name="parent"
