@@ -33,14 +33,25 @@ const API_ENDPOINTS = {
     RESOURCES: `${BASE_URL}/v2/resources`,
     RESOURCE: (id) => `${BASE_URL}/v2/resources/${id}`,
   },
-  TAGS: {
-    BROWSE: `${BASE_URL}/v2/tags/browse`,
-    CREATE: `${BASE_URL}/v2/tags/create`,
-    ASSIGN: (type, id) => `${BASE_URL}/v2/tags/assign/${type}/${id}`,
-    REMOVE: (type, id) => `${BASE_URL}/v2/tags/remove/${type}/${id}`,
+  // TAGS: {
+  //   BROWSE: `${BASE_URL}/v2/tags/browse`,
+  //   CREATE: `${BASE_URL}/v2/tags/create`,
+  //   ASSIGN: (type, id) => `${BASE_URL}/v2/tags/assign/${type}/${id}`,
+  //   REMOVE: (type, id) => `${BASE_URL}/v2/tags/remove/${type}/${id}`,
 
-    // Admin
-    TAG: (id) => `${BASE_URL}/v2/tags/${id}`,
+  //   // Admin
+  //   TAG: (id) => `${BASE_URL}/v2/tags/${id}`,
+  // },
+
+  TAGS: {
+    BROWSE: `${BASE_URL}/v2/tags/browse`, // Fetch all tags
+    ASSIGN: (type, id) => `${BASE_URL}/v2/tags/assign/${type}/${id}`, // Assign a tag to a resource
+    REMOVE: (type, id) => `${BASE_URL}/v2/tags/remove/${type}/${id}`, // Remove a tag from a resource
+
+    // Admin specific endpoints
+    TAG: (id) => `${BASE_URL}/v2/tags/${id}`, // Fetch a specific tag by ID
+    CREATE: `${BASE_URL}/v2/tags/create`, // Create a new tag (admin only)
+    DELETE: (id) => `${BASE_URL}/v2/tags/delete/${id}`, // Delete a tag by ID (admin only)
   },
   COMMENTS: {
     ADD: (id) => `${BASE_URL}/v2/comments/${id}`,

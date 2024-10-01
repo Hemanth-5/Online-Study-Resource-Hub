@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import {
+  fetchAllTags,
+  createTag as apiCreateTag,
+  deleteTag as apiDeleteTag,
+} from "../../api/apiServices"; // Ensure the correct path to the service file
 
 const AdminTagManagement = () => {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState({ name: "", type: "", parent: "" });
-  const [selectedTag, setSelectedTag] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+
+  const token = localStorage.getItem("access token");
+  console.log("Token in AdminTagManagement:", token); // Log the token
 
   useEffect(() => {
     // Fetch all tags when the component loads
@@ -15,16 +21,20 @@ const AdminTagManagement = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await axios.get("/api/tags");
-      setTags(response.data);
+      console.log("Token:", token); // Check if token is retrieved correctly
+      const response = await fetchAllTags(token);
+      console.log("Fetched Tags:", response); // Log the fetched tags
+      setTags(response.data); // Adjust if your response structure is different
     } catch (error) {
+      console.error("Fetch error:", error); // Log detailed error
       setError("Error fetching tags");
     }
   };
 
-  const createTag = async () => {
+  const handleCreateTag = async () => {
+    // Renamed function
     try {
-      await axios.post("/api/tags", newTag);
+      await apiCreateTag(newTag, token); // Use imported apiCreateTag
       setMessage("Tag created successfully");
       setNewTag({ name: "", type: "", parent: "" });
       fetchTags();
@@ -33,9 +43,10 @@ const AdminTagManagement = () => {
     }
   };
 
-  const deleteTag = async (tagId) => {
+  const handleDeleteTag = async (tagId) => {
+    // Renamed function
     try {
-      await axios.delete(`/api/tags/${tagId}`);
+      await apiDeleteTag(tagId, token); // Use imported apiDeleteTag
       setMessage("Tag deleted successfully");
       fetchTags();
     } catch (error) {
@@ -85,7 +96,7 @@ const AdminTagManagement = () => {
             </option>
           ))}
         </select>
-        <button onClick={createTag}>Create Tag</button>
+        <button onClick={handleCreateTag}>Create Tag</button>
       </div>
 
       <div className="tag-list">
@@ -94,7 +105,7 @@ const AdminTagManagement = () => {
           {tags.map((tag) => (
             <li key={tag._id}>
               {tag.name} ({tag.type})
-              <button onClick={() => deleteTag(tag._id)}>Delete</button>
+              <button onClick={() => handleDeleteTag(tag._id)}>Delete</button>
             </li>
           ))}
         </ul>
@@ -102,5 +113,5 @@ const AdminTagManagement = () => {
     </div>
   );
 };
-//exported
+
 export default AdminTagManagement;

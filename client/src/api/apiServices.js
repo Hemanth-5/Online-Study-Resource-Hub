@@ -146,6 +146,16 @@ const fetchAllTags = async (token) => {
   return apiRequest(API_ENDPOINTS.TAGS.BROWSE, "GET", token);
 };
 
+// API service to create a new tag
+const createTag = async (token, tagData) => {
+  return apiRequest(API_ENDPOINTS.TAGS.CREATE, "POST", token, tagData);
+};
+
+// API service to delete a tag by its ID
+const deleteTag = async (token, tagId) => {
+  return apiRequest(API_ENDPOINTS.TAGS.DELETE(tagId), "DELETE", token);
+};
+
 // Delete a resource by its ID
 const deleteResource = async (token, resourceId) => {
   return apiRequest(
@@ -251,6 +261,8 @@ export {
   fetchUserResources,
   browseResources,
   fetchAllTags,
+  createTag,
+  deleteTag,
   searchAndFilterResources,
   addCommentToResource,
   fetchResourceDetails,
