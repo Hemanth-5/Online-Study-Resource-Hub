@@ -28,7 +28,7 @@ const AdminTagManagement = () => {
     try {
       const response = await fetchAllTags(token);
       console.log("Fetched Tags:", response); // Check the structure of the response
-      setTags(response.data || []); // Ensure tags is always an array
+      setTags(response || []); // Ensure tags is always an array
     } catch (error) {
       console.error("Fetch error:", error);
       setError("Error fetching tags");
