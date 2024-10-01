@@ -7,3 +7,11 @@
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.tag-popup h4 {
+  text-transform: capitalize;
+  &:hover {
+    cursor: pointer;
+    color: dodgerblue;
+  }
+}
