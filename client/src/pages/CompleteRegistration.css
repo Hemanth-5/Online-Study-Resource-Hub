@@ -342,14 +342,7 @@
 } */
 
 /* Additional responsive behavior for smaller screens */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 80px; /* Auto-collapse sidebar for small screens */
-  }
-  .complete-registration-container {
-    margin-left: 80px;
-  }
-}
+
 /* Fixing the header */
 .complete-registration-main {
   display: flex; /* Enable flexbox for the main container */
@@ -532,4 +525,39 @@
   border-top: 6px solid #3498db; /* Blue border for spinner effect */
   border-radius: 50%;
   animation: spin 1s linear infinite; /* Continuous spin */
+}
+/* Media Queries for CompleteRegistration */
+
+/* Small devices (phones, 600px and down) */
+@media (max-width: 768px) {
+  .complete-registration-container {
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  .form-title {
+    font-size: 1.5rem; /* Smaller title font size */
+    text-align: center; /* Center align the title */
+  }
+
+  .profile-photo-dropzone {
+    width: 100px; /* Smaller profile photo area */
+    height: 100px; /* Smaller profile photo area */
+    margin: auto; /* Center the dropzone */
+  }
+
+  .text-input-modern {
+    width: 100%; /* Full-width inputs */
+    font-size: 0.9rem; /* Adjust font size for inputs */
+    margin-bottom: 10px; /* Spacing between inputs */
+  }
+
+  .save-button-modern {
+    width: 100%; /* Full-width button */
+    padding: 12px; /* Reduced padding */
+    font-size: 1rem; /* Smaller font size */
+  }
+
+  .complete-registration-content {
+    margin: 0; /* Adjust padding */
+  }
 }

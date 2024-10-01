@@ -428,6 +428,73 @@ footer a:hover {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    width: 50px; /* Hide sidebar on small screens */
+  }
+
+  .main-content {
+    margin-left: 0; /* No sidebar margin */
+    margin-right: 0; /* No right margin */
+  }
+
+  .welcome-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .welcome-section .welcome-text {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .quick-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dashboard-main {
+    margin-left: 100px; /* Remove left margin */
+  }
+
+  .dashboard-main .card {
+    width: 100%; /* Full width for cards */
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 20px; /* Adjust font size */
+  }
+
+  .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .user-details h2 {
+    font-size: 18px; /* Adjust font size */
+  }
+
+  .user-details p {
+    font-size: 12px; /* Adjust font size */
+  }
+
+  .logout-button {
+    padding: 10px 20px; /* Smaller padding */
+  }
+
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+  }
 }

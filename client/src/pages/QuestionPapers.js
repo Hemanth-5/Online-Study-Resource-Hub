@@ -34,18 +34,13 @@ const QuestionPapers = () => {
   const handleShowFilters = () => {
     if (filterButtonRef.current) {
       const rect = filterButtonRef.current.getBoundingClientRect();
+      const isWideScreen = window.innerWidth > 768; // Check if the screen width is greater than 768px
+
       setPopupStyle({
         display: "block",
         position: "absolute",
-        // Position to place the end of the popup at the bottom left of the button
-
-        // top: `${rect.bottom + 10}px`, // Position below the button
-        // left: `${rect.left - 10}px`, // Align left with the button
-        // zIndex: 1000, // Ensure it overlays on other elements
-
-        // Position to place the end of the popup at the top right of the button
-        top: `${rect.bottom + 10}px`, // Position above the button
-        left: `${rect.left - 275}px`, // Align right with the button
+        top: isWideScreen ? `${rect.bottom + 10}px` : `${rect.bottom + 10}px`, // Position above the button or at the top
+        left: isWideScreen ? `${rect.left - 275}px` : `${rect.left}px`, // Align left with the button or at the left
         zIndex: 1000, // Ensure it overlays on other elements
       });
     }

@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaHome, FaBook, FaClock, FaSearch, FaFileAlt } from "react-icons/fa"; // Icons
 import "./Navbar.css";
 
 const Navbar = () => {
   const location = useLocation(); // Get current location
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // State for mobile view
+
+  useEffect(() => {
+    // Handler to update the isMobile state
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Set up the event listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Empty dependency array to run this effect only on mount/unmount
 
   return (
     <aside className="navbar">
@@ -16,7 +32,7 @@ const Navbar = () => {
           }`}
         >
           <FaHome className="nav-icon" />
-          <span>Dashboard</span>
+          {!isMobile && <span>Dashboard</span>}
         </Link>
 
         <Link
@@ -26,7 +42,7 @@ const Navbar = () => {
           }`}
         >
           <FaSearch className="nav-icon" />
-          <span>Browse Resources</span>
+          {!isMobile && <span>Browse Resources</span>}
         </Link>
 
         <Link
@@ -36,7 +52,7 @@ const Navbar = () => {
           }`}
         >
           <FaBook className="nav-icon" />
-          <span>My Uploads</span>
+          {!isMobile && <span>My Uploads</span>}
         </Link>
 
         {/* <Link
@@ -46,8 +62,9 @@ const Navbar = () => {
           }`}
         >
           <FaClock className="nav-icon" />
-          <span>Recent Activities</span>
+          {!isMobile && <span>Recent Activities</span>}
         </Link> */}
+
         {/* Question paper */}
         <Link
           to="/question-papers"
@@ -56,7 +73,7 @@ const Navbar = () => {
           }`}
         >
           <FaFileAlt className="nav-icon" />
-          <span>Question Papers</span>
+          {!isMobile && <span>Question Papers</span>}
         </Link>
       </nav>
     </aside>

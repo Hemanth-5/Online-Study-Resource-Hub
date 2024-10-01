@@ -254,3 +254,9 @@
 .modal-button:hover {
   opacity: 0.8;
 }
+
+/* @media (max-width: 768px) {
+  .header {
+    width: 100%;
+  }
+} */

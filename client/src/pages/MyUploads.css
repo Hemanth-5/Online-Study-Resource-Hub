@@ -422,3 +422,44 @@
     transform: rotate(360deg);
   }
 }
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  /* Adjust the max-width as needed for your design */
+  .view-toggle {
+    display: none; /* Hide the toggle button in mobile view */
+  }
+
+  .resources-view {
+    display: flex; /* Use block display for list view */
+    flex-direction: column; /* Stack items vertically */
+  }
+
+  .resource-card {
+    display: flex; /* Flex layout for list view */
+    flex-direction: row; /* Align items horizontally */
+    margin-bottom: 15px; /* Add space between resources */
+  }
+
+  .resource-thumbnail {
+    flex: 0 0 100px; /* Fixed width for thumbnail */
+    margin-right: 15px; /* Space between thumbnail and details */
+  }
+
+  .resource-details {
+    flex-grow: 1; /* Take the remaining space for details */
+  }
+
+  .my-resource-view-section {
+    margin-left: 100px;
+  }
+
+  .resources-view.grid {
+    /* No grid alayout should be applied */
+    display: block;
+  }
+
+  .edit-icon,
+  .delete-icon {
+    font-size: 22px;
+  }
+}

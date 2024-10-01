@@ -61,3 +61,22 @@
   margin-right: 10px; /* Space between icon and text */
   font-size: 18px; /* Icon size */
 }
+
+.nav-link {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    gap: 10px;
+  }
+
+  .nav-icon {
+    font-size: 22px;
+  }
+
+  .nav-link {
+    display: block;
+  }
+}
