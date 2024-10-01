@@ -20,7 +20,7 @@ import ViewResource from "./pages/ViewResource";
 import UploadResource from "./pages/UploadResource";
 import MyUploads from "./pages/MyUploads";
 import UserProfileView from "./pages/UserProfileView";
-import AdminTagManagement from "./pages/Admin/TagManagement";
+import AdminTagManagement from "./pages/Admin/AdminTagManagement";
 import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
 import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
 

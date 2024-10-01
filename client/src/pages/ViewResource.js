@@ -244,7 +244,7 @@ const ViewResource = () => {
           <div className="like-options">
             <FaHeart
               className={`like-icon ${
-                resource?.likes?.includes(userProfile._id) ? "liked" : ""
+                resource?.likes?.includes(userProfile?._id) ? "liked" : ""
               }`}
               title="Like"
               onClick={handleLike}
