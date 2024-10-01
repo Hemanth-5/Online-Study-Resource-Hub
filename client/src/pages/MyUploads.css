@@ -436,7 +436,6 @@
 
   .resource-card {
     display: flex; /* Flex layout for list view */
-    flex-direction: row; /* Align items horizontally */
     margin-bottom: 15px; /* Add space between resources */
   }
 
@@ -447,10 +446,18 @@
 
   .resource-details {
     flex-grow: 1; /* Take the remaining space for details */
+
+    h4 {
+      font-size: 16px; /* Smaller title size */
+    }
+
+    p {
+      font-size: 12px; /* Smaller description size */
+    }
   }
 
   .my-resource-view-section {
-    margin-left: 90px;
+    margin-left: 100px;
   }
 
   .resources-view.grid {

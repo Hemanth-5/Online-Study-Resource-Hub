@@ -211,7 +211,7 @@
 @media (max-width: 768px) {
   .upload-page-main {
     flex-direction: column; /* Stack elements vertically */
-    margin-left: 90px; /* Remove left margin */
+    margin-left: 100px; /* Remove left margin */
   }
 
   /*  */

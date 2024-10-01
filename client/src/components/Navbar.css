@@ -208,7 +208,7 @@
 /* Responsive design: 768px and below */
 @media (max-width: 768px) {
   .navbar {
-    width: 60px; /* Narrower sidebar for medium screens */
+    width: 50px; /* Narrower sidebar for medium screens */
   }
 
   .nav-icon {
