@@ -185,7 +185,7 @@ const deleteResourceFile = async (req, res) => {
 // Create, update, delete their resources, Search resources, filter resources, manage resource access, assign resource
 const createResource = async (req, res) => {
   try {
-    // Create resource and upload it to cloudinary
+    // Create resource and upload it to Cloudinary
     const uploader = await User.findById(req.user.id);
 
     if (!uploader) {
@@ -197,25 +197,25 @@ const createResource = async (req, res) => {
     }
 
     const fileName = req.file.originalname;
-    // Check whether the user already uplaods the file
+
+    // Check whether the user already uploaded the file
     const existingResource = await Resource.findOne({
       fileName,
       uploadedBy: uploader._id,
     });
 
     if (existingResource) {
-      return res.status(400).json({ message: "File already exists" });
+      return res.status(409).json({ message: "File already exists" }); // Use 409 Conflict status code
     }
 
     // Upload the file to Cloudinary
     const result = await uploadResourcesToCloudinary(req, req.file.buffer);
     const { description, tags, category, accessLevel } = req.body;
-    // console.log({ description, tags, category, accessLevel });
-    // console.log(req.body);
 
-    // Split tags by comma and remove whitespace only if a array is sent, else,
-    const tagsArray = tags[0].split(",").map((tag) => tag.trim());
-    // console.log({ tagsArray });
+    // Convert tags to array if necessary
+    const tagsArray = Array.isArray(tags)
+      ? tags
+      : tags.split(",").map((tag) => tag.trim());
 
     const newResource = new Resource({
       fileName,
@@ -235,7 +235,6 @@ const createResource = async (req, res) => {
 
     res.status(201).json({ message: "Resource created" });
   } catch (error) {
-    // console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

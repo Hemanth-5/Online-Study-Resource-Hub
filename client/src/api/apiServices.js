@@ -4,7 +4,16 @@ import API_ENDPOINTS from "./apiEndpoints";
 const handleResponse = async (response) => {
   const jsonResponse = await response.json();
 
+  // Check if the response is not successful
   if (!response.ok) {
+    // Check for 409 status to indicate "File already exists"
+    if (response.status === 409) {
+      const error = new Error(jsonResponse.message || "File already exists");
+      error.status = 409;
+      throw error;
+    }
+
+    // Handle other errors generically
     const error = new Error(jsonResponse.message || "Something went wrong");
     error.status = response.status;
     throw error;
@@ -122,13 +131,23 @@ const refreshAccessToken = async (refreshToken) => {
 
 // Upload resource
 const uploadResource = async (token, formData) => {
-  return apiRequest(
-    API_ENDPOINTS.RESOURCES.UPLOAD,
-    "POST",
-    token,
-    formData,
-    true
-  );
+  try {
+    const response = await apiRequest(
+      API_ENDPOINTS.RESOURCES.UPLOAD,
+      "POST",
+      token,
+      formData,
+      true
+    );
+
+    return response;
+  } catch (error) {
+    // Check for 409 status code to return a custom message
+    if (error.status === 409) {
+      return { message: "File already exists" };
+    }
+    throw error;
+  }
 };
 
 // Fetch user's uploaded resources

@@ -138,12 +138,19 @@ const UploadResource = () => {
     formData.append("tags[]", selectedTags);
 
     // console.log(selectedTags);
-
+    // Check whether file name already exists in the database
     try {
       // Call the uploadResource function and pass the token and formData
       const response = await uploadResource(token, formData); // Pass token and formData to API function
-      showPopup("Resource uploaded successfully!", "success");
-      setTimeout(() => navigate("/my-uploads", { replace: true }), 3000);
+
+      if (response.message === "File already exists") {
+        setError("Resource already exists. Please upload a different file.");
+        setLoading(false); // Set loading state to false
+        return;
+      } else if (response.ok) {
+        showPopup("Resource uploaded successfully!", "success");
+        setTimeout(() => navigate("/my-uploads", { replace: true }), 3000);
+      }
     } catch (err) {
       setError("Error uploading resource. Please try again.");
       // showPopup("Error uploading resource. Please try again.", "error");
