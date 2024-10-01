@@ -19,9 +19,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.user.profile);
   const userStatus = useSelector((state) => state.user.status);
-  const resources = useSelector((state) => state.resource.resources);
   const navigate = useNavigate();
   const location = useLocation();
+  let resources = useSelector((state) => state.resource.resources);
 
   const showPopup = (message, type) => {
     setPopup({ visible: true, message, type });
@@ -30,54 +30,57 @@ const Dashboard = () => {
 
   const closePopup = () => setPopup({ visible: false, message: "", type: "" });
 
-  useEffect(() => {
-    const handleTokenManagement = async () => {
-      let token = localStorage.getItem("accessToken");
-      let refreshToken = localStorage.getItem("refreshToken");
+  const fetchAndUpdateData = async () => {
+    let token = localStorage.getItem("accessToken");
+    let refreshToken = localStorage.getItem("refreshToken");
 
-      if (!userProfile && userStatus === "idle") {
-        dispatch(setLoading("loading"));
-        try {
-          const response = await fetchUserProfile(token);
-          dispatch(setUserProfile(response));
-          dispatch(setLoading("succeeded"));
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
-          const userResources = await fetchUserResources(token);
-          dispatch(setResources(userResources));
-          if (response.name) {
-            showPopup(`Welcome back, ${response.name}!`, "success");
-          } else {
-            showPopup("Welcome back!", "success");
-          }
-        } catch (err) {
-          if (err.message === "Token expired") {
-            try {
-              const newTokens = await refreshAccessToken(refreshToken);
-              localStorage.setItem("accessToken", newTokens.accessToken);
-              const response = await fetchUserProfile(newTokens.accessToken);
-              dispatch(setUserProfile(response));
-              dispatch(setLoading("succeeded"));
+    try {
+      const response = await fetchUserProfile(token);
+      dispatch(setUserProfile(response));
 
-              const userResources = await fetchUserResources(
-                newTokens.accessToken
-              );
-              dispatch(setResources(userResources));
-            } catch (refreshErr) {
-              dispatch(setError("Failed to refresh token."));
-              dispatch(setLoading("failed"));
-              localStorage.removeItem("accessToken");
-              localStorage.removeItem("refreshToken");
-              navigate("/login");
-            }
-          } else {
-            dispatch(setError("Failed to fetch user profile."));
-            dispatch(setLoading("failed"));
-          }
+      const userResources = await fetchUserResources(token);
+      dispatch(setResources(userResources));
+
+      if (response.name) {
+        if (
+          location.pathname !== "/dashboard" &&
+          localStorage.getItem("accessToken")
+        ) {
+          showPopup(`Welcome back, ${response.name}!`, "success");
         }
+      } else {
+        showPopup("Welcome back!", "success");
       }
-    };
-    handleTokenManagement();
-  }, [dispatch, navigate, userProfile, userStatus]);
+    } catch (err) {
+      if (err.message === "Token expired") {
+        try {
+          const newTokens = await refreshAccessToken(refreshToken);
+          localStorage.setItem("accessToken", newTokens.accessToken);
+          await fetchAndUpdateData(); // Retry fetching data with the new token
+        } catch (refreshErr) {
+          dispatch(setError("Failed to refresh token."));
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          navigate("/login");
+        }
+      } else {
+        dispatch(setError("Failed to fetch user profile."));
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchAndUpdateData(); // Initial fetch
+
+    const intervalId = setInterval(fetchAndUpdateData, 60000); // Fetch data every 60 seconds
+
+    return () => clearInterval(intervalId); // Clean up on unmount
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     if (userProfile && !userProfile.isProfileComplete) {
@@ -90,8 +93,9 @@ const Dashboard = () => {
         userProfile.uploadedResources.includes(resource._id)
       )
     : [];
+
   const topLikedResources = userResources
-    .sort((a, b) => b.likes - a.likes)
+    .sort((a, b) => b.likes.length - a.likes.length)
     .slice(0, 3); // Get top 3 liked resources
 
   if (userStatus === "loading")
@@ -128,7 +132,6 @@ const Dashboard = () => {
           <section className="quick-stats">
             <div className="stat-card">
               <h2>Your top liked resources...</h2>
-              {/* <p>Manage and view your resources.</p> */}
               {topLikedResources.length > 0 ? (
                 topLikedResources.map((resource) => (
                   <div
@@ -159,26 +162,9 @@ const Dashboard = () => {
                 </p>
               )}
             </div>
-            {/* <div className="stat-card">
-              <h2>Study Groups</h2>
-              <p>Join or create study groups.</p>
-            </div>
-            <div className="stat-card">
-              <h2>Notifications</h2>
-              <p>Check your recent notifications.</p>
-            </div> */}
           </section>
-
-          {/* <section className="recent-activities">
-            <h2>Recent Activities</h2>
-            <div className="activities-list">
-              <p>No recent activities to show.</p>
-            </div>
-          </section> */}
         </main>
       </div>
-
-      {/* <Footer /> */}
     </div>
   );
 };

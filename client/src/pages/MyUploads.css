@@ -391,8 +391,9 @@
 .close-modal:hover {
   color: #dc3545; /* Change color on hover */
 }
+/* Loading Spinner */
 .loading-overlay {
-  position: fixed;
+  position: fixed; /* Changed from absolute to fixed */
   top: 0;
   left: 0;
   width: 100%;
@@ -401,7 +402,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10; /* Above all content */
+  z-index: 10000; /* Above all content */
 }
 
 .loading-spinner {
@@ -411,4 +412,13 @@
   border-top: 6px solid #3498db; /* Blue border for spinner effect */
   border-radius: 50%;
   animation: spin 1s linear infinite; /* Continuous spin */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

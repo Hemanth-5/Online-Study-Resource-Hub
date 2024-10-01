@@ -19,7 +19,7 @@ import tagReducer from "../features/tagSlice";
 const persistConfig = {
   key: "root", // Key for the persisted storage in sessionStorage
   storage: storageSession, // Using sessionStorage instead of localStorage
-  whitelist: ["resource", "user", "notifications", "tag"], // Persist only resource slice
+  whitelist: ["user", "resource"], // Persist only resource slice
 };
 
 const rootReducer = combineReducers({

@@ -69,10 +69,12 @@ const Resources = () => {
       setLoading(true);
       try {
         const data = await browseResources(token, { accessLevel: "public" });
-        setResources(data);
-        setFilteredResources(data);
+
+        const nonQPData = data.filter((resource) => !resource.isQuestionPaper);
+        setResources(nonQPData);
+        setFilteredResources(nonQPData);
         setLoading(false);
-        data.forEach((resource, index) => {
+        nonQPData.forEach((resource, index) => {
           if (resource.fileUrl.endsWith(".pdf")) {
             fetchPDFPages(resource.fileUrl, index);
           }

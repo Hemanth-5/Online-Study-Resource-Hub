@@ -17,28 +17,6 @@ const resourceSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    questionPaperInfo: {
-      subject: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-      },
-      batch: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-      },
-      department: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-      },
-      semester: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-      },
-      questionType: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-      },
-    },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -55,7 +33,7 @@ const resourceSchema = new mongoose.Schema(
     ],
     category: {
       type: String,
-      enum: ["book", "notes", "question papers", "other"],
+      enum: ["book", "notes", "questionPapers", "other"],
       default: "other",
     },
     accessLevel: {

@@ -126,7 +126,8 @@ const UploadResource = () => {
     setLoading(true); // Set loading state to true
 
     // Validate required fields
-    if (!file || !title || !category || selectedTags.length === 0) {
+    if (!file || !category || selectedTags.length === 0) {
+      console.log({ file, category, selectedTags });
       setError("Please fill in all required fields and select tags.");
       setLoading(false); // Set loading state to false
       return;
@@ -135,10 +136,10 @@ const UploadResource = () => {
     // Create FormData for the file upload
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
-    formData.append("visibility", visibility);
+    formData.append("accessLevel", visibility);
+    formData.append("isQuestionPaper", category === "questionPapers");
 
     formData.append("tags[]", selectedTags);
 
@@ -150,8 +151,9 @@ const UploadResource = () => {
         setError("Resource already exists. Please upload a different file.");
         setLoading(false); // Set loading state to false
         return;
-      } else if (response.ok) {
+      } else if (response.message === "Resource created") {
         showPopup("Resource uploaded successfully!", "success");
+        setLoading(false); // Set loading state to false
         setTimeout(() => navigate("/my-uploads", { replace: true }), 3000);
       }
     } catch (err) {
@@ -235,7 +237,7 @@ const UploadResource = () => {
             </div>
 
             {/* Other form inputs */}
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="title">Title</label>
               <input
                 type="text"
@@ -244,7 +246,7 @@ const UploadResource = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-            </div>
+            </div> */}
 
             <div className="form-group">
               <label htmlFor="description">Description</label>
@@ -270,8 +272,9 @@ const UploadResource = () => {
               >
                 <option value="">Select Category</option>
                 <option value="book">Book</option>
-                <option value="video">Video</option>
-                <option value="audio">Audio</option>
+                <option value="notes">Notes</option>
+                <option value="questionPapers">Question Paper</option>
+                <option value="other">Other</option>
               </select>
             </div>
 

@@ -193,6 +193,11 @@ const ViewResource = () => {
       <div className="resource-details">
         <h2 className="resource-title">{resource?.fileName}</h2>
         <p className="resource-description">{resource?.description}</p>
+        {/* Add a small note that if preview is not rendered, try refreshing the page */}
+
+        <p style={{ textAlign: "center" }}>
+          (If the page is not visible, try refreshing the site...)
+        </p>
 
         {resource?.fileUrl.endsWith(".pdf") ? (
           <div className="pdf-preview-canvas">

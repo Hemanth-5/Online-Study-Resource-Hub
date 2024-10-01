@@ -105,7 +105,6 @@ const updateResourceFile = async (req, res) => {
       accessLevel,
       fileName,
       isQuestionPaper,
-      questionPaperInfo,
     } = req.body;
     // const file = req.file;
 
@@ -129,9 +128,12 @@ const updateResourceFile = async (req, res) => {
     //   }
     // }
 
-    const tagsArray = tags[0].split(",").map((tag) => tag.trim());
+    const tagsArray = Array.isArray(tags)
+      ? tags[0].split(",").map((tag) => tag.trim())
+      : tags.split(",").map((tag) => tag.trim());
     console.log({ description, tagsArray, category, accessLevel, fileName });
     // Check if there is a file included
+
     await Resource.findByIdAndUpdate(
       currentResource._id,
       {
@@ -141,7 +143,6 @@ const updateResourceFile = async (req, res) => {
         category,
         accessLevel,
         isQuestionPaper,
-        questionPaperInfo: isQuestionPaper ? questionPaperInfo : undefined,
       },
       { new: true }
     );
@@ -226,10 +227,19 @@ const createResource = async (req, res) => {
       questionPaperInfo,
     } = req.body;
 
+    console.log({ tags });
     // Convert tags to array if necessary
     const tagsArray = Array.isArray(tags)
-      ? tags
+      ? tags[0].split(",").map((tag) => tag.trim())
       : tags.split(",").map((tag) => tag.trim());
+
+    console.log({
+      description,
+      tagsArray,
+      category,
+      accessLevel,
+      isQuestionPaper,
+    });
 
     const newResource = new Resource({
       fileName,
@@ -241,9 +251,9 @@ const createResource = async (req, res) => {
       category,
       accessLevel,
       isQuestionPaper: isQuestionPaper || false,
-      questionPaperInfo: isQuestionPaper ? questionPaperInfo : undefined,
     });
 
+    console.log(newResource);
     const savedResource = await newResource.save();
 
     uploader.uploadedResources.push(savedResource._id);
@@ -325,7 +335,7 @@ const likeResource = async (req, res) => {
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    // console.log({ currentUser, resource });
     if (resource.likes.includes(currentUser._id)) {
       // return res.status(400).json({ message: "Resource already liked" });
       // Remove the like if already liked
@@ -335,6 +345,8 @@ const likeResource = async (req, res) => {
         { new: true }
       );
 
+      console.log(await Resource.findById(resource._id));
+
       return res.status(200).json({ message: "Resource unliked" });
     }
 
@@ -343,6 +355,8 @@ const likeResource = async (req, res) => {
       { $push: { likes: currentUser._id } },
       { new: true }
     );
+
+    console.log(await Resource.findById(resource._id));
 
     res.status(200).json({ message: "Resource liked" });
 

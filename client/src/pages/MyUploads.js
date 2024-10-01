@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import renderPDF from "../utils/renderPDF";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import { useDispatch } from "react-redux";
+import { setResources as setResourcesState } from "../features/resourceSlice";
 
 const MyUploads = () => {
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ const MyUploads = () => {
   const [resourceToDelete, setResourceToDelete] = useState(null); // Track the resource to be deleted
   // Get the user's authentication token from localStorage
   const token = localStorage.getItem("accessToken");
+  const dispatch = useDispatch();
 
   // Function to fetch the user's uploaded resources
   const loadResources = async () => {
@@ -56,6 +59,7 @@ const MyUploads = () => {
         setResources(
           resources.filter((resource) => resource._id !== resourceId)
         ); // Remove the resource from state
+        dispatch(setResourcesState(resources));
         setLoading(false);
       } catch (err) {
         setError("Failed to delete resource. Please try again.");
@@ -139,7 +143,7 @@ const MyUploads = () => {
 
       const updatedResources = await fetchUserResources(token); // Fetch the updated resources
       setResources(updatedResources); // Update the resources in state
-
+      dispatch(setResourcesState(updatedResources));
       setIsModalOpen(false); // Close the modal after saving
       setLoading(false);
     } catch (error) {
