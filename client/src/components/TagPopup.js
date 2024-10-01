@@ -69,6 +69,7 @@ const TagPopup = ({ tags, onTagToggle, selectedTags, style }) => {
                     selectedTags.includes(tag._id) ? "selected" : ""
                   }`}
                   onClick={(event) => handleTagClick(tag, event)}
+                  style={{ textTransform: "capitalize" }}
                 >
                   {tag.name}
                 </div>
