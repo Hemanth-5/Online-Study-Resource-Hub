@@ -17,6 +17,7 @@ import { setNotifications } from "../features/notificationSlice";
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State to control profile options popup
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false); // State to control logout confirmation modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,6 +46,26 @@ const Header = () => {
 
     navigate("/login");
   };
+
+  const renderLogoutConfirmModal = () => (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out?</p>
+        <div className="modal-buttons">
+          <button
+            className="modal-button cancel"
+            onClick={() => setShowLogoutConfirm(false)}
+          >
+            Cancel
+          </button>
+          <button className="modal-button logout" onClick={onLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <header className="header">
@@ -98,11 +119,17 @@ const Header = () => {
           <Link to="/profile" className="profile-option">
             Profile <FaUser className="profile-icon" />
           </Link>
-          <div className="profile-option" onClick={onLogout}>
+          <div
+            className="profile-option"
+            onClick={() => setShowLogoutConfirm(true)}
+          >
             Logout <FaDoorOpen className="logout-icon" />
           </div>
         </div>
       )}
+
+      {/* Render Logout Confirmation Modal */}
+      {showLogoutConfirm && renderLogoutConfirmModal()}
     </header>
   );
 };

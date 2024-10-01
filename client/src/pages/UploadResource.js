@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { uploadResource } from "../api/apiServices"; // Import the API service
 import * as pdfjsLib from "pdfjs-dist/webpack"; // Import pdfjs-dist for PDF rendering
@@ -33,6 +33,15 @@ const UploadResource = () => {
   };
 
   const closePopup = () => setPopup({ visible: false, message: "", type: "" });
+
+  const errorRef = useRef(null); // Create a reference for the error message element
+
+  useEffect(() => {
+    if (error && errorRef.current) {
+      // Focus on the error message element when error changes
+      errorRef.current.focus();
+    }
+  }, [error]); // Run this effect whenever the `error` state changes
 
   const handleFileChange = (e) => {
     let selectedFile;
@@ -117,7 +126,8 @@ const UploadResource = () => {
     setLoading(true); // Set loading state to true
 
     // Validate required fields
-    if (!file || !title || !category || selectedTags.length === 0) {
+    if (!file || !category || selectedTags.length === 0) {
+      console.log({ file, category, selectedTags });
       setError("Please fill in all required fields and select tags.");
       setLoading(false); // Set loading state to false
       return;
@@ -126,27 +136,28 @@ const UploadResource = () => {
     // Create FormData for the file upload
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("title", title);
     formData.append("description", description);
     formData.append("category", category);
-    formData.append("visibility", visibility);
+    formData.append("accessLevel", visibility);
+    formData.append("isQuestionPaper", category === "questionPapers");
 
-    // Append each selected tag individually
-    // selectedTags.forEach((tagId) => {
-    //   formData.append("tags[]", tagId); // Add each tag ID
-    // });
     formData.append("tags[]", selectedTags);
 
-    // console.log(selectedTags);
-
+    // Check whether file name already exists in the database
     try {
-      // Call the uploadResource function and pass the token and formData
       const response = await uploadResource(token, formData); // Pass token and formData to API function
-      showPopup("Resource uploaded successfully!", "success");
-      setTimeout(() => navigate("/my-uploads", { replace: true }), 3000);
+
+      if (response.message === "File already exists") {
+        setError("Resource already exists. Please upload a different file.");
+        setLoading(false); // Set loading state to false
+        return;
+      } else if (response.message === "Resource created") {
+        showPopup("Resource uploaded successfully!", "success");
+        setLoading(false); // Set loading state to false
+        setTimeout(() => navigate("/my-uploads", { replace: true }), 3000);
+      }
     } catch (err) {
       setError("Error uploading resource. Please try again.");
-      // showPopup("Error uploading resource. Please try again.", "error");
       setLoading(false); // Set loading state to false
     }
   };
@@ -172,7 +183,16 @@ const UploadResource = () => {
           )}
           <h2>Upload New Resource</h2>
 
-          {error && <p className="error-message">{error}</p>}
+          {/* Error message with reference for focus */}
+          {error && (
+            <p
+              className="error-message"
+              ref={errorRef} // Attach the ref to the error message element
+              tabIndex={-1} // Set tabIndex to make it focusable
+            >
+              {error}
+            </p>
+          )}
 
           <form onSubmit={handleUpload}>
             {/* Drag and Drop or File Upload */}
@@ -217,7 +237,7 @@ const UploadResource = () => {
             </div>
 
             {/* Other form inputs */}
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="title">Title</label>
               <input
                 type="text"
@@ -226,7 +246,7 @@ const UploadResource = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-            </div>
+            </div> */}
 
             <div className="form-group">
               <label htmlFor="description">Description</label>
@@ -252,8 +272,9 @@ const UploadResource = () => {
               >
                 <option value="">Select Category</option>
                 <option value="book">Book</option>
-                <option value="video">Video</option>
-                <option value="audio">Audio</option>
+                <option value="notes">Notes</option>
+                <option value="questionPapers">Question Paper</option>
+                <option value="other">Other</option>
               </select>
             </div>
 

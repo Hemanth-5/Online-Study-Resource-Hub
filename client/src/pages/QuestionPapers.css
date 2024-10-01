@@ -272,6 +272,7 @@
   margin: 5px;
   cursor: pointer;
 }
+
 .filter-button {
   border: none;
   background: #007bff;
@@ -283,6 +284,7 @@
   align-items: center;
   gap: 0.5rem;
   border-radius: 5px;
+  margin-left: 10px;
   transition: all 0.3s ease-in-out;
 }
 
@@ -362,7 +364,7 @@
   }
 
   .resources-content {
-    margin-left: 100px; /* Remove left margin */
+    margin-left: 0; /* Remove left margin */
     padding: 10px; /* Reduce padding */
   }
 
@@ -388,14 +390,13 @@
   }
 
   .uploader-info {
-    /* reduce font size */
-    font-size: 0.9em;
-    align-self: flex-end;
+    font-size: 1em; /* Adjust font size for uploader info */
   }
 
-  /* .search-bar,
+  .search-bar,
   .filter-dropdown {
     width: 100%; /* Full width for inputs */
+  }
 
   .back-button {
     width: 35px; /* Adjust button size */
@@ -418,7 +419,6 @@
   .resources-content {
     margin-left: 0; /* Remove left margin */
     padding: 10px; /* Reduce padding for better spacing */
-    margin-top: 15px;
   }
 
   .search-filter-container {
@@ -446,18 +446,18 @@
     height: 100px; /* Smaller height for thumbnails */
   }
 
+  .resource-details h4 {
+    font-size: 1em; /* Smaller font size */
+  }
+
   .resource-details p {
     font-size: 0.8em; /* Adjust description font size */
   }
 
   .uploader-info {
-    font-size: 0.7em;
-    align-self: flex-end;
-
-    img {
-      width: 22px; /* Adjust image size */
-      height: 22px;
-    }
+    font-size: 0.9em; /* Smaller font size for uploader info */
+    align-self: flex-end; /* Align uploader info to the start */
+    margin-top: 5px; /* Adjust margin */
   }
 
   .search-bar,

@@ -48,3 +48,49 @@
 .login-button:hover {
   background-color: #357ae8; /* Darker blue on hover */
 }
+@media (max-width: 768px) {
+  .login-box {
+    width: 80%; /* Expand width */
+    padding: 30px; /* Adjust padding */
+  }
+
+  .login-title {
+    font-size: 28px; /* Smaller title size */
+  }
+
+  .login-subtitle {
+    font-size: 14px; /* Smaller subtitle */
+  }
+
+  .login-button {
+    font-size: 14px; /* Smaller button font size */
+    padding: 10px 20px; /* Adjust padding */
+  }
+}
+
+/* Media query for screens with a maximum width of 768px */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 0 10px; /* Add padding around container */
+  }
+
+  .login-box {
+    width: 100%; /* Full width for small screens */
+    padding: 20px; /* Adjust padding */
+  }
+
+  .login-title {
+    font-size: 24px; /* Smaller title size */
+    margin-bottom: 8px;
+  }
+
+  .login-subtitle {
+    font-size: 12px; /* Smaller subtitle size */
+    margin-bottom: 16px;
+  }
+
+  .login-button {
+    font-size: 14px; /* Smaller button font size */
+    padding: 8px 16px; /* Adjust button padding */
+  }
+}

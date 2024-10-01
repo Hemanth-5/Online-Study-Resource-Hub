@@ -54,6 +54,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
     formData.append("description", description);
     formData.append("accessLevel", accessLevel);
     formData.append("fileName", fileName);
+    formData.append("isQuestionPaper", category === "questionPapers");
     // if (file) {
     //   formData.append("file", file);
     // }
@@ -108,8 +109,9 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
             >
               <option value="">Select Category</option>
               <option value="book">Book</option>
-              <option value="video">Video</option>
-              <option value="audio">Audio</option>
+              <option value="notes">Notes</option>
+              <option value="questionPapers">Question Paper</option>
+              <option value="other">Other</option>
             </select>
           </div>
 

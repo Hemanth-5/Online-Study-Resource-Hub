@@ -166,6 +166,7 @@
 
 .my-resource-view-section h2 {
   font-size: 24px; /* Title size */
+  margin-top: 22px;
   margin-bottom: 15px; /* Margin below title */
   color: #333; /* Dark color for title */
 }
@@ -277,11 +278,13 @@
 .resource-actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px; /* Margin below action buttons */
 }
 
 .edit-icon,
 .delete-icon {
+  font-size: 18px;
   cursor: pointer; /* Pointer cursor for icons */
   margin-right: 10px; /* Space between icons */
   color: #666; /* Default color */
@@ -389,8 +392,9 @@
 .close-modal:hover {
   color: #dc3545; /* Change color on hover */
 }
+/* Loading Spinner */
 .loading-overlay {
-  position: fixed;
+  position: fixed; /* Changed from absolute to fixed */
   top: 0;
   left: 0;
   width: 100%;
@@ -399,7 +403,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10; /* Above all content */
+  z-index: 10000; /* Above all content */
 }
 
 .loading-spinner {
@@ -409,4 +413,151 @@
   border-top: 6px solid #3498db; /* Blue border for spinner effect */
   border-radius: 50%;
   animation: spin 1s linear infinite; /* Continuous spin */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  /* Adjust the max-width as needed for your design */
+  .view-toggle {
+    display: none; /* Hide the toggle button in mobile view */
+  }
+
+  .resources-view {
+    display: flex; /* Use block display for list view */
+    flex-direction: column; /* Stack items vertically */
+  }
+
+  .resource-card {
+    display: flex; /* Flex layout for list view */
+    margin-bottom: 15px; /* Add space between resources */
+  }
+
+  .resource-thumbnail {
+    flex: 0 0 100px; /* Fixed width for thumbnail */
+    margin-right: 15px; /* Space between thumbnail and details */
+  }
+
+  .resource-details {
+    flex-grow: 1; /* Take the remaining space for details */
+
+    h4 {
+      font-size: 16px; /* Smaller title size */
+    }
+
+    p {
+      font-size: 12px; /* Smaller description size */
+    }
+  }
+
+  .my-resource-view-section {
+    margin-left: 100px;
+  }
+
+  .resources-view.grid {
+    /* No grid alayout should be applied */
+    display: block;
+  }
+
+  .edit-icon,
+  .delete-icon {
+    font-size: 22px;
+  }
+}
+/* Media query for screens with a maximum width of 768px */
+@media (max-width: 768px) {
+  .my-resource-view-section {
+    margin-left: 0;
+    padding: 10px;
+  }
+  /* General container adjustments */
+  .my-resources-container {
+    padding: 8px; /* Reduce padding */
+  }
+
+  /* Adjustments for buttons */
+  .upload-resource-btn {
+    padding: 6px 10px; /* Further reduce padding */
+    font-size: 12px; /* Smaller font size */
+  }
+
+  .view-toggle {
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: stretch; /* Full width for buttons */
+  }
+
+  .view-toggle button {
+    width: 100%; /* Full width */
+    margin-bottom: 8px; /* Space between buttons */
+  }
+
+  /* Grid layout adjustments */
+  .resources-view.grid {
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 10px; /* Reduced spacing */
+  }
+
+  .resource-details h4 {
+    font-size: 14px; /* Smaller title */
+  }
+
+  .resource-details p {
+    font-size: 10px; /* Smaller description */
+  }
+
+  /* Modal adjustments */
+  .modal {
+    width: 95%; /* Reduce modal width */
+    max-width: none; /* Remove max-width */
+  }
+
+  /* Toggle switch adjustments */
+  .toggle {
+    width: 40px; /* Smaller toggle */
+    height: 20px; /* Smaller height */
+  }
+
+  .toggle-circle {
+    width: 18px; /* Smaller circle */
+    height: 18px; /* Smaller circle */
+  }
+
+  .toggle.active .toggle-circle {
+    transform: translateX(20px); /* Adjust transform */
+  }
+
+  /* Adjustments for text fields and dropdowns */
+  .input-field,
+  .dropdown-field {
+    font-size: 12px; /* Smaller font size */
+    padding: 6px 8px; /* Reduce padding */
+  }
+
+  /* Navbar adjustments */
+  .navbar {
+    flex-direction: column; /* Stack elements */
+  }
+
+  .navbar .nav-item {
+    margin: 5px 0; /* Add spacing between items */
+  }
+
+  /* Adjustments for headers */
+
+  /* Adjustments for sidebar */
+  .sidebar {
+    width: 100%; /* Full width sidebar */
+  }
+
+  .sidebar .sidebar-item {
+    font-size: 14px; /* Smaller text */
+    padding: 8px; /* Reduce padding */
+  }
 }

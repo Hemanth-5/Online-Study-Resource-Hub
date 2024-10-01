@@ -13,6 +13,10 @@ const resourceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isQuestionPaper: {
+      type: Boolean,
+      default: false,
+    },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -29,7 +33,7 @@ const resourceSchema = new mongoose.Schema(
     ],
     category: {
       type: String,
-      enum: ["book", "video", "audio", "other"],
+      enum: ["book", "notes", "questionPapers", "other"],
       default: "other",
     },
     accessLevel: {

@@ -3,6 +3,7 @@
 /* Container for the entire upload page */
 
 .upload-page-main {
+  /* width: 100%; */
   display: flex;
   margin-left: 240px;
 }
@@ -134,29 +135,6 @@
   border-radius: 8px; /* Rounded corners */
 }
 
-/* Loading Spinner */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10; /* Above all content */
-}
-
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 6px solid #ffffff; /* White border */
-  border-top: 6px solid #3498db; /* Blue border for spinner effect */
-  border-radius: 50%;
-  animation: spin 1s linear infinite; /* Continuous spin */
-}
-
 /* Loading Spinner Animation */
 @keyframes spin {
   0% {
@@ -189,27 +167,138 @@
   cursor: not-allowed; /* No pointer cursor */
 }
 
-/* Responsive Styles */
-@media (max-width: 1024px) {
-  .upload-content-wrapper {
-    width: 85%; /* Increase width for smaller screens */
-    padding: 30px 20px;
-  }
-
-  .file-preview img {
-    max-width: 250px;
-    max-height: 300px; /* Adjust preview size */
-  }
-}
-
 @media (max-width: 768px) {
   .upload-content-wrapper {
-    width: 95%; /* Further increase width for mobile devices */
+    width: auto; /* Further increase width for mobile devices */
   }
 
   .form-group input,
   .form-group select,
   .form-group textarea {
     font-size: 14px; /* Reduce font size for smaller screens */
+  }
+}
+.loading-overlay {
+  position: fixed; /* Changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* Above all content */
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ffffff; /* White border */
+  border-top: 6px solid #3498db; /* Blue border for spinner effect */
+  border-radius: 50%;
+  animation: spin 1s linear infinite; /* Continuous spin */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 768px) {
+  .upload-page-main {
+    flex-direction: column; /* Stack elements vertically */
+    margin-left: 100px; /* Remove left margin */
+  }
+
+  /*  */
+
+  .upload-content-wrapper h2 {
+    font-size: 24px; /* Smaller title font size */
+  }
+
+  .form-group {
+    margin-bottom: 15px; /* Adjust spacing for form groups */
+  }
+
+  .error-message {
+    font-size: 14px; /* Smaller error message font size */
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 14px; /* Smaller font size for input fields */
+  }
+
+  .upload-button {
+    font-size: 16px; /* Adjust button font size */
+  }
+}
+@media (max-width: 768px) {
+  .upload-page-main {
+    flex-direction: column; /* Stack elements vertically */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  .upload-content-wrapper {
+    padding: 20px; /* Adjust padding for better spacing */
+    box-shadow: none; /* Remove shadow for a cleaner look */
+  }
+
+  .upload-content-wrapper h2 {
+    font-size: 20px; /* Smaller title font size */
+    margin-bottom: 15px; /* Adjust margin */
+  }
+
+  .form-group {
+    margin-bottom: 10px; /* Reduce spacing between form groups */
+  }
+
+  .error-message {
+    font-size: 12px; /* Smaller font size for error messages */
+    padding: 8px 10px; /* Adjust padding */
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 12px; /* Smaller font size for input fields */
+    padding: 8px 10px; /* Adjust padding */
+  }
+
+  .form-group textarea {
+    min-height: 80px; /* Reduce minimum height for textarea */
+  }
+
+  .upload-button {
+    font-size: 14px; /* Smaller button font size */
+    padding: 10px; /* Adjust padding */
+  }
+
+  .file-preview {
+    max-width: 100%; /* Full width on mobile */
+    padding: 15px; /* Adjust padding */
+  }
+
+  .file-preview img {
+    max-width: 100%; /* Image width should adapt to container */
+    max-height: 300px; /* Limit height for better display */
+  }
+
+  .form-drag-drop-preview {
+    padding: 20px 10px; /* Adjust padding for drag area */
+  }
+
+  .drag-drop-area {
+    padding: 30px 10px; /* Adjust padding for drag area */
+    font-size: 14px; /* Smaller font size */
+  }
+
+  .drag-drop-area p {
+    font-size: 14px; /* Adjust paragraph font size */
   }
 }

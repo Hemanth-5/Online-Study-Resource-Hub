@@ -10,6 +10,7 @@ import {
   fetchUserResources,
   fetchAllTags,
   fetchUserNotifications,
+  logRecentActivity,
 } from "../api/apiServices"; // Import API services
 import Popup from "../components/Popup"; // Assuming Popup component is available
 import "./Login.css"; // Import the external CSS file
@@ -43,6 +44,7 @@ const Login = () => {
     if (accessToken && refreshToken) {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+
       window.history.replaceState({}, document.title, "/dashboard");
     }
 
@@ -76,14 +78,19 @@ const Login = () => {
             if (name) {
               showPopup(`Welcome back, ${name}!`, "success");
             } else if (newUser) {
-              showPopup(`Welcome back!, ${userName}!`, "success");
+              showPopup(`Welcome back, ${userName}!`, "success");
             } else {
               showPopup(
                 "Welcome to Study Resoure Hub, loading your profile...",
                 "success"
               );
             }
-            setTimeout(() => navigate("/dashboard"), 5000); // Redirect to dashboard after 3 seconds
+
+            // logRecentActivity(accessToken, {
+            //   actionType: "login",
+            //   description: "User logged in successfully",
+            // }).then((response) => console.log(response));
+            setTimeout(() => navigate("/dashboard"), 2500); // Redirect to dashboard after 3 seconds
           } else {
             navigate("/dashboard");
           }

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   fetchResourceDetails,
   fetchCommentsForResource,
   addCommentToResource,
   replyToComment,
   fetchAllTags,
+  likeResource,
 } from "../api/apiServices";
 import * as pdfjsLib from "pdfjs-dist/webpack";
 import {
@@ -33,6 +35,7 @@ const ViewResource = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const canvasRef = useRef(null);
+  const userProfile = useSelector((state) => state.user.profile);
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -171,6 +174,16 @@ const ViewResource = () => {
     }));
   };
 
+  const handleLike = async () => {
+    await likeResource(token, resource._id);
+    setResource((prevResource) => ({
+      ...prevResource,
+      likes: prevResource.likes.includes(userProfile._id)
+        ? prevResource.likes.filter((id) => id !== userProfile._id)
+        : [...prevResource.likes, userProfile._id],
+    }));
+  };
+
   return (
     <div className="view-resource-container">
       <div className="back-button" onClick={() => navigate(-1)} title="Go Back">
@@ -180,6 +193,11 @@ const ViewResource = () => {
       <div className="resource-details">
         <h2 className="resource-title">{resource?.fileName}</h2>
         <p className="resource-description">{resource?.description}</p>
+        {/* Add a small note that if preview is not rendered, try refreshing the page */}
+
+        <p style={{ textAlign: "center" }}>
+          (If the page is not visible, try refreshing the site...)
+        </p>
 
         {resource?.fileUrl.endsWith(".pdf") ? (
           <div className="pdf-preview-canvas">
@@ -216,14 +234,30 @@ const ViewResource = () => {
           Open in New Tab
         </div>
 
-        <div className="resource-tags">
-          <h3>Tags:</h3>
-          <div className="tags-container">
-            {resource?.tags.map((tag) => (
-              <span key={tag} className="tag-pill">
-                {tags.find((t) => t._id === tag)?.name}
-              </span>
-            ))}
+        <div className="resource-bottom">
+          <div className="resource-tags">
+            <div className="tags-container">
+              {resource?.tags.map((tag) => (
+                <span key={tag} className="tag-pill">
+                  {tags.find((t) => t._id === tag)?.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="like-options">
+            <FaHeart
+              className={`like-icon ${
+                resource?.likes?.includes(userProfile?._id) ? "liked" : ""
+              }`}
+              title="Like"
+              onClick={handleLike}
+            />
+            <strong>
+              {resource?.likes?.length < 2
+                ? `${resource?.likes?.length} like`
+                : `${resource?.likes?.length} likes`}
+            </strong>
           </div>
         </div>
       </div>

@@ -98,7 +98,14 @@ const updateResourceFile = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { description, tags, category, accessLevel, fileName } = req.body;
+    const {
+      description,
+      tags,
+      category,
+      accessLevel,
+      fileName,
+      isQuestionPaper,
+    } = req.body;
     // const file = req.file;
 
     // Delete exisiting file from cloudinary
@@ -121,20 +128,21 @@ const updateResourceFile = async (req, res) => {
     //   }
     // }
 
-    const tagsArray = tags[0].split(",").map((tag) => tag.trim());
+    const tagsArray = Array.isArray(tags)
+      ? tags[0].split(",").map((tag) => tag.trim())
+      : tags.split(",").map((tag) => tag.trim());
     console.log({ description, tagsArray, category, accessLevel, fileName });
     // Check if there is a file included
+
     await Resource.findByIdAndUpdate(
       currentResource._id,
       {
         description,
         fileName,
-        // fileName: result.fileName,
-        // uploadId: result.public_id,
-        // fileUrl: result.url,
         tags: tagsArray,
         category,
         accessLevel,
+        isQuestionPaper,
       },
       { new: true }
     );
@@ -185,7 +193,7 @@ const deleteResourceFile = async (req, res) => {
 // Create, update, delete their resources, Search resources, filter resources, manage resource access, assign resource
 const createResource = async (req, res) => {
   try {
-    // Create resource and upload it to cloudinary
+    // Create resource and upload it to Cloudinary
     const uploader = await User.findById(req.user.id);
 
     if (!uploader) {
@@ -197,25 +205,41 @@ const createResource = async (req, res) => {
     }
 
     const fileName = req.file.originalname;
-    // Check whether the user already uplaods the file
+
+    // Check whether the user already uploaded the file
     const existingResource = await Resource.findOne({
       fileName,
       uploadedBy: uploader._id,
     });
 
     if (existingResource) {
-      return res.status(400).json({ message: "File already exists" });
+      return res.status(409).json({ message: "File already exists" }); // Use 409 Conflict status code
     }
 
     // Upload the file to Cloudinary
     const result = await uploadResourcesToCloudinary(req, req.file.buffer);
-    const { description, tags, category, accessLevel } = req.body;
-    // console.log({ description, tags, category, accessLevel });
-    // console.log(req.body);
+    const {
+      description,
+      tags,
+      category,
+      accessLevel,
+      isQuestionPaper,
+      questionPaperInfo,
+    } = req.body;
 
-    // Split tags by comma and remove whitespace only if a array is sent, else,
-    const tagsArray = tags[0].split(",").map((tag) => tag.trim());
-    // console.log({ tagsArray });
+    console.log({ tags });
+    // Convert tags to array if necessary
+    const tagsArray = Array.isArray(tags)
+      ? tags[0].split(",").map((tag) => tag.trim())
+      : tags.split(",").map((tag) => tag.trim());
+
+    console.log({
+      description,
+      tagsArray,
+      category,
+      accessLevel,
+      isQuestionPaper,
+    });
 
     const newResource = new Resource({
       fileName,
@@ -226,8 +250,10 @@ const createResource = async (req, res) => {
       tags: tagsArray,
       category,
       accessLevel,
+      isQuestionPaper: isQuestionPaper || false,
     });
 
+    console.log(newResource);
     const savedResource = await newResource.save();
 
     uploader.uploadedResources.push(savedResource._id);
@@ -235,7 +261,6 @@ const createResource = async (req, res) => {
 
     res.status(201).json({ message: "Resource created" });
   } catch (error) {
-    // console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -310,9 +335,19 @@ const likeResource = async (req, res) => {
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    // console.log({ currentUser, resource });
     if (resource.likes.includes(currentUser._id)) {
-      return res.status(400).json({ message: "Resource already liked" });
+      // return res.status(400).json({ message: "Resource already liked" });
+      // Remove the like if already liked
+      await Resource.findByIdAndUpdate(
+        resource._id,
+        { $pull: { likes: currentUser._id } },
+        { new: true }
+      );
+
+      console.log(await Resource.findById(resource._id));
+
+      return res.status(200).json({ message: "Resource unliked" });
     }
 
     await Resource.findByIdAndUpdate(
@@ -320,6 +355,8 @@ const likeResource = async (req, res) => {
       { $push: { likes: currentUser._id } },
       { new: true }
     );
+
+    console.log(await Resource.findById(resource._id));
 
     res.status(200).json({ message: "Resource liked" });
 

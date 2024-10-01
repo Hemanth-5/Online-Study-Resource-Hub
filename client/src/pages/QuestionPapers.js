@@ -10,7 +10,7 @@ import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import TagPopup from "../components/TagPopup";
 
-const Resources = () => {
+const QuestionPapers = () => {
   const [resources, setResources] = useState([]);
   const [filteredResources, setFilteredResources] = useState([]);
   const [tags, setTags] = useState([]);
@@ -63,16 +63,15 @@ const Resources = () => {
     const fetchResources = async () => {
       setLoading(true);
       try {
-        const data = await browseResources(token);
+        const data = await browseResources(token, { accessLevel: "public" });
 
-        const nonQPData = data.filter(
-          (resource) =>
-            !resource.isQuestionPaper && resource.accessLevel === "public"
+        const questionPapers = data.filter(
+          (resource) => resource.isQuestionPaper
         );
-        setResources(nonQPData);
-        setFilteredResources(nonQPData);
+        setResources(questionPapers);
+        setFilteredResources(questionPapers);
         setLoading(false);
-        nonQPData.forEach((resource, index) => {
+        questionPapers.forEach((resource, index) => {
           if (resource.fileUrl.endsWith(".pdf")) {
             fetchPDFPages(resource.fileUrl, index);
           }
@@ -170,7 +169,7 @@ const Resources = () => {
         )}
         <Navbar />
         <div className="resources-content">
-          <h2>Browse Resources</h2>
+          <h2>Browse Question Papers</h2>
 
           <div className="search-filter-container">
             <input
@@ -243,7 +242,7 @@ const Resources = () => {
                 </Link>
               ))
             ) : (
-              <div>No resources found</div>
+              <div>No question papers found</div>
             )}
           </div>
         </div>
@@ -252,4 +251,4 @@ const Resources = () => {
   );
 };
 
-export default Resources;
+export default QuestionPapers;

@@ -216,7 +216,9 @@ const CompleteRegistration = () => {
 
   return (
     <div className="complete-registration-container">
-      <Header userProfile={userProfile} />
+      <div className="complete-registration-header">
+        <Header userProfile={userProfile} />
+      </div>
       <div className="complete-registration-main">
         <Navbar />
         <div className="complete-registration-content">
@@ -225,7 +227,11 @@ const CompleteRegistration = () => {
               <div className="loading-spinner"></div>
             </div>
           )}
-          <h1>Edit Profile</h1>
+          {userProfile.isProfileComplete ? (
+            <h1>Edit Profile</h1>
+          ) : (
+            <h1>Complete your Profile...</h1>
+          )}
           <div className="profile-photo-section">
             <div
               className={`profile-photo-dropzone ${dragging ? "dragging" : ""}`}
@@ -407,7 +413,7 @@ const CompleteRegistration = () => {
           />
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
