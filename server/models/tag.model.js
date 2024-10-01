@@ -11,11 +11,11 @@ const tagSchema = new mongoose.Schema(
       type: String,
       enum: [
         "department",
-        "course",
         "branch",
         "subject",
         "questionType",
         "semester",
+        "batch",
       ],
       // enum for questionType => ["semester", "assessment", "tutorial"]
       required: true,

@@ -78,7 +78,8 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
       {Object.entries(groupedTagsByType).map(([type, tags]) => (
         <div key={type}>
           {/* Capitalize type */}
-          <h4>{type}</h4> {/* Type Header */}
+          <h4 style={{ textTransform: "capitalize" }}>{type}</h4>{" "}
+          {/* Type Header */}
           <div className="tag-group">
             {tags.map((tag) => (
               <div
@@ -87,6 +88,7 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
                   selectedTagIds.includes(tag._id) ? "selected" : ""
                 }`}
                 onClick={() => handleTagClick(tag._id)} // Toggle on click
+                style={{ textTransform: "capitalize" }}
               >
                 {tag.name}
               </div>
