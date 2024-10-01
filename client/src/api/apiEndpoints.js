@@ -51,7 +51,7 @@ const API_ENDPOINTS = {
     // Admin specific endpoints
     TAG: (id) => `${BASE_URL}/v2/tags/${id}`, // Fetch a specific tag by ID
     CREATE: `${BASE_URL}/v2/tags/create`, // Create a new tag (admin only)
-    DELETE: (id) => `${BASE_URL}/v2/tags/delete/${id}`, // Delete a tag by ID (admin only)
+    DELETE: (id) => `${BASE_URL}/v2/tags/${id}`, // Delete a tag by ID (admin only)
   },
   COMMENTS: {
     ADD: (id) => `${BASE_URL}/v2/comments/${id}`,

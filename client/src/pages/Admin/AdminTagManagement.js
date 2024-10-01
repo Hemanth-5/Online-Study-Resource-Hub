@@ -58,7 +58,7 @@ const AdminTagManagement = () => {
   const handleDeleteTag = async (tagId) => {
     // Renamed function
     try {
-      await apiDeleteTag(tagId, token); // Use imported apiDeleteTag
+      await apiDeleteTag(token, tagId); // Use imported apiDeleteTag
       setMessage("Tag deleted successfully");
       fetchTags();
     } catch (error) {
