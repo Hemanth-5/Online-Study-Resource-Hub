@@ -190,7 +190,8 @@ const Resources = () => {
               ref={filterButtonRef} // Attach the ref to the button
               onClick={handleShowFilters} // Update click handler
             >
-              <FontAwesomeIcon icon={faSliders} /> Show Filters
+              <FontAwesomeIcon icon={faSliders} />{" "}
+              {showFilters ? "Show Filters" : "Hide Filters"}
             </button>
           </div>
 
