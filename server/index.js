@@ -27,27 +27,18 @@ console.log(process.env.FRONTEND_URL.toString());
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL.toString(), // Frontend origin
+    origin: [
+      "https://online-study-resource-hub-odo4.vercel.app",
+      "http://localhost:3000",
+    ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // Allow cookies to be sent
+    credentials: true,
   })
 );
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
-
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    process.env.VERCEL_URL.toString()
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
 
 // API Endpoints
 app.use("/api/auth", authRoutes);
