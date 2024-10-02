@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    process.env.VERCEL_FRONTEND.toString()
+    process.env.VERCEL_URL.toString()
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
