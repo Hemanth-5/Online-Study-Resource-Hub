@@ -481,7 +481,6 @@
 
   .tag-popup {
     /* width: 100%; Make tag popup take full width */
-    width: calc(100% - 75px);
     left: 0;
     margin: 0;
     padding: 10px; /* Adjust padding */

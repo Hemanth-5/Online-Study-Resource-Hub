@@ -15,3 +15,9 @@
     color: dodgerblue;
   }
 }
+
+@media (max-width: 768px) {
+  .tag-popup {
+    width: calc(100% - 75px);
+  }
+}
