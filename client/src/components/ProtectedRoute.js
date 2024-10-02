@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode"; // Ensure you have jwt-decode installed
 import { refreshAccessToken } from "../api/apiServices"; // Your function to refresh token
+import Popup from "./Popup"; // Import the Popup component
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
 
   // Utility function to check if the token is expired or near expiration
   const isTokenExpiredOrNearExpiry = (token, offset = 60000) => {
@@ -18,13 +20,21 @@ const ProtectedRoute = ({ children }) => {
     return expiryTime - currentTime < offset; // True if the token will expire within `offset` milliseconds
   };
 
+  const showPopup = (message, type) => {
+    setPopup({ visible: true, message, type });
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 4000); // Auto-close after 4 seconds
+  };
+
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
+
   // Function to handle user logout and navigation
   const dispatchLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     dispatch({ type: "user/logout" });
-    alert("Session expired. Please log in again.");
-    navigate("/login");
+    showPopup("Session expired. Please log in again", "failure");
+    // navigate("/login");
+    setTimeout(() => navigate("/login"), 4000);
   };
 
   // Function to check and refresh tokens if needed
@@ -89,7 +99,14 @@ const ProtectedRoute = ({ children }) => {
     };
   }, [navigate, dispatch]);
 
-  return isAuthenticated ? children : null; // Render children if authenticated, else null
+  return (
+    <>
+      {popup.visible && (
+        <Popup message={popup.message} type={popup.type} onClose={closePopup} />
+      )}
+      {isAuthenticated ? children : null}
+    </>
+  );
 };
 
 export default ProtectedRoute;
