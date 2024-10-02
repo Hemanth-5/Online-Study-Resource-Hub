@@ -16,10 +16,12 @@ import renderPDF from "../utils/renderPDF";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useDispatch } from "react-redux";
 import { setResources as setResourcesState } from "../features/resourceSlice";
+import Popup from "../components/Popup";
 
 const MyUploads = () => {
   const navigate = useNavigate();
-  const [resources, setResources] = useState([]); // Holds the user's uploaded resources
+  const [resources, setResources] = useState([]);
+  const [filteredResources, setFilteredResources] = useState([]); // Holds the user's uploaded resources
   const [viewMode, setViewMode] = useState("grid"); // Toggle between grid and list view
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -32,7 +34,8 @@ const MyUploads = () => {
   // Get the user's authentication token from localStorage
   const token = localStorage.getItem("accessToken");
   const dispatch = useDispatch();
-
+  const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
+  const [query, setQuery] = useState("");
   // Function to fetch the user's uploaded resources
   const loadResources = async () => {
     try {
@@ -115,10 +118,36 @@ const MyUploads = () => {
     });
   }, [resources]);
 
+  useEffect(() => {
+    const filterResourcesLocally = () => {
+      let updatedResources = resources;
+
+      if (query) {
+        updatedResources = updatedResources.filter(
+          (resource) =>
+            resource.fileName.toLowerCase().includes(query.toLowerCase()) ||
+            (resource.description &&
+              resource.description.toLowerCase().includes(query.toLowerCase()))
+        );
+      }
+
+      setFilteredResources(updatedResources);
+    };
+
+    filterResourcesLocally();
+  }, [query, resources]);
+
   // Navigate to the resource upload page
   const handleUploadResource = () => {
     navigate("/resources/upload", { replace: true });
   };
+
+  const showPopup = (message, type) => {
+    setPopup({ visible: true, message, type });
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 4000); // Auto-close after 4 seconds
+  };
+
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
 
   // Function to open the modal for editing a resource
   const handleEdit = (resource) => {
@@ -168,6 +197,7 @@ const MyUploads = () => {
       await deleteResource(token, resourceToDelete._id);
       setResources(resources.filter((res) => res._id !== resourceToDelete._id));
       setLoading(false);
+      showPopup("Resource deleted successfully...", "success");
       setShowDeleteModal(false); // Close the modal after deletion
     } catch (err) {
       setError("Failed to delete resource. Please try again.");
@@ -194,6 +224,15 @@ const MyUploads = () => {
         <Navbar />
         <div className="my-resource-view-section">
           <h2>My Resources</h2>
+          <div className="search-filter-container">
+            <input
+              type="text"
+              placeholder="Search by keyword"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="search-bar"
+            />
+          </div>
           <Link className="upload-resource-btn" to={"/resources/upload"}>
             Upload Resource <FaPlus />
           </Link>
@@ -211,60 +250,67 @@ const MyUploads = () => {
 
           {/* Render the user's resources */}
           <div className={`resources-view ${viewMode}`}>
-            {resources.map((resource, index) => (
-              <div
-                key={resource._id}
-                className="resource-card"
-                onClick={() => navigate(`/resources/view/${resource._id}`)}
-              >
-                <div className="resource-thumbnail">
-                  {resource.fileUrl.endsWith(".pdf") ? (
-                    <div className="pdf-preview">
-                      <canvas
-                        style={{
-                          width: "-webkit-fill-available",
-                          height: "auto",
+            {filteredResources.length > 0 ? (
+              filteredResources.map((resource, index) => (
+                <div
+                  key={resource._id}
+                  className="resource-card"
+                  onClick={() => navigate(`/resources/view/${resource._id}`)}
+                >
+                  <div className="resource-thumbnail">
+                    {resource.fileUrl.endsWith(".pdf") ? (
+                      <div className="pdf-preview">
+                        <canvas
+                          style={{
+                            width: "-webkit-fill-available",
+                            height: "auto",
+                          }}
+                          ref={(el) => (canvasRefs.current[index] = el)}
+                        />
+                      </div>
+                    ) : (
+                      <img src={resource.fileUrl} alt={resource.fileName} />
+                    )}
+                  </div>
+                  <div className="resource-details">
+                    <h4>{resource.fileName}</h4>
+                    <p>{resource.description}</p>
+
+                    {/* Edit and Delete buttons */}
+                    <div className="resource-actions">
+                      <FaEdit
+                        className="edit-icon"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents the link from being activated
+                          handleEdit(resource);
                         }}
-                        ref={(el) => (canvasRefs.current[index] = el)}
+                        title="Edit Resource"
+                      />
+                      <FaTrash
+                        className="delete-icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClick(resource);
+                        }}
+                        title="Delete Resource"
                       />
                     </div>
-                  ) : (
-                    <img src={resource.fileUrl} alt={resource.fileName} />
-                  )}
-                </div>
-                <div className="resource-details">
-                  <h4>{resource.fileName}</h4>
-                  <p>{resource.description}</p>
 
-                  {/* Edit and Delete buttons */}
-                  <div className="resource-actions">
-                    <FaEdit
-                      className="edit-icon"
+                    <button
+                      className="open-resource-btn"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevents the link from being activated
-                        handleEdit(resource);
+                        e.stopPropagation(); // Prevents triggering the card click
+                        window.open(resource.fileUrl, "_blank");
                       }}
-                      title="Edit Resource"
-                    />
-                    <FaTrash
-                      className="delete-icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteClick(resource);
-                      }}
-                      title="Delete Resource"
-                    />
+                    >
+                      Open Resource
+                    </button>
                   </div>
-
-                  <button
-                    className="open-resource-btn"
-                    onClick={() => window.open(resource.fileUrl, "_blank")}
-                  >
-                    Open Resource
-                  </button>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No resources found</p>
+            )}
           </div>
 
           {/* Conditionally render the EditResourceModal */}
@@ -281,6 +327,14 @@ const MyUploads = () => {
               onConfirm={handleConfirmDelete}
               onCancel={handleCancelDelete}
               resourceName={resourceToDelete?.fileName}
+            />
+          )}
+
+          {popup.visible && (
+            <Popup
+              message={popup.message}
+              type={popup.type}
+              onClose={closePopup}
             />
           )}
         </div>

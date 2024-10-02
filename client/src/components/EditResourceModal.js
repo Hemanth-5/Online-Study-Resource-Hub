@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TagsDropdown from "../components/TagsDropdown";
 import "./EditResourceModal.css";
+import Popup from "./Popup";
 
 const EditResourceModal = ({ resource, onSave, onClose }) => {
   const [tags, setTags] = useState(resource.tags || []); // Use resource tags as initial state
@@ -14,6 +15,7 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
   const [file, setFile] = useState(null);
   // const [filePreview, setFilePreview] = useState(resource.file || null); // Preview existing file if available
   const [errorMessage, setErrorMessage] = useState("");
+  const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
 
   // Handle file selection and preview
   // const handleFileChange = (e) => {
@@ -31,7 +33,12 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
   //     setFilePreview(null);
   //   }
   // };
+  const showPopup = (message, type) => {
+    setPopup({ visible: true, message, type });
+    setTimeout(() => setPopup({ visible: false, message: "", type: "" }), 4000); // Auto-close after 4 seconds
+  };
 
+  const closePopup = () => setPopup({ visible: false, message: "", type: "" });
   // Handle tag selection from TagsDropdown
   const handleTagSelection = (selectedTagIds) => {
     // console.log({ selectedTagIds });
@@ -163,6 +170,14 @@ const EditResourceModal = ({ resource, onSave, onClose }) => {
             </div>
           </div> */}
         </div>
+
+        {popup.visible && (
+          <Popup
+            message={popup.message}
+            type={popup.type}
+            onClose={closePopup}
+          />
+        )}
 
         {/* Save and Cancel Buttons */}
         <div className="form-buttons">
