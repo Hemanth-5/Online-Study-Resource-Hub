@@ -136,9 +136,12 @@ const AdminTagManagement = () => {
             >
               <option value="">Select Tag Type</option>
               <option value="department">Department</option>
-              <option value="course">Course</option>
+              {/* <option value="course">Course</option> */}
               <option value="branch">Branch</option>
               <option value="subject">Subject</option>
+              <option value="questionType">Question Type</option>
+              <option value="semester">Semester</option>
+              <option value="batch">Batch</option>
             </select>
           </div>
 
