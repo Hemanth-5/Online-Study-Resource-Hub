@@ -10,6 +10,9 @@ import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import TagPopup from "../components/TagPopup";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSliders } from "@fortawesome/free-solid-svg-icons";
+
 const QuestionPapers = () => {
   const [resources, setResources] = useState([]);
   const [filteredResources, setFilteredResources] = useState([]);
@@ -187,7 +190,8 @@ const QuestionPapers = () => {
               ref={filterButtonRef} // Attach the ref to the button
               onClick={handleShowFilters} // Update click handler
             >
-              <FaFilter /> Show Filters
+              <FontAwesomeIcon icon={faSliders} />{" "}
+              {showFilters ? "Hide Filters" : "Show Filters"}
             </button>
           </div>
 

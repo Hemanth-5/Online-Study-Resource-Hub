@@ -191,7 +191,7 @@ const Resources = () => {
               onClick={handleShowFilters} // Update click handler
             >
               <FontAwesomeIcon icon={faSliders} />{" "}
-              {showFilters ? "Show Filters" : "Hide Filters"}
+              {showFilters ? "Hide Filters" : "Show Filters"}
             </button>
           </div>
 
