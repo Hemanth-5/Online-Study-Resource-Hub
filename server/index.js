@@ -21,7 +21,7 @@ dotenv.config();
 // App Config
 const app = express();
 
-console.log(process.env.FRONTEND_URL.toString());
+// console.log(process.env.FRONTEND_URL.toString());
 
 // Inbuilt Middleware
 app.use(express.json());

@@ -131,7 +131,7 @@ const updateResourceFile = async (req, res) => {
     const tagsArray = Array.isArray(tags)
       ? tags[0].split(",").map((tag) => tag.trim())
       : tags.split(",").map((tag) => tag.trim());
-    console.log({ description, tagsArray, category, accessLevel, fileName });
+    // console.log({ description, tagsArray, category, accessLevel, fileName });
     // Check if there is a file included
 
     await Resource.findByIdAndUpdate(
@@ -227,19 +227,19 @@ const createResource = async (req, res) => {
       questionPaperInfo,
     } = req.body;
 
-    console.log({ tags });
+    // console.log({ tags });
     // Convert tags to array if necessary
     const tagsArray = Array.isArray(tags)
       ? tags[0].split(",").map((tag) => tag.trim())
       : tags.split(",").map((tag) => tag.trim());
 
-    console.log({
-      description,
-      tagsArray,
-      category,
-      accessLevel,
-      isQuestionPaper,
-    });
+    // // console.log({
+    //   // description,
+    //   tagsArray,
+    //   category,
+    //   accessLevel,
+    //   isQuestionPaper,
+    // });
 
     const newResource = new Resource({
       fileName,
@@ -253,7 +253,7 @@ const createResource = async (req, res) => {
       isQuestionPaper: isQuestionPaper || false,
     });
 
-    console.log(newResource);
+    // console.log(newResource);
     const savedResource = await newResource.save();
 
     uploader.uploadedResources.push(savedResource._id);
@@ -345,7 +345,7 @@ const likeResource = async (req, res) => {
         { new: true }
       );
 
-      console.log(await Resource.findById(resource._id));
+      // console.log(await Resource.findById(resource._id));
 
       return res.status(200).json({ message: "Resource unliked" });
     }
@@ -356,7 +356,7 @@ const likeResource = async (req, res) => {
       { new: true }
     );
 
-    console.log(await Resource.findById(resource._id));
+    // console.log(await Resource.findById(resource._id));
 
     res.status(200).json({ message: "Resource liked" });
 

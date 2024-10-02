@@ -5,7 +5,7 @@ import Popup from "./Popup";
 
 const EditResourceModal = ({ resource, onSave, onClose }) => {
   const [tags, setTags] = useState(resource.tags || []); // Use resource tags as initial state
-  console.log({ initialTags: tags });
+  // console.log({ initialTags: tags });
   const [category, setCategory] = useState(resource.category || "");
   const [fileName, setFileName] = useState(resource.fileName || "");
   const [description, setDescription] = useState(resource.description || "");

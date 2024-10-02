@@ -40,8 +40,8 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
 
   // Toggle selection of a tag
   const handleTagClick = (tagId) => {
-    console.log({ before: selectedTagIds });
-    console.log({ id: tagId });
+    // console.log({ before: selectedTagIds });
+    // console.log({ id: tagId });
 
     let updatedTags;
     if (!selectedTagIds.includes(tagId)) {
@@ -55,7 +55,7 @@ const TagDropdown = ({ onTagSelect, selectedTags }) => {
     setSelectedTagIds(updatedTags);
 
     // Log the updated state using the local variable
-    console.log({ after: updatedTags });
+    // console.log({ after: updatedTags });
 
     // Notify the parent component with the updated tag list
     onTagSelect(updatedTags); // Pass the updatedTags instead of selectedTagIds

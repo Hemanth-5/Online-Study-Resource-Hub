@@ -16,24 +16,26 @@ const FeedbackForm = () => {
   const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
   const navigate = useNavigate();
   // Check for previous feedback
-  useEffect(() => {
-    if (userProfile.providedFeedback) {
-      // Set ratings if feedback is already provided
-      showPopup("You have already provided feedback!", "info");
-      setRatings(userProfile.feedbackInfo);
-    }
-  }, [userProfile]);
+  // useEffect(() => {
+  //   if (userProfile.providedFeedback) {
+  //     // Set ratings if feedback is already provided
+  //     setRatings(userProfile.feedbackInfo);
+  //   }
+  // }, [userProfile]);
 
-  console.log(userProfile);
+  // console.log(userProfile);
 
   // State to track ratings for each question
-  const [ratings, setRatings] = useState({
+  const initialFeedback = {
     question1: 0,
     question2: 0,
     question3: 0,
     question4: 0,
     question5: 0,
-  });
+  };
+  const [ratings, setRatings] = useState(
+    userProfile.providedFeedback ? userProfile.feedbackInfo : initialFeedback
+  );
 
   // Handler to update state when a rating is set
   const handleRatingChange = (question, value) => {
@@ -56,7 +58,7 @@ const FeedbackForm = () => {
     if (userProfile.providedFeedback) {
       updateFeedback(token, ratings)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.message === "Feedback updated") {
             dispatch(setUserProfile({ ...userProfile, feedbackInfo: ratings }));
             showPopup("Feedback updated successfully", "success");
@@ -70,7 +72,7 @@ const FeedbackForm = () => {
       // Post feedback if not provided
       postFeedback(token, ratings)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.message === "Feedback submitted") {
             dispatch(
               setUserProfile({
@@ -88,6 +90,15 @@ const FeedbackForm = () => {
         });
     }
   };
+
+  // useEffect(() => userProfile.providedFeedback
+  //   ? showPopup("You have already provided feedback", "info")
+  //   : null;, [])
+  useEffect(() => {
+    if (userProfile.providedFeedback) {
+      showPopup("You have already provided feedback", "info");
+    }
+  }, []);
 
   return (
     <div className="feedback-form-container">
