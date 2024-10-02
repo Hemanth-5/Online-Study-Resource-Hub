@@ -20,10 +20,12 @@ const Login = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(
+    localStorage.getItem("accessToken") !== null
+  );
 
   const handleGoogleLogin = () => {
-    console.log(`${process.env.REACT_APP_API_URL}/auth/google`);
+    // console.log(`${process.env.REACT_APP_API_URL}/auth/google`);
     window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
   };
 
@@ -50,9 +52,11 @@ const Login = () => {
     }
 
     const token = accessToken || localStorage.getItem("accessToken");
+    // console.log({ token });
 
     if (token) {
       // dispatch(setLoading("loading"));
+      console.log("In toke part");
       setLoading(true);
       // Fetch user profile
       fetchUserProfile(token)
@@ -66,7 +70,7 @@ const Login = () => {
             fetchUserResources(token),
             fetchAllTags(token),
             fetchUserNotifications(token, userResponse._id),
-          ]); // Fetch resources and tags
+          ]); // Fetch resources }and tags
         })
         .then(([resourcesResponse, tagsResponse, notificationResponse]) => {
           dispatch(setResources(resourcesResponse)); // Update resources state
