@@ -127,7 +127,7 @@ const UploadResource = () => {
 
     // Validate required fields
     if (!file || !category || selectedTags.length === 0) {
-      console.log({ file, category, selectedTags });
+      // console.log({ file, category, selectedTags });
       setError("Please fill in all required fields and select tags.");
       setLoading(false); // Set loading state to false
       return;
