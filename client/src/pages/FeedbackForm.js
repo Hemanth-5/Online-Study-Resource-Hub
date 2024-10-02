@@ -19,6 +19,7 @@ const FeedbackForm = () => {
   useEffect(() => {
     if (userProfile.providedFeedback) {
       // Set ratings if feedback is already provided
+      showPopup("You have already provided feedback!", "info");
       setRatings(userProfile.feedbackInfo);
     }
   }, [userProfile]);

@@ -3,7 +3,8 @@ import "./Popup.css";
 
 const Popup = ({ message, type, onClose }) => {
   // Determine the background color and loading bar color based on the type
-  const loadingBarColor = type === "success" ? "green" : "red";
+  const loadingBarColor =
+    type === "success" ? "green" : type === "failure" ? "red" : "yellow";
 
   return (
     <div className="popup">
