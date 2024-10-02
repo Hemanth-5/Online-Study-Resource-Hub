@@ -15,6 +15,12 @@
   font-weight: bold;
   color: #333;
   cursor: pointer;
+  margin: 0;
+  /* width: 24px; */
+}
+
+.logo-image {
+  width: 200px;
 }
 
 .header-left {
@@ -262,7 +268,17 @@
     font-size: medium;
   }
 
+  .logo-image {
+    width: 150px;
+  }
+
   .notification-popup {
     left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-image {
+    width: 120px;
   }
 }

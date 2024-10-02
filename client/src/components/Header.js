@@ -14,6 +14,7 @@ import { setUserProfile } from "../features/userSlice";
 import { setResources } from "../features/resourceSlice";
 import { setTags } from "../features/tagSlice";
 import { setNotifications } from "../features/notificationSlice";
+import logo from "../assets/svg/logo-no-background.svg";
 
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -70,8 +71,10 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="logo" onClick={() => navigate("/dashboard")}>
-        Resource Hub
+      <div className="logo">
+        <Link to="/dashboard">
+          <img src={logo} alt="Logo" className="logo-image" />
+        </Link>
       </div>
 
       {/* <div className="header-left">
