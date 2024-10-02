@@ -50,7 +50,6 @@
 }
 @media (max-width: 768px) {
   .login-box {
-    width: 80%; /* Expand width */
     padding: 30px; /* Adjust padding */
   }
 
@@ -75,7 +74,6 @@
   }
 
   .login-box {
-    width: 100%; /* Full width for small screens */
     padding: 20px; /* Adjust padding */
   }
 
