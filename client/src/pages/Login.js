@@ -54,14 +54,26 @@ const Login = () => {
     const token = accessToken || localStorage.getItem("accessToken");
     // console.log({ token });
 
+    const timeoutDuration = 15000; // Set timeout duration to 15 seconds
+    let timeoutId;
+
     if (token) {
-      // dispatch(setLoading("loading"));
-      // console.log("In toke part");
       setLoading(true);
+
+      // Start a timeout to detect long loading times
+      timeoutId = setTimeout(() => {
+        // If still loading after the timeout, show a popup and refresh the page
+        if (loading) {
+          showPopup("Login timed out. Please try logging in again.", "failure");
+          setTimeout(() => window.location.reload(), 3000); // Reload the page after 3 seconds
+        }
+      }, timeoutDuration);
+
       // Fetch user profile
       fetchUserProfile(token)
         .then((userResponse) => {
-          // console.log(userResponse);
+          // Clear timeout if the fetch succeeds before timeout duration
+          clearTimeout(timeoutId);
           name = userResponse.name;
           newUser = userResponse.isProfileComplete;
           userName = userResponse.username;
@@ -70,61 +82,60 @@ const Login = () => {
             fetchUserResources(token),
             fetchAllTags(token),
             fetchUserNotifications(token, userResponse._id),
-          ]); // Fetch resources }and tags
+          ]); // Fetch resources and tags
         })
         .then(([resourcesResponse, tagsResponse, notificationResponse]) => {
           dispatch(setResources(resourcesResponse)); // Update resources state
           dispatch(setTags(tagsResponse)); // Update tags state
           dispatch(setNotifications(notificationResponse));
 
-          // console.log({ resourcesResponse, tagsResponse });
-          // dispatch(setLoading("succeeded"));
-          setLoading(false);
+          setLoading(false); // Update loading state to false after successful fetch
+
           if (accessToken) {
+            // Show appropriate welcome popup
             if (name) {
               showPopup(`Welcome back, ${name}!`, "success");
             } else if (newUser) {
               showPopup(`Welcome back, ${userName}!`, "success");
             } else {
               showPopup(
-                "Welcome to Study Resoure Hub, loading your profile...",
+                "Welcome to Study Resource Hub, loading your profile...",
                 "success"
               );
             }
 
-            // logRecentActivity(accessToken, {
-            //   actionType: "login",
-            //   description: "User logged in successfully",
-            // }).then((response) => console.log(response));
-            setTimeout(() => navigate("/dashboard"), 2500); // Redirect to dashboard after 3 seconds
+            // Navigate to dashboard after a short delay
+            setTimeout(() => navigate("/dashboard"), 2500);
           } else {
             navigate("/dashboard");
           }
-          // navigate("/dashboard");
         })
         .catch((err) => {
+          clearTimeout(timeoutId); // Clear timeout on error
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
 
+          showPopup("An error occurred. Please log in again.", "failure");
+
           // Redirect to login after showing the error
-          navigate("/login");
+          setTimeout(() => navigate("/login"), 3000);
         });
     } else {
+      // If there's no token or an error in the URL params
       const error = params.get("error") || "Failed to fetch user data";
       const errorType = params.get("type") || null;
-      if (
-        error &&
-        error === "google-auth" &&
-        errorType &&
-        errorType === "domain"
-      ) {
-        showPopup("Only PSG Tech students allowed", "failure");
+
+      if (error === "google-auth" && errorType === "domain") {
+        showPopup("Only PSG Tech students are allowed.", "failure");
       }
 
       // Redirect to login after showing the error
       setTimeout(() => navigate("/login"), 5000);
     }
-  }, [dispatch, navigate, location.search]);
+
+    // Clean up timeout on component unmount or if dependencies change
+    return () => clearTimeout(timeoutId);
+  }, [dispatch, navigate, location.search, loading]);
 
   return (
     <div className="login-container">
