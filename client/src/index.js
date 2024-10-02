@@ -24,6 +24,7 @@ import AdminTagManagement from "./pages/Admin/AdminTagManagement";
 // import DesktopSuggestionPopup from "./components/DesktopSuggestionPopup"; // Import the popup component
 // import { isMobileDevice } from "./utils/deviceUtils"; // Import the device detection function
 import QuestionPapers from "./pages/QuestionPapers";
+import FeedbackForm from "./pages/FeedbackForm";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -123,6 +124,14 @@ const Index = () => {
                 element={
                   <ProtectedRoute>
                     <QuestionPapers />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/feedback"
+                element={
+                  <ProtectedRoute>
+                    <FeedbackForm />
                   </ProtectedRoute>
                 }
               />

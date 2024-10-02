@@ -274,6 +274,26 @@ const markNotificationAsRead = async (token, notificationId) => {
 const likeResource = async (token, resourceId) => {
   return apiRequest(API_ENDPOINTS.RESOURCES.LIKE(resourceId), "PUT", token);
 };
+
+// User feedbacks
+const postFeedback = async (token, feedbackData) => {
+  return apiRequest(
+    API_ENDPOINTS.USERS.POST_FEEDBACK,
+    "POST",
+    token,
+    feedbackData
+  );
+};
+
+const updateFeedback = async (token, feedbackData) => {
+  return apiRequest(
+    API_ENDPOINTS.USERS.UPDATE_FEEDBACK(feedbackData.id),
+    "PUT",
+    token,
+    feedbackData
+  );
+};
+
 // Export the new function
 export {
   fetchUserProfile,
@@ -302,4 +322,6 @@ export {
   viewUserProfile,
   markNotificationAsRead,
   likeResource,
+  postFeedback,
+  updateFeedback,
 };

@@ -64,6 +64,32 @@ const userSchema = new mongoose.Schema(
         ref: "Resource",
       },
     ],
+    providedFeedback: {
+      type: Boolean,
+      default: false,
+    },
+    feedbackInfo: {
+      question1: {
+        type: Number,
+        default: 0,
+      },
+      question2: {
+        type: Number,
+        default: 0,
+      },
+      question3: {
+        type: Number,
+        default: 0,
+      },
+      question4: {
+        type: Number,
+        default: 0,
+      },
+      question5: {
+        type: Number,
+        default: 0,
+      },
+    },
     studyGroups: [
       {
         type: mongoose.Schema.Types.ObjectId,

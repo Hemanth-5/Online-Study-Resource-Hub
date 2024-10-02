@@ -18,6 +18,9 @@ const API_ENDPOINTS = {
     // Admin
     USERS: `${BASE_URL}/v2/users`,
     USER: (id) => `${BASE_URL}/v2/users/${id}`,
+
+    POST_FEEDBACK: `${BASE_URL}/v2/users/feedback`,
+    UPDATE_FEEDBACK: (id) => `${BASE_URL}/v2/users/feedback/${id}`,
   },
   RESOURCES: {
     MY_RESOURCES: `${BASE_URL}/v2/resources/my-resources`,

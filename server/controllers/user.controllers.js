@@ -5,6 +5,77 @@ import cloudinary from "../config/cloudinary.js";
 
 // Controllers for user profile management, not by admin
 
+// Post feedback
+const postFeedback = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.providedFeedback) {
+      // Update
+      updateFeedback(req, res, user);
+    }
+
+    const { question1, question2, question3, question4, question5 } = req.body;
+    user.feedbackInfo = {
+      question1,
+      question2,
+      question3,
+      question4,
+      question5,
+    };
+    user.providedFeedback = true;
+
+    await user.save();
+
+    res.status(200).json({ message: "Feedback submitted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateFeedback = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const { question1, question2, question3, question4, question5 } = req.body;
+    // user.feedbackInfo = {
+    //   question1,
+    //   question2,
+    //   question3,
+    //   question4,
+    //   question5,
+    // };
+
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      {
+        feedbackInfo: {
+          question1,
+          question2,
+          question3,
+          question4,
+          question5,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Feedback updated" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Get user profile
 const getUserProfile = async (req, res) => {
   try {
@@ -226,4 +297,6 @@ export {
   updateUser,
   deleteUser,
   viewProfile,
+  postFeedback,
+  updateFeedback,
 };

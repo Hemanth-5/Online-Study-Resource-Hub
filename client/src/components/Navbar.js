@@ -10,6 +10,8 @@ import {
   FaTimes,
 } from "react-icons/fa"; // Import necessary icons
 import "./Navbar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolder, faComments } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const location = useLocation(); // Get current location
@@ -40,7 +42,10 @@ const Navbar = () => {
     <aside className="navbar">
       {/* Mobile Navbar Toggle Icon */}
       {is768 ? (
-        <div className="mobile-navbar-toggle" onClick={toggleMobileNav}>
+        <div
+          className={`mobile-navbar-toggle ${isMobileNavOpen ? "close" : ""}`}
+          onClick={toggleMobileNav}
+        >
           {isMobileNavOpen ? (
             <FaTimes
               className="fa-close-icon"
@@ -80,7 +85,7 @@ const Navbar = () => {
               location.pathname === "/my-uploads" ? "active" : ""
             }`}
           >
-            <FaBook className="nav-icon" />
+            <FontAwesomeIcon icon={faFolder} className="nav-icon" />
             {!is768 && <span>My Uploads</span>}
           </Link>
 
@@ -94,6 +99,19 @@ const Navbar = () => {
             <FaFileAlt className="nav-icon" />
             {!is768 && <span>Question Papers</span>}
           </Link>
+
+          {/* Submit feedback */}
+          <Link
+            to="/feedback"
+            className={`nav-link ${
+              location.pathname === "/feedback" ? "active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faComments} className="nav-icon" />
+            {!is768 && <span>Submit Feedback</span>}
+          </Link>
+
+          {/* <FontAwesomeIcon icon={faSignOutAlt} /> */}
         </nav>
       )}
 
@@ -128,7 +146,7 @@ const Navbar = () => {
               }`}
               onClick={toggleMobileNav}
             >
-              <FaBook className="nav-icon" />
+              <FontAwesomeIcon icon={faFolder} className="nav-icon" />
             </Link>
 
             {/* Question Papers */}
@@ -140,6 +158,15 @@ const Navbar = () => {
               onClick={toggleMobileNav}
             >
               <FaFileAlt className="nav-icon" />
+            </Link>
+
+            <Link
+              to="/feedback"
+              className={`nav-link ${
+                location.pathname === "/feedback" ? "active" : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faComments} className="nav-icon" />
             </Link>
           </nav>
         </div>

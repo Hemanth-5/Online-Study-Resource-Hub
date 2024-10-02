@@ -251,17 +251,52 @@
 
   /* Mobile toggle icon */
   .mobile-navbar-toggle {
+    width: 35px;
+    left: 0.75rem;
     display: block;
-    position: absolute;
+    padding: 5px; /* Add padding if necessary to prevent cutting off */
+
+    /* position: absolute; */
     right: 20px;
     top: 15px;
     cursor: pointer;
     z-index: 1001; /* Ensure it appears above the sidebar */
+
+    margin-top: 60px;
+    border-radius: 12px; /* Smooth, rounded corners */
+    background: rgba(255, 255, 255, 0.15); /* Translucent background */
+    backdrop-filter: blur(8px); /* Glass effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Optional: shadow for depth */
+    transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
   }
 
-  .mobile-navbar-toggle svg {
+  .mobile-navbar-toggle:hover {
+    background: rgba(
+      255,
+      255,
+      255,
+      0.25
+    ); /* Slightly increase opacity on hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+  }
+
+  .mobile-navbar-toggle .fa-bars-icon {
+    margin: auto;
     font-size: 30px;
-    color: #007bff;
+    color: #555555;
+    transition: color 0.3s ease; /* Smooth transition for color */
+  }
+
+  .mobile-navbar-toggle.close {
+    background: none;
+    border: none;
+    backdrop-filter: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .mobile-navbar-toggle:hover svg {
+    color: #404040; /* Change color on hover */
   }
 
   /* Mobile sidebar content */

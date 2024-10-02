@@ -8,6 +8,8 @@ import {
   updateUser,
   viewProfile,
   deleteUser,
+  postFeedback,
+  updateFeedback,
 } from "../controllers/user.controllers.js";
 
 import { authenticateJWT, verifyAdmin } from "../middlewares/auth.js";
@@ -26,5 +28,8 @@ router.route("/").get(authenticateJWT, verifyAdmin, getUsers);
 router.route("/:id").get(authenticateJWT, verifyAdmin, getUserById);
 router.route("/:id").put(authenticateJWT, verifyAdmin, updateUser);
 router.route("/:id").delete(authenticateJWT, verifyAdmin, deleteUser);
+
+router.route("/feedback").post(authenticateJWT, postFeedback);
+router.route("/feedback/:id").put(authenticateJWT, updateFeedback);
 
 export default router;
