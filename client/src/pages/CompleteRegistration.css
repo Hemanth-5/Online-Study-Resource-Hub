@@ -599,9 +599,9 @@
     font-size: 0.875rem;
   }
 
-  .profile-photo-section {
+  /* .profile-photo-section {
     flex-direction: column;
-  }
+  } */
 
   .profile-photo-dropzone {
     width: 120px;
