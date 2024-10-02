@@ -112,8 +112,9 @@ const MyUploads = () => {
   useEffect(() => {
     // Render PDF preview for each resource
     resources.forEach((resource, index) => {
+      console.log(resource.fileUrl.replace("http://", "https://"));
       if (resource.fileUrl.endsWith(".pdf")) {
-        fetchPDFPages(resource.fileUrl, index);
+        fetchPDFPages(resource.fileUrl.replace("http://", "https://"), index);
       }
     });
   }, [resources]);

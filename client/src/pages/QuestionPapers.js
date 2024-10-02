@@ -73,7 +73,10 @@ const QuestionPapers = () => {
         setLoading(false);
         questionPapers.forEach((resource, index) => {
           if (resource.fileUrl.endsWith(".pdf")) {
-            fetchPDFPages(resource.fileUrl, index);
+            fetchPDFPages(
+              resource.fileUrl.replace("http://", "https://"),
+              index
+            );
           }
         });
       } catch (err) {

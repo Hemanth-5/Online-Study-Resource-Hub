@@ -74,7 +74,10 @@ const Resources = () => {
         setLoading(false);
         nonQPData.forEach((resource, index) => {
           if (resource.fileUrl.endsWith(".pdf")) {
-            fetchPDFPages(resource.fileUrl, index);
+            fetchPDFPages(
+              resource.fileUrl.replace("http://", "https://"),
+              index
+            );
           }
         });
       } catch (err) {
