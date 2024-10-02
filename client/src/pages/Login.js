@@ -56,7 +56,7 @@ const Login = () => {
 
     if (token) {
       // dispatch(setLoading("loading"));
-      console.log("In toke part");
+      // console.log("In toke part");
       setLoading(true);
       // Fetch user profile
       fetchUserProfile(token)
