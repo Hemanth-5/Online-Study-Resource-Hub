@@ -45,7 +45,9 @@ const ViewResource = () => {
         setResource(data);
 
         if (data.fileUrl.endsWith(".pdf")) {
-          const pages = await getTotalPages(data.fileUrl);
+          const pages = await getTotalPages(
+            data.fileUrl.replace("http://", "https://")
+          );
           setTotalPages(pages);
           setPageNumber(1);
         }
@@ -77,7 +79,7 @@ const ViewResource = () => {
 
   useEffect(() => {
     if (resource && resource?.fileUrl.endsWith(".pdf")) {
-      renderPDF(resource?.fileUrl, pageNumber);
+      renderPDF(resource?.fileUrl.replace("http://", "https://"), pageNumber);
     }
   }, [resource, pageNumber]);
 
