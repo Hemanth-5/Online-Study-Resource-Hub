@@ -107,12 +107,12 @@
 
 .profile-popup {
   position: absolute;
-  right: 0;
+  right: 10px;
   top: 60px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 180px;
+  width: calc(max-content);
   z-index: 10;
   padding: 10px;
 }

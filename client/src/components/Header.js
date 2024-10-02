@@ -6,6 +6,7 @@ import {
   FaSearch,
   FaUser,
   FaDoorOpen,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import "./Header.css";
 import { useDispatch, useSelector } from "react-redux"; // Import useSelector
@@ -123,7 +124,7 @@ const Header = () => {
             className="profile-option"
             onClick={() => setShowLogoutConfirm(true)}
           >
-            Logout <FaDoorOpen className="logout-icon" />
+            Logout <FaSignOutAlt className="logout-icon" />
           </div>
         </div>
       )}
