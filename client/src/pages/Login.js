@@ -65,6 +65,7 @@ const Login = () => {
         // If still loading after the timeout, show a popup and refresh the page
         if (loading) {
           showPopup("Login timed out. Please try logging in again.", "failure");
+          setLoading(false);
           setTimeout(() => window.location.reload(), 3000); // Reload the page after 3 seconds
         }
       }, timeoutDuration);
