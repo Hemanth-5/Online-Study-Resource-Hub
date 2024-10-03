@@ -218,6 +218,7 @@ const createResource = async (req, res) => {
 
     // Upload the file to Cloudinary
     const result = await uploadResourcesToCloudinary(req, req.file.buffer);
+    console.log({ result });
     const {
       description,
       tags,
