@@ -27,10 +27,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "https://online-study-resource-hub-odo4.vercel.app",
-      "http://localhost:3000",
-    ],
+    origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
